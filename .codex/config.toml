@@ -1,0 +1,12 @@
+# Project-scoped documentation MCPs. Open this directory as a trusted project.
+# Endpoints verified against official Motion and Context7 sources on 2026-09-09.
+[mcp_servers.motion]
+url = "https://mcp.motion.dev"
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+# Provides GSAP, React, and tooling documentation; not an official GSAP server.
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+startup_timeout_sec = 20
+tool_timeout_sec = 60
