@@ -1,0 +1,51 @@
+---
+title: "Fan Cards"
+description: "Overlapping liquid-glass cards with frosted depth, rounded refraction, and a smooth lift on hover or keyboard focus."
+---
+
+Cards fan out on larger screens and form a grid in narrow containers. Hover or focus a card to bring it forward.
+
+## Installation
+
+<InstallCommand name="fan-cards" />
+
+## Usage
+
+```tsx
+import { FanCards } from "@/components/ui/fan-cards"
+
+export default function Team() {
+  return (
+    <FanCards
+      aria-label="Our team"
+      items={[
+        {
+          id: "maya",
+          label: "Maya, Designer",
+          content: <div className="h-72 p-6">Maya · Designer</div>,
+        },
+        {
+          id: "devon",
+          label: "Devon, Engineer",
+          content: <div className="h-72 p-6">Devon · Engineer</div>,
+        },
+      ]}
+    />
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` | `FanCardItem[]` | The items option. |
+| `cardClassName?` | `string` | The card class name option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
