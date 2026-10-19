@@ -1,0 +1,49 @@
+---
+title: "Liquid Switch"
+description: "A switch whose knob turns into a glass lens while you hold it."
+---
+
+Use checked and onCheckedChange for controlled state. Give the switch an accessible name. Space toggles the focused switch.
+
+## Installation
+
+<InstallCommand name="liquid-switch" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { LiquidSwitch } from "@/components/ui/liquid-switch"
+
+export default function Demo() {
+  const [enabled, setEnabled] = useState(true)
+  return (
+    <div className="flex items-center gap-5">
+      <LiquidSwitch
+        checked={enabled}
+        onCheckedChange={setEnabled}
+        aria-label="Enable notifications"
+      />
+      <span>{enabled ? "Notifications on" : "Notifications off"}</span>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `checked?` | `boolean` | The checked option. |
+| `defaultChecked?` | `boolean` | The default checked option. |
+| `onCheckedChange?` | `(checked: boolean) => void` | The on checked change option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
