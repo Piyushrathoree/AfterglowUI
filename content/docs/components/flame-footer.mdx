@@ -1,0 +1,50 @@
+---
+title: "Flame Footer"
+description: "A page footer on a field of flame: brand and links on top, a big headline, and small print resting on the fire."
+---
+
+Provide headline content and real navigation links. The footer includes the accent-driven Flame Field and responds to the current theme.
+
+## Installation
+
+<InstallCommand name="flame-footer" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { FlameFooter } from "@/components/ui/flame-footer"
+
+export default function Demo() {
+  return (
+    <FlameFooter
+      className="w-full"
+      headline="A little afterglow."
+      links={[
+        { label: "Components", href: "/docs/components/fan-cards" },
+        { label: "Getting started", href: "/docs/installation" },
+      ]}
+      legal="Afterglow UI"
+    />
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `headline` | `React.ReactNode` | the big line over the flame |
+| `brand?` | `React.ReactNode` | the name at the top left; defaults to the afterglow mark |
+| `links?` | `FooterLink[]` | The links option. |
+| `legal?` | `React.ReactNode` | small print at the bottom left |
+| `legalLinks?` | `FooterLink[]` | The legal links option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+No additional runtime packages beyond the project setup.
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
