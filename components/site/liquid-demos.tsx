@@ -113,7 +113,7 @@ const feed = [
 
 export function PhoneDemo() {
   return (
-    <div className="relative h-[560px] w-[300px] overflow-hidden rounded-[44px] border-[6px] border-foreground/10 bg-background shadow-2xl">
+    <div className="relative h-[560px] w-full max-w-[300px] overflow-hidden rounded-[44px] border-[6px] border-foreground/10 bg-background shadow-2xl">
       <div className="h-full overflow-y-auto px-4 pt-14 pb-28 [scrollbar-width:none]">
         <p className="text-[26px] font-bold tracking-tight">Listen now</p>
         <div className="mt-4 grid grid-cols-2 gap-3">
@@ -201,7 +201,7 @@ function Widget({
   children: React.ReactNode
 }) {
   return (
-    <LiquidCard className="min-h-[14.5rem]">
+    <LiquidCard className="min-w-0 min-h-[14.5rem]">
       <div className="flex h-full flex-col">
         <div className="flex h-5 items-center justify-between">
           <p className={`text-[11px] font-semibold tracking-[0.08em] uppercase ${accent ? "text-glow-2" : "text-foreground/60"}`}>
@@ -354,7 +354,8 @@ export function DesktopDemo() {
   }, [playing])
 
   return (
-    <div className="flex w-full flex-col gap-8">
+    <div className="@container min-w-0 w-full">
+    <div className="flex min-w-0 w-full flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <LiquidToolbar
@@ -413,7 +414,7 @@ export function DesktopDemo() {
         />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid min-w-0 grid-cols-1 gap-4 @min-[520px]:grid-cols-2 @min-[840px]:grid-cols-3">
         <Widget
           label="Now playing"
           aside={<span className="text-[11px] text-foreground/55 tabular-nums">{BPM} BPM</span>}
@@ -499,6 +500,7 @@ export function DesktopDemo() {
           </ul>
         </Widget>
       </div>
+    </div>
     </div>
   )
 }
