@@ -1,0 +1,442 @@
+import Link from "next/link"
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Flame,
+  Share,
+  Sparkles,
+} from "lucide-react"
+
+import { AfterglowMark } from "@/components/ui/auth-parts"
+import { GlossButton } from "@/components/ui/gloss-button"
+import { LiquidButton } from "@/components/ui/liquid-button"
+import { SheenCard } from "@/components/ui/sheen-card"
+import { SilkDemo } from "@/components/site/auth-demos"
+import { SliderDemo, SwitchDemo, ToastDemo } from "@/components/site/demos"
+import {
+  DeployDemo,
+  CopyDemo,
+  AccentDemo,
+  DockDemo,
+  TabsDemo,
+} from "@/components/site/light-demos"
+import {
+  ControlCenterDemo,
+  DesktopDemo,
+  LensDemo,
+  PhoneDemo,
+} from "@/components/site/liquid-demos"
+import {
+  MetalCardDemo,
+  MetalHeroDemo,
+  MetalPassDemo,
+} from "@/components/site/metal-demos"
+import { FlameField } from "@/components/ui/flame-field"
+import { FlameFooter } from "@/components/ui/flame-footer"
+import { AccentPicker } from "@/components/ui/accent-picker"
+import { DocsDemo } from "@/components/site/nav-demos"
+import { PageRail } from "@/components/site/page-rail"
+import { RailDemo } from "@/components/site/rail-demos"
+import { ThemeToggle } from "@/components/site/theme-toggle"
+import { cn } from "@/lib/utils"
+
+function Preview({
+  name,
+  description,
+  stretch = false,
+  flush = false,
+  className,
+  children,
+}: {
+  name: string
+  description: string
+  /** grow the stage to match the tallest preview in its row */
+  stretch?: boolean
+  /** the preview fills the whole stage, with no padding around it */
+  flush?: boolean
+  className?: string
+  children: React.ReactNode
+}) {
+  return (
+    <section
+      // the page rail reads these to list every component
+      data-rail-id={`c-${name.replace(/[^a-z0-9]+/gi, "-")}`}
+      data-rail-title={name}
+      data-rail-excerpt={description}
+      className={cn("flex scroll-mt-10 flex-col gap-3", className)}
+    >
+      <div
+        className={cn(
+          "relative isolate grid min-h-80 grid-cols-1 place-items-center overflow-hidden rounded-3xl border bg-card",
+          flush ? "p-0" : "p-8",
+          stretch && "flex-1"
+        )}
+      >
+        {children}
+      </div>
+      <div className="px-1">
+        <h3 className="font-mono text-sm text-foreground">{name}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+      </div>
+    </section>
+  )
+}
+
+function Group({
+  id,
+  title,
+  description,
+  children,
+}: {
+  id: string
+  title: string
+  description: string
+  children: React.ReactNode
+}) {
+  return (
+    <div id={id} data-rail-group={title} className="scroll-mt-8 pt-16 first:pt-0">
+      <div className="mb-8 flex flex-col gap-1">
+        <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+      <div className="grid gap-10 lg:grid-cols-2">{children}</div>
+    </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <div className="relative isolate min-h-screen">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+        <div className="flex items-center gap-2.5">
+          <AfterglowMark className="size-5" />
+          <span className="font-medium tracking-tight">afterglow</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/auth"
+            className="inline-flex h-8 items-center rounded-full border px-3.5 text-[13px] text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground"
+          >
+            Auth forms
+          </Link>
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-6 pb-24">
+        <div className="py-16 sm:py-24">
+          <p className="mb-5 font-mono text-xs tracking-wide text-muted-foreground uppercase">
+            29 components · 4 auth forms · copy, paste, own the code
+          </p>
+          <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
+            Components that leave a little{" "}
+            <span className="bg-linear-to-r from-glow via-glow-2 to-glow-3 bg-clip-text text-transparent">
+              light
+            </span>{" "}
+            behind.
+          </h1>
+          <p className="mt-6 max-w-xl text-lg text-muted-foreground text-pretty">
+            Glossy, tactile React components with one shared glow, one set of
+            springs, and one material. Copy, paste, restyle.
+          </p>
+        </div>
+
+        <section
+          id="auth"
+          data-rail-id="c-auth-forms"
+          data-rail-title="auth forms"
+          data-rail-excerpt="Four sign-in blocks, each one file: Silk, Liquid glass, Split and One question."
+          data-rail-group="Auth forms"
+          className="scroll-mt-8 pb-16"
+        >
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-xl font-semibold tracking-tight">Auth forms</h2>
+              <p className="text-sm text-muted-foreground">
+                Four sign-in blocks, each one file. Here is Silk; try submitting it.
+              </p>
+            </div>
+            <Link
+              href="/auth"
+              className="group inline-flex items-center gap-1.5 text-sm font-medium transition-opacity duration-150 hover:opacity-70"
+            >
+              See all four
+              <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+          <div className="overflow-hidden rounded-3xl border shadow-[0_30px_80px_-40px_oklch(0_0_0/50%)]">
+            <SilkDemo />
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {[
+              ["auth-glass", "Liquid glass"],
+              ["auth-split", "Split"],
+              ["auth-steps", "One question"],
+            ].map(([id, label]) => (
+              <Link
+                key={id}
+                href={`/auth#${id}`}
+                className="inline-flex h-8 items-center rounded-full border px-3.5 text-[13px] text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <Group
+          id="liquid"
+          title="Liquid glass"
+          description="Clear glass with a curved rim that bends what's behind it, like Apple's Liquid Glass. Refraction runs in Chromium; Safari and Firefox get frosted glass."
+        >
+          <Preview
+            name="liquid-button · liquid-switch · liquid-slider"
+            description="Glass buttons that swell when pressed. Switch knobs and slider thumbs turn into lenses while you hold them."
+            className="lg:col-span-2"
+          >
+            <div className="flex w-full flex-col items-center gap-8 py-4">
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <LiquidButton size="icon" aria-label="Back">
+                  <ChevronLeft />
+                </LiquidButton>
+                <LiquidButton size="icon" aria-label="Forward">
+                  <ChevronRight />
+                </LiquidButton>
+                <LiquidButton>
+                  <Share />
+                  Share
+                </LiquidButton>
+                <LiquidButton tinted>Done</LiquidButton>
+              </div>
+              <ControlCenterDemo />
+            </div>
+          </Preview>
+
+          <Preview
+            name="liquid-toolbar · liquid-menu · liquid-segmented · liquid-card"
+            description="A whole desktop in glass: grouped toolbar buttons, a button that morphs into a menu, a segmented control you can drag, and widgets that swell a touch under your pointer."
+            className="lg:col-span-2"
+          >
+            <DesktopDemo />
+          </Preview>
+
+          <Preview
+            name="liquid-tabs"
+            description="A tab bar whose selection becomes a magnifying lens as it moves. Drag across it, or scroll the feed under it."
+          >
+            <PhoneDemo />
+          </Preview>
+
+          <Preview
+            name="liquid-glass"
+            description="The material on its own: a clear pane with a curved rim that bends whatever is behind it. Drag it around."
+            stretch
+          >
+            <LensDemo />
+          </Preview>
+        </Group>
+
+        <Group
+          id="metal"
+          title="Liquid metal"
+          description="Brushed silver and flowing chrome from one small WebGL shader. Every piece on the page shares a single GPU context, pauses offscreen, and holds still under reduced motion."
+        >
+          <Preview
+            name="metal-text · metal-button"
+            description="Polished lettering that glints now and then. Buttons in brushed silver, or dark with a hairline of moving chrome."
+            className="lg:col-span-2"
+          >
+            <MetalHeroDemo />
+          </Preview>
+
+          <Preview
+            name="metal-card"
+            description="A card edged in a hairline of chrome."
+          >
+            <MetalCardDemo />
+          </Preview>
+
+          <Preview
+            name="liquid-metal"
+            description="The material on its own. Softened to satin and darkened, it becomes graphite; a lighter cut makes the chip."
+            stretch
+          >
+            <MetalPassDemo />
+          </Preview>
+        </Group>
+
+        <Group
+          id="gloss"
+          title="Gloss"
+          description="Surfaces with a specular rim, a shaded edge and real depth. Press them."
+        >
+          <Preview
+            name="gloss-button"
+            description="A glossy button with a sheen, a hotspot that follows your pointer, and a press that squishes."
+          >
+            <div className="flex flex-col items-center gap-5">
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <GlossButton>
+                  <Flame />
+                  Ignite
+                </GlossButton>
+                <GlossButton variant="glass">Frosted glass</GlossButton>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <GlossButton size="sm">Small</GlossButton>
+                <GlossButton size="lg" variant="glass">
+                  <Sparkles />
+                  Large
+                </GlossButton>
+              </div>
+            </div>
+          </Preview>
+
+          <Preview
+            name="sheen-card"
+            description="A card that tilts toward your pointer while a band of reflected light slides across it."
+          >
+            <SheenCard className="flex aspect-[1.586] w-full max-w-sm flex-col justify-between p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <AfterglowMark className="size-[18px]" />
+                  <span className="text-sm font-medium tracking-tight">
+                    afterglow
+                  </span>
+                </div>
+                <span className="font-mono text-[11px] tracking-widest text-muted-foreground">
+                  PASS
+                </span>
+              </div>
+              <div className="h-8 w-11 rounded-md bg-linear-to-br from-glow/90 via-[color-mix(in_oklch,var(--glow),white_35%)] to-glow-2/80 shadow-gloss" />
+              <div>
+                <p className="font-mono text-sm tracking-[0.2em] text-foreground/90">
+                  •••• •••• •••• 2026
+                </p>
+                <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+                  <span>Night Owl</span>
+                  <span>since 2026</span>
+                </div>
+              </div>
+            </SheenCard>
+          </Preview>
+
+          <Preview
+            name="glass-switch"
+            description="A toggle whose bead stretches like a drop of liquid as it travels. Drag it, too."
+          >
+            <SwitchDemo />
+          </Preview>
+
+          <Preview
+            name="glass-slider"
+            description="A slider that's hottest at the thumb, leans its bubble into fast moves, and stretches at the ends."
+          >
+            <SliderDemo />
+          </Preview>
+
+          <Preview
+            name="glass-toaster"
+            description="Frosted toasts that stack, fan out on hover, swipe away, and burn down like an ember."
+            className="lg:col-span-2"
+          >
+            <ToastDemo />
+          </Preview>
+        </Group>
+
+        <Group
+          id="light"
+          title="Light"
+          description="Light that travels, and lingers for a moment after you leave."
+        >
+          <Preview
+            name="deploy-card"
+            description="A liquid glass card that follows a deploy from Queued to Ready. The status dot turns into a check, the timer counts up, and Redeploy spins its icon and starts over."
+            className="lg:col-span-2"
+          >
+            <DeployDemo />
+          </Preview>
+
+          <Preview
+            name="copy-button"
+            description="Copy the command and a streak of light runs along it while the icon turns into a check. The key stays hidden until you reveal it, then decodes in place."
+          >
+            <CopyDemo />
+          </Preview>
+
+          <Preview
+            name="trail-tabs"
+            description="Tabs that fold down to their icons. The one you pick opens up to show its name, its icon moves (the bell rings, the gear turns), and the panel slides in while the height follows."
+          >
+            <TabsDemo />
+          </Preview>
+
+          <Preview
+            name="accent-picker"
+            description="Pick a color and every glow and focus ring on the page turns that one solid color, in light and dark. It remembers your choice. Press T to flip the theme."
+          >
+            <AccentDemo />
+          </Preview>
+
+          <Preview
+            name="flame-field"
+            description="Slow waves of accent color rise, fall, and drift across the surface, fading into white or black with the theme. They run only while on screen and hold still under reduced motion."
+            className="lg:col-span-2"
+            flush
+          >
+            <div className="relative h-[420px] w-full">
+              <FlameField className="absolute inset-0" />
+              <p className="relative z-10 p-10 text-[clamp(40px,6vw,76px)] leading-none font-bold tracking-[-0.04em] text-black dark:text-white">Slow fire.</p>
+            </div>
+          </Preview>
+
+          <Preview
+            name="magnetic-dock"
+            description="A frosted dock of glossy app tiles that grow toward your pointer. Apps bounce as they open, and a glow trails behind."
+            className="lg:col-span-2"
+          >
+            <DockDemo />
+          </Preview>
+        </Group>
+
+        <Group
+          id="scroll"
+          title="Navigation"
+          description="Know where you are, and get anywhere in one move."
+        >
+          <Preview
+            name="rail-nav · reading-rail"
+            description="A sidebar and a table of contents drawn on one dashed rail. In the sidebar a solid line hooks into the page you are on, and a quieter one reaches out to the row under your pointer. In the contents, the rail bends in where a heading is indented, fills as you read, and an ember at its tip turns with each bend."
+            className="lg:col-span-2"
+            flush
+          >
+            <DocsDemo />
+          </Preview>
+
+          <Preview
+            name="scroll-rail"
+            description="A column of ticks for a long scroll, here beside a live chat. Send a message and it adds a tick. The tick you are on is longer, ticks swell toward your pointer, and hovering one opens a preview that glides from tick to tick. Click to jump, or use the arrow keys."
+            className="lg:col-span-2"
+            flush
+          >
+            <RailDemo />
+          </Preview>
+        </Group>
+      </main>
+      <FlameFooter
+        className="pb-20 sm:pb-0"
+        headline={<>Light that<br />lingers.</>}
+        links={[
+          { label: "Components", href: "#light" },
+          { label: "Auth forms", href: "/auth" },
+          { label: "Registry", href: "/r/registry.json" },
+        ]}
+        legal="Afterglow UI © 2026 · MIT with Commons Clause"
+        legalLinks={[{ label: "Back to top", href: "#" }]}
+      />
+      <AccentPicker className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2" />
+      <PageRail />
+    </div>
+  )
+}
