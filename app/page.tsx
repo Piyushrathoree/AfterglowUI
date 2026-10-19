@@ -1,17 +1,13 @@
+import { SheenPassShowcase } from "@/components/site/sheen-showcase"
+import { GlossButtonsShowcase } from "@/components/site/gloss-showcase"
+import { ControlCenterShowcase } from "@/components/site/controls-showcase"
 import Link from "next/link"
 import {
   ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  Flame,
-  Share,
-  Sparkles,
 } from "lucide-react"
 
 import { AfterglowMark } from "@/components/ui/auth-parts"
-import { GlossButton } from "@/components/ui/gloss-button"
-import { LiquidButton } from "@/components/ui/liquid-button"
-import { SheenCard } from "@/components/ui/sheen-card"
+import { FanCardsDemo } from "@/components/site/fan-cards-demo"
 import { SilkDemo } from "@/components/site/auth-demos"
 import { SliderDemo, SwitchDemo, ToastDemo } from "@/components/site/demos"
 import {
@@ -22,7 +18,6 @@ import {
   TabsDemo,
 } from "@/components/site/light-demos"
 import {
-  ControlCenterDemo,
   DesktopDemo,
   LensDemo,
   PhoneDemo,
@@ -114,6 +109,9 @@ export default function Home() {
           <span className="font-medium tracking-tight">afterglow</span>
         </div>
         <div className="flex items-center gap-4">
+          <Link href="/docs" className="text-[13px] text-muted-foreground transition-colors hover:text-foreground">
+            Documentation
+          </Link>
           <Link
             href="/auth"
             className="inline-flex h-8 items-center rounded-full border px-3.5 text-[13px] text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground"
@@ -127,7 +125,7 @@ export default function Home() {
       <main className="mx-auto max-w-6xl px-6 pb-24">
         <div className="py-16 sm:py-24">
           <p className="mb-5 font-mono text-xs tracking-wide text-muted-foreground uppercase">
-            29 components · 4 auth forms · copy, paste, own the code
+            30 components · 4 auth forms · copy, paste, own the code
           </p>
           <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
             Components that leave a little{" "}
@@ -195,22 +193,7 @@ export default function Home() {
             description="Glass buttons that swell when pressed. Switch knobs and slider thumbs turn into lenses while you hold them."
             className="lg:col-span-2"
           >
-            <div className="flex w-full flex-col items-center gap-8 py-4">
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                <LiquidButton size="icon" aria-label="Back">
-                  <ChevronLeft />
-                </LiquidButton>
-                <LiquidButton size="icon" aria-label="Forward">
-                  <ChevronRight />
-                </LiquidButton>
-                <LiquidButton>
-                  <Share />
-                  Share
-                </LiquidButton>
-                <LiquidButton tinted>Done</LiquidButton>
-              </div>
-              <ControlCenterDemo />
-            </div>
+            <ControlCenterShowcase />
           </Preview>
 
           <Preview
@@ -275,51 +258,23 @@ export default function Home() {
             name="gloss-button"
             description="A glossy button with a sheen, a hotspot that follows your pointer, and a press that squishes."
           >
-            <div className="flex flex-col items-center gap-5">
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                <GlossButton>
-                  <Flame />
-                  Ignite
-                </GlossButton>
-                <GlossButton variant="glass">Frosted glass</GlossButton>
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                <GlossButton size="sm">Small</GlossButton>
-                <GlossButton size="lg" variant="glass">
-                  <Sparkles />
-                  Large
-                </GlossButton>
-              </div>
-            </div>
+            <GlossButtonsShowcase />
           </Preview>
 
           <Preview
             name="sheen-card"
             description="A card that tilts toward your pointer while a band of reflected light slides across it."
           >
-            <SheenCard className="flex aspect-[1.586] w-full max-w-sm flex-col justify-between p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <AfterglowMark className="size-[18px]" />
-                  <span className="text-sm font-medium tracking-tight">
-                    afterglow
-                  </span>
-                </div>
-                <span className="font-mono text-[11px] tracking-widest text-muted-foreground">
-                  PASS
-                </span>
-              </div>
-              <div className="h-8 w-11 rounded-md bg-linear-to-br from-glow/90 via-[color-mix(in_oklch,var(--glow),white_35%)] to-glow-2/80 shadow-gloss" />
-              <div>
-                <p className="font-mono text-sm tracking-[0.2em] text-foreground/90">
-                  •••• •••• •••• 2026
-                </p>
-                <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-                  <span>Night Owl</span>
-                  <span>since 2026</span>
-                </div>
-              </div>
-            </SheenCard>
+            <SheenPassShowcase />
+          </Preview>
+
+          <Preview
+            name="fan-cards"
+            description="Liquid-glass cards in a gentle fan, with frosted depth and a curved, light-catching rim. Hover or focus one and it lifts, straightens, and comes to the front. On smaller screens they become a readable stack."
+            className="lg:col-span-2"
+            flush
+          >
+            <FanCardsDemo />
           </Preview>
 
           <Preview
