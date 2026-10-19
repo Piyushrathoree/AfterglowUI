@@ -1,0 +1,74 @@
+---
+title: Theming
+description: One accent. Shared materials. A consistent light and dark appearance.
+---
+
+## Color tokens
+
+Afterglow uses CSS custom properties: named values that components share. Change a token once and every component using it follows.
+
+| Token | Purpose |
+| --- | --- |
+| `--glow` | Main accent color and interactive highlights |
+| `--glow-2`, `--glow-3` | Secondary colors used by layered effects |
+| `--glow-foreground` | Text on an accent surface |
+| `--ring` | Keyboard focus outlines |
+| `--background`, `--card` | Page and card surfaces |
+
+## Change the accent
+
+The registry installs material tokens with each component. Override the accent after those declarations in your global stylesheet:
+
+```css
+:root {
+  --glow: oklch(0.7 0.19 240);
+  --glow-2: oklch(0.7 0.19 240);
+  --glow-3: oklch(0.7 0.19 240);
+  --ring: var(--glow);
+}
+
+.dark {
+  --glow: oklch(0.8 0.16 240);
+  --glow-2: oklch(0.8 0.16 240);
+  --glow-3: oklch(0.8 0.16 240);
+  --ring: var(--glow);
+}
+```
+
+These values use OKLCH, a color format with separate lightness, color intensity, and hue. The final number, `240`, chooses a blue hue. Using the same hue for all three tokens produces a single-color accent.
+
+Try the color picker on this page to preview different accents. Check foreground contrast when choosing your own colors, especially for small text on accent buttons.
+
+## Light and dark mode
+
+Dark mode uses a `.dark` class on the document element. Your theme controller adds or removes this class; the CSS variables handle the component colors.
+
+```css
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #fafafa;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #f5f5f5;
+  --card: #171717;
+}
+```
+
+In this site, `next-themes` saves the theme selection across pages and reloads. Press **T** to switch, or use the theme button in the header.
+
+## Materials
+
+Gloss surfaces use `--gloss-highlight`, `--gloss-shade`, `--gloss-depth`, and `--gloss-edge`. Glass surfaces add `--liquid-tint`, `--liquid-rim`, and related edge and shadow colors.
+
+Keep both the light and dark material values installed by the registry. Changing only a background color can leave highlights and shadows tuned for the wrong theme.
+
+## Motion preferences
+
+Fan Cards removes its transforms when the user requests reduced motion. Gloss Button removes its press scaling, while its pointer highlight still fades. These are different behaviors; check each component rather than assuming every visual effect is disabled.
+
+When adding your own animation, honor `prefers-reduced-motion` in CSS or use Motion’s `useReducedMotion` hook for JavaScript animation.
