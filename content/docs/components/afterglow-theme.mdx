@@ -1,0 +1,42 @@
+---
+title: "Afterglow Theme"
+description: "The full afterglow palette: dusk-toned surfaces with an ember, rose and violet glow."
+---
+
+The theme provides CSS variables used by the materials. Import your Tailwind CSS stylesheet once at the application root. Accent Picker demonstrates changing the shared accent at runtime.
+
+## Installation
+
+<InstallCommand name="afterglow-theme" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { AccentPicker } from "@/components/ui/accent-picker"
+
+export default function Demo() {
+  return (
+    <div className="space-y-6 text-center">
+      <h2 className="text-3xl font-medium text-glow">
+        One shared accent.
+      </h2>
+      <p className="text-muted-foreground">
+        Change the accent to update every material.
+      </p>
+      <AccentPicker />
+    </div>
+  )
+}
+```
+
+## API
+
+This entry supplies shared tokens or geometry rather than a standalone props interface. See the source for its complete exports.
+
+## Dependencies
+
+No additional runtime packages beyond the project setup.
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
