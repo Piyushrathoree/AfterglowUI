@@ -1,0 +1,78 @@
+---
+title: "Liquid Toolbar"
+description: "Grouped glass toolbar buttons with a sliding hover highlight."
+---
+
+Give icon actions a label. Use pressed for toggle actions and insert divider entries between groups. Arrow keys move between toolbar buttons.
+
+## Installation
+
+<InstallCommand name="liquid-toolbar" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { Bold, Italic, Underline } from "lucide-react"
+import { LiquidToolbar } from "@/components/ui/liquid-toolbar"
+
+export default function Demo() {
+  const [bold, setBold] = useState(false)
+  const [italic, setItalic] = useState(false)
+  const [underline, setUnderline] = useState(false)
+  return (
+    <div className="space-y-8 text-center">
+      <LiquidToolbar
+        aria-label="Text formatting"
+        items={[
+          {
+            label: "Bold",
+            icon: <Bold />,
+            pressed: bold,
+            onClick: () => setBold(!bold),
+          },
+          {
+            label: "Italic",
+            icon: <Italic />,
+            pressed: italic,
+            onClick: () => setItalic(!italic),
+          },
+          "divider",
+          {
+            label: "Underline",
+            icon: <Underline />,
+            pressed: underline,
+            onClick: () => setUnderline(!underline),
+          },
+        ]}
+      />
+      <p
+        style={{
+          fontWeight: bold ? 700 : 400,
+          fontStyle: italic ? "italic" : "normal",
+          textDecoration: underline ? "underline" : "none",
+        }}
+      >
+        Make it yours.
+      </p>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` | `ToolbarEntry[]` | The items option. |
+| `aria-label?` | `string` | The aria-label option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
