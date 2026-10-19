@@ -1,0 +1,55 @@
+---
+title: "Liquid Slider"
+description: "A slider whose thumb turns into a magnifying lens while you drag it."
+---
+
+The default range is 0–100. Use min, max, and step for a different range; onValueCommit runs when the adjustment is committed.
+
+## Installation
+
+<InstallCommand name="liquid-slider" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { LiquidSlider } from "@/components/ui/liquid-slider"
+
+export default function Demo() {
+  const [value, setValue] = useState(60)
+  return (
+    <div className="w-full max-w-sm space-y-6 px-5">
+      <p>Volume: {value}%</p>
+      <LiquidSlider
+        value={value}
+        onValueChange={setValue}
+        aria-label="Volume"
+      />
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value?` | `number` | The value option. |
+| `defaultValue?` | `number` | The default value option. |
+| `min?` | `number` | The min option. |
+| `max?` | `number` | The max option. |
+| `step?` | `number` | The step option. |
+| `disabled?` | `boolean` | The disabled option. |
+| `onValueChange?` | `(value: number) => void` | The on value change option. |
+| `onValueCommit?` | `(value: number) => void` | The on value commit option. |
+| `getValueText?` | `(value: number) => string` | text read out by screen readers, e.g. "40%" |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
