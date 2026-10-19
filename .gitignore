@@ -1,0 +1,22 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+*.local
+.DS_Store
+.next/
+.turbo/
+out/
+*.tsbuildinfo
+output/playwright/
+.playwright-cli/
+
+# third-party reference code
+reference/
+.vercel/
+*.pem
+next-env.d.ts
