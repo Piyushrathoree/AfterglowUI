@@ -9,6 +9,7 @@ test-results/
 *.local
 .DS_Store
 .next/
+.source/
 .turbo/
 out/
 *.tsbuildinfo
