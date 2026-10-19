@@ -1,0 +1,64 @@
+---
+title: "Liquid Glass"
+description: "A clear pane with a curved rim that bends whatever is behind it, like Apple's Liquid Glass."
+---
+
+Place the glass below a separate content layer. Refraction is supported in Chromium; other browsers receive frosted glass. Set refraction to zero for native blur. Avoid animating ancestor opacity around refracting glass.
+
+## Installation
+
+<InstallCommand name="liquid-glass" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { LiquidGlass } from "@/components/ui/liquid-glass"
+
+export default function Demo() {
+  return (
+    <div className="relative grid min-h-88 w-full place-items-center overflow-hidden p-8">
+      <div className="absolute left-[18%] top-10 size-40 rounded-full bg-glow" />
+      <div className="absolute bottom-8 right-[16%] size-32 rounded-full bg-glow-3" />
+      <div className="relative max-w-xs rounded-3xl">
+        <LiquidGlass
+          className="absolute inset-0 rounded-[inherit]"
+          frost={6}
+        />
+        <div className="relative p-8">
+          <h2 className="text-xl font-medium">
+            A different perspective.
+          </h2>
+          <p className="mt-4 text-sm leading-6">
+            The color behind the glass becomes part of the material.
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `bezel?` | `number` | width of the curved rim in px, defaults to the corner radius (max 24) |
+| `refraction?` | `number \| MotionValue<number>` | 0 is flat glass, 1 is the full lens; pass a motion value to animate it |
+| `magnify?` | `number` | zooms the middle like a magnifier, 0 to 0.3 |
+| `frost?` | `number` | blur behind the glass in px |
+| `tint?` | `string` | a color mixed over the glass, e.g. for a tinted primary button |
+| `presence?` | `number \| MotionValue<number>` | fades the whole pane in and out. Never fade a parent of liquid glass instead: an ancestor with opacity cuts the glass off from what's behind it. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
+
+## Browser support
+
+Chromium supports backdrop displacement. Other browsers use a frosted fallback. Keep content above the glass in a separate layer and avoid fading a parent of refracting glass.
