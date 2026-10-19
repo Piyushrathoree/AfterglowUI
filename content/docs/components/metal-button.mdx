@@ -1,0 +1,43 @@
+---
+title: "Metal Button"
+description: "Dark buttons ringed in moving chrome, or solid brushed silver."
+---
+
+Choose rim for a dark surface with a chrome edge or silver for brushed metal. Standard button attributes are supported.
+
+## Installation
+
+<InstallCommand name="metal-button" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { MetalButton } from "@/components/ui/metal-button"
+
+export default function Demo() {
+  return (
+    <div className="flex flex-wrap justify-center gap-4">
+      <MetalButton>Continue</MetalButton>
+      <MetalButton variant="silver">Save changes</MetalButton>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `variant?` | `"rim" \| "silver"` | rim is a dark button ringed in flowing chrome; silver is solid brushed metal |
+| `size?` | `keyof typeof sizes` | The size option. |
+| `children?` | `React.ReactNode` | The children option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
