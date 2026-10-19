@@ -74,7 +74,7 @@ export function AuthSplit({ onSubmit, onProvider, stories = defaultStories, clas
   }
 
   return (
-    <div className={cn("grid min-h-[44rem] w-full bg-background text-foreground lg:grid-cols-2", className)}>
+    <div className="@container w-full min-w-0"><div className={cn("grid min-h-[44rem] w-full min-w-0 bg-background text-foreground @min-[880px]:grid-cols-2", className)}>
       <div className="flex flex-col items-center justify-between gap-10 px-6 py-10">
         <span className="inline-flex items-center gap-2 text-[15px] font-medium tracking-[-0.01em] [&_svg]:size-5">
           <AfterglowMark />
@@ -155,7 +155,7 @@ export function AuthSplit({ onSubmit, onProvider, stories = defaultStories, clas
       </div>
 
       <StoryPanel stories={stories} />
-    </div>
+    </div></div>
   )
 }
 
@@ -166,7 +166,7 @@ function StoryPanel({ stories }: { stories: Story[] }) {
   const story = stories[index]
 
   return (
-    <div className="dark relative isolate m-3 hidden overflow-hidden rounded-[22px] bg-[oklch(0.1_0.002_285)] text-white lg:block">
+    <div className="dark relative isolate m-3 hidden overflow-hidden rounded-[22px] bg-[oklch(0.1_0.002_285)] text-white @min-[880px]:block">
       <LiquidMetal pattern="silk" softness={0.7} brightness={-0.22} scale={0.7} tint={[1, 1, 1]} speed={0.4} quality={0.6} />
       <div aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,oklch(0_0_0/55%))]" />
 
