@@ -78,7 +78,7 @@ export function SliderDemo() {
   )
 }
 
-export function ToastDemo() {
+export function ToastDemo({ contained = false }: { contained?: boolean }) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
       <GlossButton
@@ -107,7 +107,7 @@ export function ToastDemo() {
       >
         With an action
       </GlossButton>
-      <GlassToaster />
+      <GlassToaster className={contained ? "absolute inset-x-4 bottom-5 w-auto max-w-[356px] mx-auto" : undefined} />
     </div>
   )
 }
