@@ -1,0 +1,38 @@
+---
+title: "Accent Picker"
+description: "A bar of solid swatches that turns the page's glow and focus ring one steady color, in light and dark, and remembers the choice."
+---
+
+The selected accent is shared through CSS variables and persisted locally. Mount one visible picker in your interface.
+
+## Installation
+
+<InstallCommand name="accent-picker" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { AccentPicker } from "@/components/ui/accent-picker"
+
+export default function Demo() {
+  return <AccentPicker />
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `options?` | `Accent[]` | the choices; the first is treated as the stock palette |
+| `storageKey?` | `string` | where the choice is saved |
+| `onValueChange?` | `(id: string) => void` | The on value change option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
