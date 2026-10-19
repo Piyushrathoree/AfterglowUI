@@ -1,0 +1,57 @@
+---
+title: "Rail Nav"
+description: "A sidebar on a dashed rail: a solid line hooks into the current page and a quieter one reaches out to the row under your pointer."
+---
+
+Use value and onValueChange for a controlled sidebar. Entries can include href to become real links. Heading entries separate groups.
+
+## Installation
+
+<InstallCommand name="rail-nav" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { RailNav } from "@/components/ui/rail-nav"
+
+export default function Demo() {
+  const [value, setValue] = useState("overview")
+  return (
+    <div className="w-full max-w-xs">
+      <RailNav
+        value={value}
+        onValueChange={setValue}
+        items={[
+          { heading: "Workspace" },
+          { id: "overview", label: "Overview" },
+          { id: "projects", label: "Projects", badge: "4" },
+          { id: "settings", label: "Settings" },
+        ]}
+      />
+      <p className="mt-6 text-sm text-muted-foreground">
+        Selected: {value}
+      </p>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` | `(RailNavItem \| RailNavHeading)[]` | The items option. |
+| `value?` | `string` | The value option. |
+| `defaultValue?` | `string` | The default value option. |
+| `onValueChange?` | `(id: string) => void` | The on value change option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
