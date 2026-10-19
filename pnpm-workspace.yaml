@@ -1,3 +1,7 @@
 allowBuilds:
+  esbuild: true
   sharp: false
   unrs-resolver: false
+minimumReleaseAgeExclude:
+  - fumadocs-core@16.17.7
+  - fumadocs-mdx@15.4.8
