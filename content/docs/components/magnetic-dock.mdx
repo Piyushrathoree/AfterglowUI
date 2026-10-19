@@ -1,0 +1,75 @@
+---
+title: "Magnetic Dock"
+description: "A frosted dock of glossy app tiles that grow toward your pointer and bounce as they open."
+---
+
+The pointer enlarges nearby tiles. Set size, magnification, and range to suit your available space. Each item needs a label and can provide an action.
+
+## Installation
+
+<InstallCommand name="magnetic-dock" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { Home, Mail, Music, Settings } from "lucide-react"
+import { MagneticDock } from "@/components/ui/magnetic-dock"
+
+export default function Demo() {
+  const [app, setApp] = useState("Choose an app")
+  return (
+    <div className="space-y-8 text-center">
+      <MagneticDock
+        size={42}
+        magnification={64}
+        items={[
+          {
+            label: "Home",
+            icon: <Home />,
+            onClick: () => setApp("Home"),
+          },
+          {
+            label: "Mail",
+            icon: <Mail />,
+            onClick: () => setApp("Mail"),
+          },
+          {
+            label: "Music",
+            icon: <Music />,
+            onClick: () => setApp("Music"),
+          },
+          "divider",
+          {
+            label: "Settings",
+            icon: <Settings />,
+            onClick: () => setApp("Settings"),
+          },
+        ]}
+      />
+      <p role="status" className="text-sm text-muted-foreground">
+        {app}
+      </p>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` | `DockEntry[]` | The items option. |
+| `size?` | `number` | The size option. |
+| `magnification?` | `number` | The magnification option. |
+| `range?` | `number` | The range option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
