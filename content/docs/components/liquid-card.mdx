@@ -1,0 +1,45 @@
+---
+title: "Liquid Card"
+description: "A thick-rimmed glass card or widget that swells a touch under the pointer."
+---
+
+Pass material options through the glass prop. The card stays flat so the backdrop filter remains connected to the scene.
+
+## Installation
+
+<InstallCommand name="liquid-card" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { LiquidCard } from "@/components/ui/liquid-card"
+
+export default function Demo() {
+  return (
+    <LiquidCard className="w-full max-w-xs p-8">
+      <p className="text-sm text-muted-foreground">Your next project</p>
+      <h2 className="mt-4 text-3xl">Make it yours.</h2>
+      <p className="mt-6 text-sm leading-6">
+        A clear material with a curved edge and a gentle response.
+      </p>
+    </LiquidCard>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `glass?` | `Omit<LiquidGlassProps, "className" \| "children">` | passed to the glass, e.g. a tint for a colored widget |
+| `children?` | `React.ReactNode` | The children option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
