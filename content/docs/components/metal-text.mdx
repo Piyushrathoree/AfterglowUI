@@ -1,0 +1,41 @@
+---
+title: "Metal Text"
+description: "Polished lettering, bright above and dim below, with a glint now and then."
+---
+
+Use for short display text. The every prop controls the interval between glints. Preserve an accessible text label when styling decorative content.
+
+## Installation
+
+<InstallCommand name="metal-text" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { MetalText } from "@/components/ui/metal-text"
+
+export default function Demo() {
+  return (
+    <MetalText className="text-5xl font-semibold tracking-tight">
+      Afterglow
+    </MetalText>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `every?` | `number` | seconds between glints |
+| `children?` | `React.ReactNode` | The children option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
