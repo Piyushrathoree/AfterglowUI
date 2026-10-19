@@ -146,8 +146,8 @@ export function RailDemo() {
   }
 
   return (
-    <div className="relative flex h-[min(720px,84vh)] w-full flex-col">
-      <header className="flex h-14 shrink-0 items-center gap-3 border-b border-foreground/[0.08] px-8">
+    <div className="@container relative flex h-[min(720px,84vh)] min-h-[480px] w-full min-w-0 flex-col">
+      <header className="flex h-14 shrink-0 items-center gap-3 border-b border-foreground/[0.08] px-4 @min-[560px]:px-8">
         <span className="grid size-7 place-items-center rounded-[9px] bg-foreground/[0.09] [&_svg]:size-4">
           <AfterglowMark />
         </span>
@@ -158,7 +158,7 @@ export function RailDemo() {
       <div className="relative min-h-0 flex-1">
         <div
           ref={setScroller}
-          className="h-full overflow-y-auto px-8 py-6 pr-16 mask-[linear-gradient(transparent,#000_24px,#000_calc(100%-24px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="h-full overflow-y-auto px-4 @min-[560px]:px-8 py-6 pr-16 mask-[linear-gradient(transparent,#000_24px,#000_calc(100%-24px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           <div className="mx-auto flex max-w-3xl flex-col gap-9">
             {turns.map((turn) => {
@@ -180,10 +180,10 @@ export function RailDemo() {
                     <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-[9px] bg-foreground/[0.09] [&_svg]:size-4">
                       <AfterglowMark />
                     </span>
-                    <div className="flex min-h-7 max-w-[90%] flex-col items-start gap-3 text-[15px] leading-relaxed text-foreground/75">
+                    <div className="flex min-h-7 min-w-0 max-w-[90%] flex-col items-start gap-3 text-[15px] leading-relaxed text-foreground/75">
                       <p>{text || <Thinking />}</p>
                       {turn.changed && !typing && (
-                        <p className="flex h-9 items-center gap-3 rounded-[14px] border border-foreground/10 bg-foreground/[0.04] px-3.5 text-[13px] text-foreground">
+                        <p className="flex min-h-9 flex-wrap items-center gap-2 rounded-[14px] border border-foreground/10 bg-foreground/[0.04] px-3.5 text-[13px] text-foreground">
                           {turn.changed.files} changed {turn.changed.files === 1 ? "file" : "files"}
                           <span className="text-[oklch(0.62_0.17_150)] tabular-nums dark:text-[oklch(0.78_0.17_150)]">+{turn.changed.added}</span>
                           <span className="text-[oklch(0.58_0.2_22)] tabular-nums dark:text-[oklch(0.74_0.17_22)]">−{turn.changed.removed}</span>
@@ -199,7 +199,7 @@ export function RailDemo() {
         <ScrollRail items={items} container={scroller} className="absolute top-1/2 right-5 -translate-y-1/2" />
       </div>
 
-      <form onSubmit={send} className="shrink-0 px-8 pr-16 pb-5">
+      <form onSubmit={send} className="shrink-0 px-4 @min-[560px]:px-8 pr-16 pb-5">
         {/* the same padding and width as the messages above, so the box lines up with the text */}
         <div className="mx-auto max-w-3xl rounded-[26px] border border-foreground/10 bg-foreground/[0.05] p-2.5 transition-[border-color,box-shadow] duration-150 focus-within:border-glow/60 focus-within:ring-2 focus-within:ring-glow/20">
           <input
