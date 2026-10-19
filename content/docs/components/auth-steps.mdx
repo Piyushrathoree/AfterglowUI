@@ -1,0 +1,46 @@
+---
+title: "Auth Steps"
+description: "One question per screen, with keyboard hints and Escape to step back."
+---
+
+The preview simulates submission only. Connect onSubmit to your authentication service and onProvider to your OAuth flow. Never place provider secrets in client code. Errors thrown by onSubmit are shown by the form.
+
+## Installation
+
+<InstallCommand name="auth-steps" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { AuthSteps } from "@/components/blocks/auth-steps"
+
+export default function Demo() {
+  return (
+    <div className="w-full overflow-hidden rounded-3xl">
+      <AuthSteps
+        onSubmit={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 800))
+        }}
+      />
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `onSubmit?` | `(values: { email: string }) => Promise<void> \| void` | The on submit option. |
+| `onProvider?` | `(provider: Provider) => void` | The on provider option. |
+| `className?` | `string` | The class name option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`lucide-react`, `motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
