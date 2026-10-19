@@ -1,0 +1,55 @@
+---
+title: "Glass Slider"
+description: "A slider that's hottest at the thumb and stretches at the ends."
+---
+
+The default range is 0–100. Use min, max, and step for a different range; onValueCommit runs when the adjustment is committed.
+
+## Installation
+
+<InstallCommand name="glass-slider" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { GlassSlider } from "@/components/ui/glass-slider"
+
+export default function Demo() {
+  const [value, setValue] = useState(60)
+  return (
+    <div className="w-full max-w-sm space-y-6 px-5">
+      <p>Volume: {value}%</p>
+      <GlassSlider
+        value={value}
+        onValueChange={setValue}
+        aria-label="Volume"
+      />
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value?` | `number` | The value option. |
+| `defaultValue?` | `number` | The default value option. |
+| `min?` | `number` | The min option. |
+| `max?` | `number` | The max option. |
+| `step?` | `number` | The step option. |
+| `disabled?` | `boolean` | The disabled option. |
+| `onValueChange?` | `(value: number) => void` | The on value change option. |
+| `onValueCommit?` | `(value: number) => void` | The on value commit option. |
+| `formatValue?` | `(value: number) => React.ReactNode` | The format value option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
