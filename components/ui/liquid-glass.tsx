@@ -167,7 +167,11 @@ function LiquidGlass({
   const ref = React.useRef<HTMLDivElement>(null)
   const displaceRef = React.useRef<SVGFEDisplacementMapElement>(null)
   const id = `liquid-${React.useId().replace(/[^a-zA-Z0-9_-]/g, "")}`
-  const refract = useCanRefract()
+  const canRefractHere = useCanRefract()
+  // A fixed zero opts out of SVG backdrop sampling entirely. Native frosting avoids
+  // clipped-backdrop seams when flat panes overlap and change stacking order.
+  // Motion values still keep the map ready so they can animate away from zero.
+  const refract = canRefractHere && (typeof refraction !== "number" || refraction > 0)
   const [shape, setShape] = React.useState<{ w: number; h: number; r: number }>()
   // the scale last written to the filter, so a no-op resize can put it back
   const applied = React.useRef(0)
