@@ -149,8 +149,9 @@ export function DocsDemo() {
   }, [page, scroller])
 
   return (
-    <div className="grid h-[640px] w-full grid-cols-[16.5rem_1fr_15rem] max-lg:grid-cols-[16.5rem_1fr]">
-      <aside className="flex min-h-0 flex-col border-r border-foreground/[0.08]">
+    <div className="@container w-full min-w-0">
+    <div className="grid h-[640px] w-full min-w-0 grid-cols-1 @min-[600px]:grid-cols-[minmax(0,1fr)_140px] @min-[900px]:grid-cols-[180px_minmax(0,1fr)_140px] @min-[1040px]:grid-cols-[208px_minmax(0,1fr)_180px]">
+      <aside className="hidden min-h-0 flex-col @min-[900px]:flex border-r border-foreground/[0.08]">
         <div className="flex items-center gap-2.5 px-5 pt-5">
           <span className="grid size-8 place-items-center rounded-[10px] bg-foreground/[0.09] shadow-[inset_0_1px_0_oklch(1_0_0/10%)] [&_svg]:size-[18px]">
             <AfterglowMark />
@@ -185,8 +186,10 @@ export function DocsDemo() {
 
       <div
         ref={setScroller}
-        className="min-h-0 overflow-y-auto px-12 pt-10 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="min-h-0 min-w-0 overflow-y-auto px-5 pt-6 pb-4 @min-[640px]:px-8 @min-[1040px]:px-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
+        <details className="mb-6 rounded-xl border border-foreground/10 p-3 @min-[900px]:hidden"><summary className="cursor-pointer text-sm">Browse demo pages</summary><div className="mt-4"><RailNav items={visible} value={page} onValueChange={setPage} aria-label="Demo pages" /></div></details>
+        <details open className="mb-6 rounded-xl border border-foreground/10 p-3 @min-[600px]:hidden"><summary className="cursor-pointer text-sm">On this page</summary><div className="mt-4"><ReadingRail items={contents} container={scroller} offset={24} /></div></details>
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.article
             key={page}
@@ -231,9 +234,10 @@ export function DocsDemo() {
         </AnimatePresence>
       </div>
 
-      <div className="min-h-0 overflow-y-auto border-l border-foreground/[0.08] p-6 pt-10 [scrollbar-width:none] max-lg:hidden [&::-webkit-scrollbar]:hidden">
+      <div className="min-h-0 overflow-y-auto border-l border-foreground/[0.08] p-3 pt-6 @min-[1040px]:p-6 @min-[1040px]:pt-10 [scrollbar-width:none] hidden @min-[600px]:block [&::-webkit-scrollbar]:hidden">
         <ReadingRail items={contents} container={scroller} offset={32} />
       </div>
+    </div>
     </div>
   )
 }
