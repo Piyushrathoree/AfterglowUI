@@ -1,0 +1,55 @@
+---
+title: "Border Beam"
+description: "A beam of light that circles a border while work runs and fades out slowly when you turn it off, spun on the GPU."
+---
+
+Place the beam inside a positioned, rounded parent. Turning active off lets its tail fade instead of removing it abruptly.
+
+## Installation
+
+<InstallCommand name="border-beam" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { BorderBeam } from "@/components/ui/border-beam"
+
+export default function Demo() {
+  const [active, setActive] = useState(true)
+  return (
+    <button
+      className="relative rounded-3xl border p-12"
+      onClick={() => setActive(!active)}
+    >
+      <BorderBeam active={active} />
+      <span className="relative">
+        {active ? "Working · Click to stop" : "Paused · Click to start"}
+      </span>
+    </button>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `duration?` | `number` | seconds per lap |
+| `width?` | `number` | thickness of the beam in px |
+| `tail?` | `number` | length of the fading tail, in degrees of the lap |
+| `color?` | `string` | The color option. |
+| `tailColor?` | `string` | a color the tail passes through on its way out; by default it simply fades |
+| `twin?` | `string` | a second beam on the opposite side, in its own color |
+| `reverse?` | `boolean` | The reverse option. |
+| `active?` | `boolean` | turn it off and the beam fades out slowly, still circling, instead of vanishing |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
