@@ -1250,6 +1250,81 @@
       }
     },
     {
+      "name": "liquid-toolbar",
+      "type": "registry:ui",
+      "title": "Liquid Toolbar",
+      "description": "Grouped glass toolbar buttons with a sliding hover highlight.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "components/ui/liquid-toolbar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/liquid-glass.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/afterglow.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "cssVars": {
+        "theme": {
+          "color-glow": "var(--glow)",
+          "color-glow-foreground": "var(--glow-foreground)",
+          "color-glow-2": "var(--glow-2)",
+          "color-glow-3": "var(--glow-3)",
+          "color-glass": "var(--glass)",
+          "color-gloss-highlight": "var(--gloss-highlight)",
+          "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
+          "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
+          "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
+        },
+        "light": {
+          "glow": "oklch(0.7 0.19 45)",
+          "glow-foreground": "oklch(0.22 0.05 40)",
+          "glow-2": "oklch(0.64 0.22 12)",
+          "glow-3": "oklch(0.56 0.21 300)",
+          "glass": "oklch(1 0 0 / 55%)",
+          "gloss-highlight": "oklch(1 0 0 / 95%)",
+          "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
+          "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
+          "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
+          "liquid-tint": "oklch(1 0 0 / 18%)",
+          "liquid-fallback": "oklch(1 0 0 / 55%)",
+          "liquid-rim": "oklch(1 0 0 / 95%)",
+          "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
+          "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
+          "liquid-glow": "oklch(1 0 0 / 55%)",
+          "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
+        },
+        "dark": {
+          "glow": "oklch(0.8 0.16 55)",
+          "glow-foreground": "oklch(0.22 0.05 40)",
+          "glow-2": "oklch(0.7 0.2 15)",
+          "glow-3": "oklch(0.65 0.2 300)",
+          "glass": "oklch(0.19 0 0 / 55%)",
+          "gloss-highlight": "oklch(1 0 0 / 16%)",
+          "gloss-shade": "oklch(0 0 0 / 30%)",
+          "gloss-depth": "oklch(0.04 0 0 / 55%)",
+          "gloss-edge": "oklch(1 0 0 / 8%)",
+          "liquid-tint": "oklch(0.2 0 0 / 22%)",
+          "liquid-fallback": "oklch(0.2 0 0 / 45%)",
+          "liquid-rim": "oklch(1 0 0 / 60%)",
+          "liquid-edge": "oklch(1 0 0 / 10%)",
+          "liquid-shadow": "oklch(0 0 0 / 45%)",
+          "liquid-glow": "oklch(1 0 0 / 24%)",
+          "liquid-shade": "oklch(0 0 0 / 28%)"
+        }
+      }
+    },
+    {
       "name": "liquid-menu",
       "type": "registry:ui",
       "title": "Liquid Menu",
