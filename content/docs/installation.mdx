@@ -1,0 +1,87 @@
+---
+title: Installation
+description: Add the source to your project. Install only the components you need.
+---
+
+## Requirements
+
+Use a React project with TypeScript and Tailwind CSS 4. Components with animation also use `motion`. The shadcn CLI installs each component’s declared dependencies for you.
+
+The examples use `@/components` and `@/lib` aliases. Configure these in your project, or update the imports after copying the source.
+
+## Initialize shadcn
+
+If your project already has a working `components.json`, skip this step. Otherwise, initialize shadcn from your project directory:
+
+```bash
+pnpm dlx shadcn@latest init
+```
+
+This prepares your paths, base CSS variables, and the `cn` class-name helper. It does not install the full Afterglow collection.
+
+## Add a component
+
+Choose a component and run its install command. For example, add Fan Cards:
+
+<InstallCommand name="fan-cards" />
+
+The command uses the origin of this docs site. When running the docs locally, the command points to your local server, which must stay running while the CLI fetches the component.
+
+Review the CLI’s proposed changes, especially shared files and existing theme variables. The component’s registry item includes its source files, dependencies, and material tokens.
+
+## Use the component
+
+Import the installed component from your own project:
+
+```tsx
+import { FanCards } from "@/components/ui/fan-cards"
+
+export default function Team() {
+  return (
+    <FanCards
+      items={[
+        {
+          id: "maya",
+          label: "Maya, product designer",
+          content: <div className="p-8">Maya — Product designer</div>,
+        },
+        {
+          id: "devon",
+          label: "Devon, frontend engineer",
+          content: <div className="p-8">Devon — Frontend engineer</div>,
+        },
+        {
+          id: "aria",
+          label: "Aria, engineering lead",
+          content: <div className="p-8">Aria — Engineering lead</div>,
+        },
+      ]}
+    />
+  )
+}
+```
+
+## Copy manually
+
+Each component page includes expandable source files. Install its dependencies, copy the listed files to the matching paths, and provide a `cn` helper using `clsx` and `tailwind-merge`.
+
+```bash
+pnpm add motion clsx tailwind-merge
+```
+
+```tsx
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+Manual copying also requires the component’s CSS variables. The registry JSON linked on each component page contains its exact `cssVars`: add `theme` entries to Tailwind’s `@theme inline`, `light` entries to `:root`, and `dark` entries to `.dark`, prefixing each variable name with `--`. See [theming](/docs/theming) for how these values work.
+
+## Next.js
+
+Keep the component’s `"use client"` directive when it has one. You can import a client component into a server-rendered page; the entire page does not need to become a client component.
+
+When passing callbacks such as `onClick`, create a small client component around that interaction. Static content and the rest of your page can stay on the server.
