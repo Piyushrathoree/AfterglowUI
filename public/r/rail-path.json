@@ -1,0 +1,72 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "rail-path",
+  "title": "Rail Path",
+  "description": "The geometry the rail components share: a path through every row, with rounded jogs and hooks.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/rail-path.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\n// the geometry that the rail components share: a path drawn through the centre of every row,\n// stepping sideways with rounded elbows where a row is indented, and a short curved hook that\n// turns off the rail into a row\n\ntype RailRow = { x: number; y: number }\n\ntype RailTrack = {\n  /** the full path, from the first row to the last */\n  d: string\n  /** how far along the path each row sits, in px */\n  at: number[]\n  total: number\n}\n\n/** a path through every row. rows that sit at a different x get a rounded jog halfway between them */\nfunction buildTrack(rows: RailRow[], radius = 7): RailTrack {\n  if (!rows.length) return { d: \"\", at: [], total: 0 }\n  let d = `M ${rows[0].x} ${rows[0].y}`\n  let length = 0\n  const at = [0]\n  for (let i = 1; i < rows.length; i++) {\n    const a = rows[i - 1]\n    const b = rows[i]\n    if (a.x === b.x) {\n      d += ` V ${b.y}`\n      length += b.y - a.y\n    } else {\n      const dir = b.x > a.x ? 1 : -1\n      const dx = Math.abs(b.x - a.x)\n      const r = Math.min(radius, dx / 2, (b.y - a.y) / 4)\n      const mid = (a.y + b.y) / 2\n      d += ` V ${mid - r} A ${r} ${r} 0 0 ${dir === 1 ? 0 : 1} ${a.x + dir * r} ${mid} H ${b.x - dir * r}`\n      d += ` A ${r} ${r} 0 0 ${dir === 1 ? 1 : 0} ${b.x} ${mid + r} V ${b.y}`\n      length += mid - r - a.y + (Math.PI * r) / 2 + (dx - 2 * r) + (Math.PI * r) / 2 + (b.y - mid - r)\n    }\n    at.push(length)\n  }\n  return { d, at, total: length }\n}\n\n/** how far along the track a position is, where 1.5 means halfway between the second and third row */\nfunction lengthAt(track: RailTrack, position: number) {\n  if (!track.at.length) return 0\n  const clamped = Math.min(Math.max(position, 0), track.at.length - 1)\n  const index = Math.min(Math.floor(clamped), track.at.length - 2)\n  if (index < 0) return 0\n  const t = clamped - index\n  return track.at[index] + (track.at[index + 1] - track.at[index]) * t\n}\n\n/**\n * measures the centre of each `[data-rail-row]` inside the list. a row's `data-depth` shifts it\n * sideways by `step` px. returns null until the first measure, so nothing is drawn on the server\n */\nfunction useRailRows(list: React.RefObject<HTMLElement | null>, x: number, step: number, watch: unknown) {\n  const [rows, setRows] = React.useState<RailRow[] | null>(null)\n\n  React.useEffect(() => {\n    const node = list.current\n    if (!node) return\n    let frame = 0\n    const measure = () => {\n      frame = 0\n      const found = Array.from(node.querySelectorAll<HTMLElement>(\"[data-rail-row]\"))\n      setRows(\n        found.map((row) => ({\n          x: x + Number(row.dataset.depth ?? 0) * step,\n          y: row.offsetTop + row.offsetHeight / 2,\n        }))\n      )\n    }\n    const schedule = () => {\n      if (!frame) frame = requestAnimationFrame(measure)\n    }\n    schedule()\n    const observer = new ResizeObserver(schedule)\n    observer.observe(node)\n    node.querySelectorAll(\"[data-rail-row]\").forEach((row) => observer.observe(row))\n    return () => {\n      cancelAnimationFrame(frame)\n      observer.disconnect()\n    }\n  }, [list, x, step, watch])\n\n  return rows\n}\n\nexport { buildTrack, lengthAt, useRailRows, type RailRow, type RailTrack }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/afterglow.ts",
+      "content": "import type { CSSProperties } from \"react\"\nimport type { TargetAndTransition, Transition } from \"motion/react\"\n\n// shared spring presets, every component picks from these\nexport const springs = {\n  snappy: { stiffness: 520, damping: 34, mass: 0.6 },\n  soft: { stiffness: 260, damping: 26, mass: 0.8 },\n  glide: { stiffness: 120, damping: 20, mass: 1 },\n} as const\n\nexport type SpringName = keyof typeof springs\n\nexport function spring(name: SpringName): Transition {\n  return { type: \"spring\", ...springs[name] }\n}\n\n// how a glow fades once its source moves away: slow, with a long tail\nexport const afterglow = {\n  linger: 0.9,\n  ease: [0.22, 1, 0.36, 1],\n} as const satisfies { linger: number; ease: Transition[\"ease\"] }\n\n// paints only the padding ring of an element, used for glowing borders\nexport const ringMask: CSSProperties = {\n  WebkitMask:\n    \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  WebkitMaskComposite: \"xor\",\n  mask: \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  maskComposite: \"exclude\",\n}\n\n// small icon gestures, played when a control is pressed or selected\nexport const iconGestures = {\n  pop: { scale: [1, 1.2, 1] },\n  ring: { rotate: [0, -18, 14, -9, 4, 0], scale: [1, 1.12, 1] },\n  // a gear looks the same after half a turn, so it can rest there and snap back unseen\n  turn: { rotate: [0, 180], scale: [1, 1.12, 1] },\n  hop: { y: [0, -3, 0], scale: [1, 1.1, 1] },\n  nudge: { x: [0, 2.5, 0], scale: [1, 1.1, 1] },\n} satisfies Record<string, TargetAndTransition>\n\nexport type IconGesture = keyof typeof iconGestures\n\n// leaving a gesture is instant: every gesture already ends at, or looks like, its resting pose\nexport const iconRest: TargetAndTransition = { scale: 1, rotate: 0, x: 0, y: 0, transition: { duration: 0 } }\n",
+      "type": "registry:lib"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "color-glow": "var(--glow)",
+      "color-glow-foreground": "var(--glow-foreground)",
+      "color-glow-2": "var(--glow-2)",
+      "color-glow-3": "var(--glow-3)",
+      "color-glass": "var(--glass)",
+      "color-gloss-highlight": "var(--gloss-highlight)",
+      "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
+      "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
+      "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
+    },
+    "light": {
+      "glow": "oklch(0.7 0.19 45)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.64 0.22 12)",
+      "glow-3": "oklch(0.56 0.21 300)",
+      "glass": "oklch(1 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 95%)",
+      "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
+      "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
+      "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
+      "liquid-tint": "oklch(1 0 0 / 18%)",
+      "liquid-fallback": "oklch(1 0 0 / 55%)",
+      "liquid-rim": "oklch(1 0 0 / 95%)",
+      "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
+      "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
+      "liquid-glow": "oklch(1 0 0 / 55%)",
+      "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
+    },
+    "dark": {
+      "glow": "oklch(0.8 0.16 55)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.7 0.2 15)",
+      "glow-3": "oklch(0.65 0.2 300)",
+      "glass": "oklch(0.19 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 16%)",
+      "gloss-shade": "oklch(0 0 0 / 30%)",
+      "gloss-depth": "oklch(0.04 0 0 / 55%)",
+      "gloss-edge": "oklch(1 0 0 / 8%)",
+      "liquid-tint": "oklch(0.2 0 0 / 22%)",
+      "liquid-fallback": "oklch(0.2 0 0 / 45%)",
+      "liquid-rim": "oklch(1 0 0 / 60%)",
+      "liquid-edge": "oklch(1 0 0 / 10%)",
+      "liquid-shadow": "oklch(0 0 0 / 45%)",
+      "liquid-glow": "oklch(1 0 0 / 24%)",
+      "liquid-shade": "oklch(0 0 0 / 28%)"
+    }
+  },
+  "type": "registry:ui"
+}
