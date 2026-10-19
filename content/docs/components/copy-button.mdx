@@ -1,0 +1,46 @@
+---
+title: "Copy Button"
+description: "A copy button whose icon morphs into a check, with an optional Copied bubble."
+---
+
+Use a secure browser context for clipboard access. The icon confirms a successful copy; onCopy runs after the clipboard write.
+
+## Installation
+
+<InstallCommand name="copy-button" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { CopyButton } from "@/components/ui/copy-button"
+
+export default function Demo() {
+  return (
+    <div className="flex items-center gap-4 rounded-xl border p-5">
+      <code>hello@afterglow.ui</code>
+      <CopyButton value="hello@afterglow.ui" tooltip />
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `string` | The value option. |
+| `timeout?` | `number` | The timeout option. |
+| `showLabel?` | `boolean` | The show label option. |
+| `variant?` | `"soft" \| "ghost"` | soft sits on a faint fill; ghost has no fill until you hover it |
+| `tooltip?` | `boolean` | a small "Copied" bubble pops up above the button |
+| `onCopy?` | `(value: string) => void` | The on copy option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`lucide-react`, `motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
