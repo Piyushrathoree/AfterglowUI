@@ -1,0 +1,47 @@
+---
+title: "Auth Split"
+description: "Email first on the left; customer stories in glass over graphite silk on the right."
+---
+
+The preview simulates submission only. Connect onSubmit to your authentication service and onProvider to your OAuth flow. Never place provider secrets in client code. Errors thrown by onSubmit are shown by the form.
+
+## Installation
+
+<InstallCommand name="auth-split" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { AuthSplit } from "@/components/blocks/auth-split"
+
+export default function Demo() {
+  return (
+    <div className="w-full overflow-hidden rounded-3xl">
+      <AuthSplit
+        onSubmit={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 800))
+        }}
+      />
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `onSubmit?` | `(values: { email: string }) => Promise<void> \| void` | sends the magic link; throw to show an error under the field |
+| `onProvider?` | `(provider: Provider) => void` | The on provider option. |
+| `stories?` | `Story[]` | The stories option. |
+| `className?` | `string` | The class name option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`lucide-react`, `motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
