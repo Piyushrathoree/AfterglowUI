@@ -1,0 +1,52 @@
+---
+title: "Liquid Metal"
+description: "Flowing chrome or brushed satin from one small WebGL shader, plus a hairline chrome rim. Every piece shares one GPU context."
+---
+
+Set dimensions on the wrapper. Multiple pieces share a GPU context. Lower quality for smaller decorative surfaces; pattern silk produces diagonal folds.
+
+## Installation
+
+<InstallCommand name="liquid-metal" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { LiquidMetal } from "@/components/ui/liquid-metal"
+
+export default function Demo() {
+  return (
+    <div className="relative h-80 w-full max-w-md overflow-hidden rounded-3xl">
+      <LiquidMetal className="absolute inset-0" />
+      <div className="relative flex h-full items-center justify-center">
+        <span className="rounded-full bg-black/50 px-6 py-3 text-white">
+          Moving chrome
+        </span>
+      </div>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `speed?` | `number` | 1 is a slow drift |
+| `tint?` | `[number, number, number]` | warms or cools the highlights, as r, g, b from 0 to 1 |
+| `quality?` | `number` | 0.5 renders at half resolution, plenty for thin rims |
+| `brightness?` | `number` | shifts the reflection toward the bright sky; 0.8 is mostly silver |
+| `scale?` | `number` | below 1 makes the ripples broader, good for small or wide shapes |
+| `softness?` | `number` | 0 is mirror chrome, 1 is soft brushed satin |
+| `pattern?` | `"liquid" \| "silk"` | "silk" lays the ripples out as long diagonal folds |
+| `maxAspect?` | `number` | wider than this width-to-height ratio, ripples stretch instead of repeating |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
