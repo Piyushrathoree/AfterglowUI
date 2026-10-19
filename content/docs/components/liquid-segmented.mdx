@@ -1,0 +1,57 @@
+---
+title: "Liquid Segmented"
+description: "A segmented control with a draggable glass thumb that stretches as it moves."
+---
+
+Use a controlled value to update related content. Choices have stable values and labels. Use arrow keys to move between tabs or segments.
+
+## Installation
+
+<InstallCommand name="liquid-segmented" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { Home, Settings, Bell } from "lucide-react"
+import { LiquidSegmented } from "@/components/ui/liquid-segmented"
+
+export default function Demo() {
+  const [value, setValue] = useState("home")
+  return (
+    <div className="space-y-8 text-center">
+      <LiquidSegmented
+        aria-label="Workspace section"
+        value={value}
+        onValueChange={setValue}
+        options={[
+          { value: "home", label: "Home", icon: <Home /> },
+          { value: "updates", label: "Updates", icon: <Bell /> },
+          { value: "settings", label: "Settings", icon: <Settings /> },
+        ]}
+      />
+      <p className="text-sm text-muted-foreground">Selected: {value}</p>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `options` | `LiquidSegment[]` | The options option. |
+| `value?` | `string` | The value option. |
+| `defaultValue?` | `string` | The default value option. |
+| `onValueChange?` | `(value: string) => void` | The on value change option. |
+| `aria-label?` | `string` | The aria-label option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
