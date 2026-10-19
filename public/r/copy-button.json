@@ -1,0 +1,75 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "copy-button",
+  "title": "Copy Button",
+  "description": "A copy button whose icon morphs into a check, with an optional Copied bubble.",
+  "dependencies": [
+    "lucide-react",
+    "motion"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/copy-button.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Check, Copy } from \"lucide-react\"\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\"\n\nimport { spring } from \"@/lib/afterglow\"\nimport { cn } from \"@/lib/utils\"\n\ntype CopyButtonProps = Omit<\n  React.ComponentProps<\"button\">,\n  \"value\" | \"children\" | \"onCopy\"\n> & {\n  value: string\n  timeout?: number\n  showLabel?: boolean\n  /** soft sits on a faint fill; ghost has no fill until you hover it */\n  variant?: \"soft\" | \"ghost\"\n  /** a small \"Copied\" bubble pops up above the button */\n  tooltip?: boolean\n  onCopy?: (value: string) => void\n}\n\nfunction CopyButton({\n  value,\n  timeout = 1600,\n  showLabel = false,\n  variant = \"soft\",\n  tooltip = false,\n  onCopy,\n  className,\n  onClick,\n  ...props\n}: CopyButtonProps) {\n  const reduceMotion = useReducedMotion()\n  const [copied, setCopied] = React.useState(false)\n  // bumps on every copy, so copying again restarts the reset timer\n  const [pulse, setPulse] = React.useState(0)\n\n  React.useEffect(() => {\n    if (!copied) return\n    const id = window.setTimeout(() => setCopied(false), timeout)\n    return () => window.clearTimeout(id)\n  }, [copied, pulse, timeout])\n\n  async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {\n    onClick?.(event)\n    if (event.defaultPrevented) return\n    try {\n      await navigator.clipboard.writeText(value)\n      setCopied(true)\n      setPulse((count) => count + 1)\n      onCopy?.(value)\n    } catch {\n      // clipboard blocked (insecure context or denied permission): stay idle\n    }\n  }\n\n  // icon cross-fade: scale from 0.25, a 4px blur, a spring with no bounce\n  // the resting state is identical either way, so server and client agree\n  const swap = reduceMotion\n    ? {\n        initial: { opacity: 0 },\n        animate: { opacity: 1, scale: 1, filter: \"blur(0px)\" },\n        exit: { opacity: 0 },\n      }\n    : {\n        initial: { opacity: 0, scale: 0.25, filter: \"blur(4px)\" },\n        animate: { opacity: 1, scale: 1, filter: \"blur(0px)\" },\n        exit: { opacity: 0, scale: 0.25, filter: \"blur(4px)\", transition: { duration: 0.15 } },\n      }\n  const iconTransition = { type: \"spring\", duration: 0.3, bounce: 0 } as const\n\n  const slide = reduceMotion\n    ? { initial: { opacity: 0 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0 } }\n    : {\n        initial: { opacity: 0, y: 8 },\n        animate: { opacity: 1, y: 0 },\n        exit: { opacity: 0, y: -8 },\n      }\n\n  const state = copied ? \"copied\" : \"idle\"\n\n  return (\n    <button\n      data-slot=\"copy-button\"\n      data-state={state}\n      type=\"button\"\n      aria-label={copied ? \"Copied\" : showLabel ? \"Copy\" : \"Copy to clipboard\"}\n      className={cn(\n        // a capsule with no rim of its own, so it sits cleanly inside a bordered field. 32px tall,\n        // its 16px radius nests concentric in a 48px row with 8px of padding\n        \"relative inline-flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-[13px] font-medium outline-none transition-[background-color,color,scale] duration-150 ease-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50\",\n        variant === \"soft\"\n          ? \"bg-foreground/[0.07] text-foreground hover:bg-foreground/[0.12]\"\n          : \"text-foreground/65 hover:bg-foreground/[0.08] hover:text-foreground\",\n        showLabel ? \"px-3\" : \"w-8\",\n        className\n      )}\n      onClick={handleClick}\n      {...props}\n    >\n      {/* an invisible copy of the widest state sets the width, so the button never resizes */}\n      <span className=\"grid place-items-center\">\n        {showLabel && (\n          <span aria-hidden className=\"invisible col-start-1 row-start-1 inline-flex items-center gap-1.5\">\n            <span className=\"size-4\" />\n            Copied\n          </span>\n        )}\n        <span className=\"col-start-1 row-start-1 inline-flex items-center gap-1.5\">\n          {/* the icon glides as the label beside it changes width, so the pair stays centered */}\n          <motion.span\n            aria-hidden\n            layout={showLabel ? \"position\" : false}\n            transition={reduceMotion ? { duration: 0 } : iconTransition}\n            className=\"grid size-4 place-items-center [&_svg]:size-3.5\"\n          >\n            <AnimatePresence initial={false}>\n              <motion.span\n                key={state}\n                className=\"col-start-1 row-start-1 grid place-items-center\"\n                transition={iconTransition}\n                {...swap}\n              >\n                {copied ? <Check className=\"text-glow\" /> : <Copy />}\n              </motion.span>\n            </AnimatePresence>\n          </motion.span>\n\n          {showLabel && (\n            <span aria-hidden className=\"relative grid overflow-hidden\">\n              <AnimatePresence initial={false} mode=\"popLayout\">\n                <motion.span key={state} transition={spring(\"snappy\")} {...slide}>\n                  {copied ? \"Copied\" : \"Copy\"}\n                </motion.span>\n              </AnimatePresence>\n            </span>\n          )}\n        </span>\n      </span>\n\n      <AnimatePresence>\n        {tooltip && copied && (\n          <motion.span\n            aria-hidden\n            className=\"pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-md bg-foreground px-2 py-1 text-xs font-medium whitespace-nowrap text-background shadow-lg\"\n            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 4, filter: \"blur(4px)\" }}\n            animate={{ opacity: 1, y: 0, filter: \"blur(0px)\" }}\n            exit={\n              reduceMotion\n                ? { opacity: 0 }\n                : { opacity: 0, y: -4, filter: \"blur(4px)\", transition: { duration: 0.15 } }\n            }\n            transition={{ type: \"spring\", duration: 0.3, bounce: 0 }}\n          >\n            Copied\n          </motion.span>\n        )}\n      </AnimatePresence>\n\n      <span className=\"sr-only\" aria-live=\"polite\">\n        {copied ? \"Copied to clipboard\" : \"\"}\n      </span>\n    </button>\n  )\n}\n\nexport { CopyButton, type CopyButtonProps }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/afterglow.ts",
+      "content": "import type { CSSProperties } from \"react\"\nimport type { TargetAndTransition, Transition } from \"motion/react\"\n\n// shared spring presets, every component picks from these\nexport const springs = {\n  snappy: { stiffness: 520, damping: 34, mass: 0.6 },\n  soft: { stiffness: 260, damping: 26, mass: 0.8 },\n  glide: { stiffness: 120, damping: 20, mass: 1 },\n} as const\n\nexport type SpringName = keyof typeof springs\n\nexport function spring(name: SpringName): Transition {\n  return { type: \"spring\", ...springs[name] }\n}\n\n// how a glow fades once its source moves away: slow, with a long tail\nexport const afterglow = {\n  linger: 0.9,\n  ease: [0.22, 1, 0.36, 1],\n} as const satisfies { linger: number; ease: Transition[\"ease\"] }\n\n// paints only the padding ring of an element, used for glowing borders\nexport const ringMask: CSSProperties = {\n  WebkitMask:\n    \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  WebkitMaskComposite: \"xor\",\n  mask: \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  maskComposite: \"exclude\",\n}\n\n// small icon gestures, played when a control is pressed or selected\nexport const iconGestures = {\n  pop: { scale: [1, 1.2, 1] },\n  ring: { rotate: [0, -18, 14, -9, 4, 0], scale: [1, 1.12, 1] },\n  // a gear looks the same after half a turn, so it can rest there and snap back unseen\n  turn: { rotate: [0, 180], scale: [1, 1.12, 1] },\n  hop: { y: [0, -3, 0], scale: [1, 1.1, 1] },\n  nudge: { x: [0, 2.5, 0], scale: [1, 1.1, 1] },\n} satisfies Record<string, TargetAndTransition>\n\nexport type IconGesture = keyof typeof iconGestures\n\n// leaving a gesture is instant: every gesture already ends at, or looks like, its resting pose\nexport const iconRest: TargetAndTransition = { scale: 1, rotate: 0, x: 0, y: 0, transition: { duration: 0 } }\n",
+      "type": "registry:lib"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "color-glow": "var(--glow)",
+      "color-glow-foreground": "var(--glow-foreground)",
+      "color-glow-2": "var(--glow-2)",
+      "color-glow-3": "var(--glow-3)",
+      "color-glass": "var(--glass)",
+      "color-gloss-highlight": "var(--gloss-highlight)",
+      "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
+      "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
+      "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
+    },
+    "light": {
+      "glow": "oklch(0.7 0.19 45)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.64 0.22 12)",
+      "glow-3": "oklch(0.56 0.21 300)",
+      "glass": "oklch(1 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 95%)",
+      "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
+      "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
+      "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
+      "liquid-tint": "oklch(1 0 0 / 18%)",
+      "liquid-fallback": "oklch(1 0 0 / 55%)",
+      "liquid-rim": "oklch(1 0 0 / 95%)",
+      "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
+      "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
+      "liquid-glow": "oklch(1 0 0 / 55%)",
+      "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
+    },
+    "dark": {
+      "glow": "oklch(0.8 0.16 55)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.7 0.2 15)",
+      "glow-3": "oklch(0.65 0.2 300)",
+      "glass": "oklch(0.19 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 16%)",
+      "gloss-shade": "oklch(0 0 0 / 30%)",
+      "gloss-depth": "oklch(0.04 0 0 / 55%)",
+      "gloss-edge": "oklch(1 0 0 / 8%)",
+      "liquid-tint": "oklch(0.2 0 0 / 22%)",
+      "liquid-fallback": "oklch(0.2 0 0 / 45%)",
+      "liquid-rim": "oklch(1 0 0 / 60%)",
+      "liquid-edge": "oklch(1 0 0 / 10%)",
+      "liquid-shadow": "oklch(0 0 0 / 45%)",
+      "liquid-glow": "oklch(1 0 0 / 24%)",
+      "liquid-shade": "oklch(0 0 0 / 28%)"
+    }
+  },
+  "type": "registry:ui"
+}
