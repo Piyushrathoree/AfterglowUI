@@ -1,0 +1,49 @@
+---
+title: "Glass Switch"
+description: "A toggle whose bead stretches like a drop of liquid as it travels."
+---
+
+Use checked and onCheckedChange for controlled state. Give the switch an accessible name. Space toggles the focused switch.
+
+## Installation
+
+<InstallCommand name="glass-switch" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { GlassSwitch } from "@/components/ui/glass-switch"
+
+export default function Demo() {
+  const [enabled, setEnabled] = useState(true)
+  return (
+    <div className="flex items-center gap-5">
+      <GlassSwitch
+        checked={enabled}
+        onCheckedChange={setEnabled}
+        aria-label="Enable notifications"
+      />
+      <span>{enabled ? "Notifications on" : "Notifications off"}</span>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `checked?` | `boolean` | The checked option. |
+| `defaultChecked?` | `boolean` | The default checked option. |
+| `onCheckedChange?` | `(checked: boolean) => void` | The on checked change option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
