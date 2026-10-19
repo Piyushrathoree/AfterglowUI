@@ -1,0 +1,146 @@
+{
+  "afterglow-theme": {
+    "code": "\"use client\"\n\nimport { AccentPicker } from \"@/components/ui/accent-picker\"\n\nexport default function Demo() {\n  return (\n    <div className=\"space-y-6 text-center\">\n      <h2 className=\"text-3xl font-medium text-glow\">\n        One shared accent.\n      </h2>\n      <p className=\"text-muted-foreground\">\n        Change the accent to update every material.\n      </p>\n      <AccentPicker />\n    </div>\n  )\n}\n",
+    "notes": "The theme provides CSS variables used by the materials. Import your Tailwind CSS stylesheet once at the application root. Accent Picker demonstrates changing the shared accent at runtime."
+  },
+  "accent-picker": {
+    "code": "\"use client\"\n\nimport { AccentPicker } from \"@/components/ui/accent-picker\"\n\nexport default function Demo() {\n  return <AccentPicker />\n}\n",
+    "notes": "The selected accent is shared through CSS variables and persisted locally. Mount one visible picker in your interface."
+  },
+  "border-beam": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { BorderBeam } from \"@/components/ui/border-beam\"\n\nexport default function Demo() {\n  const [active, setActive] = useState(true)\n  return (\n    <button\n      className=\"relative rounded-3xl border p-12\"\n      onClick={() => setActive(!active)}\n    >\n      <BorderBeam active={active} />\n      <span className=\"relative\">\n        {active ? \"Working \u00b7 Click to stop\" : \"Paused \u00b7 Click to start\"}\n      </span>\n    </button>\n  )\n}\n",
+    "notes": "Place the beam inside a positioned, rounded parent. Turning active off lets its tail fade instead of removing it abruptly."
+  },
+  "copy-button": {
+    "code": "\"use client\"\n\nimport { CopyButton } from \"@/components/ui/copy-button\"\n\nexport default function Demo() {\n  return (\n    <div className=\"flex items-center gap-4 rounded-xl border p-5\">\n      <code>hello@afterglow.ui</code>\n      <CopyButton value=\"hello@afterglow.ui\" tooltip />\n    </div>\n  )\n}\n",
+    "notes": "Use a secure browser context for clipboard access. The icon confirms a successful copy; onCopy runs after the clipboard write."
+  },
+  "glass-switch": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { GlassSwitch } from \"@/components/ui/glass-switch\"\n\nexport default function Demo() {\n  const [enabled, setEnabled] = useState(true)\n  return (\n    <div className=\"flex items-center gap-5\">\n      <GlassSwitch\n        checked={enabled}\n        onCheckedChange={setEnabled}\n        aria-label=\"Enable notifications\"\n      />\n      <span>{enabled ? \"Notifications on\" : \"Notifications off\"}</span>\n    </div>\n  )\n}\n",
+    "notes": "Use checked and onCheckedChange for controlled state. Give the switch an accessible name. Space toggles the focused switch."
+  },
+  "liquid-switch": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { LiquidSwitch } from \"@/components/ui/liquid-switch\"\n\nexport default function Demo() {\n  const [enabled, setEnabled] = useState(true)\n  return (\n    <div className=\"flex items-center gap-5\">\n      <LiquidSwitch\n        checked={enabled}\n        onCheckedChange={setEnabled}\n        aria-label=\"Enable notifications\"\n      />\n      <span>{enabled ? \"Notifications on\" : \"Notifications off\"}</span>\n    </div>\n  )\n}\n",
+    "notes": "Use checked and onCheckedChange for controlled state. Give the switch an accessible name. Space toggles the focused switch."
+  },
+  "glass-slider": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { GlassSlider } from \"@/components/ui/glass-slider\"\n\nexport default function Demo() {\n  const [value, setValue] = useState(60)\n  return (\n    <div className=\"w-full max-w-sm space-y-6 px-5\">\n      <p>Volume: {value}%</p>\n      <GlassSlider\n        value={value}\n        onValueChange={setValue}\n        aria-label=\"Volume\"\n      />\n    </div>\n  )\n}\n",
+    "notes": "The default range is 0\u2013100. Use min, max, and step for a different range; onValueCommit runs when the adjustment is committed."
+  },
+  "liquid-slider": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { LiquidSlider } from \"@/components/ui/liquid-slider\"\n\nexport default function Demo() {\n  const [value, setValue] = useState(60)\n  return (\n    <div className=\"w-full max-w-sm space-y-6 px-5\">\n      <p>Volume: {value}%</p>\n      <LiquidSlider\n        value={value}\n        onValueChange={setValue}\n        aria-label=\"Volume\"\n      />\n    </div>\n  )\n}\n",
+    "notes": "The default range is 0\u2013100. Use min, max, and step for a different range; onValueCommit runs when the adjustment is committed."
+  },
+  "gloss-button": {
+    "code": "\"use client\"\n\nimport { GlossButton } from \"@/components/ui/gloss-button\"\n\nexport default function Demo() {\n  return (\n    <div className=\"flex flex-wrap justify-center gap-4\">\n      <GlossButton>Save changes</GlossButton>\n      <GlossButton variant=\"glass\">Cancel</GlossButton>\n      <GlossButton disabled>Unavailable</GlossButton>\n    </div>\n  )\n}\n",
+    "notes": "Use the ember variant for an emphasized action and glass for a secondary action. Standard button attributes are supported."
+  },
+  "liquid-button": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { LiquidButton } from \"@/components/ui/liquid-button\"\n\nexport default function Demo() {\n  const [count, setCount] = useState(0)\n  return (\n    <LiquidButton size=\"lg\" onClick={() => setCount(count + 1)}>\n      {count ? `Pressed ${count} times` : \"Press the glass\"}\n    </LiquidButton>\n  )\n}\n",
+    "notes": "The glass swells while pressed. The component accepts standard button events and attributes."
+  },
+  "sheen-card": {
+    "code": "\"use client\"\n\nimport { SheenCard } from \"@/components/ui/sheen-card\"\n\nexport default function Demo() {\n  return (\n    <SheenCard className=\"w-full max-w-sm rounded-3xl border p-10\">\n      <p className=\"text-sm text-muted-foreground\">Afterglow studio</p>\n      <h2 className=\"mt-3 text-3xl font-medium\">\n        A different perspective.\n      </h2>\n      <p className=\"mt-6 text-muted-foreground\">\n        Move your pointer across the surface.\n      </p>\n    </SheenCard>\n  )\n}\n",
+    "notes": "The card responds to the pointer with tilt and reflected light. Keep interactive content accessible without relying on the tilt."
+  },
+  "fan-cards": {
+    "code": "import { FanCards } from \"@/components/ui/fan-cards\"\n\nexport default function Team() {\n  return (\n    <FanCards\n      aria-label=\"Our team\"\n      items={[\n        {\n          id: \"maya\",\n          label: \"Maya, Designer\",\n          content: <div className=\"h-72 p-6\">Maya \u00b7 Designer</div>,\n        },\n        {\n          id: \"devon\",\n          label: \"Devon, Engineer\",\n          content: <div className=\"h-72 p-6\">Devon \u00b7 Engineer</div>,\n        },\n      ]}\n    />\n  )\n}\n",
+    "notes": "Cards fan out on larger screens and form a grid in narrow containers. Hover or focus a card to bring it forward."
+  },
+  "liquid-glass": {
+    "code": "\"use client\"\n\nimport { LiquidGlass } from \"@/components/ui/liquid-glass\"\n\nexport default function Demo() {\n  return (\n    <div className=\"relative grid min-h-88 w-full place-items-center overflow-hidden p-8\">\n      <div className=\"absolute left-[18%] top-10 size-40 rounded-full bg-glow\" />\n      <div className=\"absolute bottom-8 right-[16%] size-32 rounded-full bg-glow-3\" />\n      <div className=\"relative max-w-xs rounded-3xl\">\n        <LiquidGlass\n          className=\"absolute inset-0 rounded-[inherit]\"\n          frost={6}\n        />\n        <div className=\"relative p-8\">\n          <h2 className=\"text-xl font-medium\">\n            A different perspective.\n          </h2>\n          <p className=\"mt-4 text-sm leading-6\">\n            The color behind the glass becomes part of the material.\n          </p>\n        </div>\n      </div>\n    </div>\n  )\n}\n",
+    "notes": "Place the glass below a separate content layer. Refraction is supported in Chromium; other browsers receive frosted glass. Set refraction to zero for native blur. Avoid animating ancestor opacity around refracting glass."
+  },
+  "liquid-card": {
+    "code": "\"use client\"\n\nimport { LiquidCard } from \"@/components/ui/liquid-card\"\n\nexport default function Demo() {\n  return (\n    <LiquidCard className=\"w-full max-w-xs p-8\">\n      <p className=\"text-sm text-muted-foreground\">Your next project</p>\n      <h2 className=\"mt-4 text-3xl\">Make it yours.</h2>\n      <p className=\"mt-6 text-sm leading-6\">\n        A clear material with a curved edge and a gentle response.\n      </p>\n    </LiquidCard>\n  )\n}\n",
+    "notes": "Pass material options through the glass prop. The card stays flat so the backdrop filter remains connected to the scene."
+  },
+  "liquid-segmented": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { Home, Settings, Bell } from \"lucide-react\"\nimport { LiquidSegmented } from \"@/components/ui/liquid-segmented\"\n\nexport default function Demo() {\n  const [value, setValue] = useState(\"home\")\n  return (\n    <div className=\"space-y-8 text-center\">\n      <LiquidSegmented\n        aria-label=\"Workspace section\"\n        value={value}\n        onValueChange={setValue}\n        options={[\n          { value: \"home\", label: \"Home\", icon: <Home /> },\n          { value: \"updates\", label: \"Updates\", icon: <Bell /> },\n          { value: \"settings\", label: \"Settings\", icon: <Settings /> },\n        ]}\n      />\n      <p className=\"text-sm text-muted-foreground\">Selected: {value}</p>\n    </div>\n  )\n}\n",
+    "notes": "Use a controlled value to update related content. Choices have stable values and labels. Use arrow keys to move between tabs or segments."
+  },
+  "liquid-tabs": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { Home, Settings, Bell } from \"lucide-react\"\nimport { LiquidTabs } from \"@/components/ui/liquid-tabs\"\n\nexport default function Demo() {\n  const [value, setValue] = useState(\"home\")\n  return (\n    <div className=\"space-y-8 text-center\">\n      <LiquidTabs\n        aria-label=\"Workspace section\"\n        value={value}\n        onValueChange={setValue}\n        tabs={[\n          { value: \"home\", label: \"Home\", icon: <Home /> },\n          { value: \"updates\", label: \"Updates\", icon: <Bell /> },\n          { value: \"settings\", label: \"Settings\", icon: <Settings /> },\n        ]}\n      />\n      <p className=\"text-sm text-muted-foreground\">Selected: {value}</p>\n    </div>\n  )\n}\n",
+    "notes": "Use a controlled value to update related content. Choices have stable values and labels. Use arrow keys to move between tabs or segments."
+  },
+  "trail-tabs": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { Home, Settings, Bell } from \"lucide-react\"\nimport { TrailTabs } from \"@/components/ui/trail-tabs\"\n\nexport default function Demo() {\n  const [value, setValue] = useState(\"home\")\n  return (\n    <div className=\"space-y-8 text-center\">\n      <TrailTabs\n        aria-label=\"Workspace section\"\n        value={value}\n        onValueChange={setValue}\n        tabs={[\n          { value: \"home\", label: \"Home\", icon: <Home /> },\n          { value: \"updates\", label: \"Updates\", icon: <Bell /> },\n          { value: \"settings\", label: \"Settings\", icon: <Settings /> },\n        ]}\n      />\n      <p className=\"text-sm text-muted-foreground\">Selected: {value}</p>\n    </div>\n  )\n}\n",
+    "notes": "Use a controlled value to update related content. Choices have stable values and labels. Use arrow keys to move between tabs or segments."
+  },
+  "liquid-toolbar": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { Bold, Italic, Underline } from \"lucide-react\"\nimport { LiquidToolbar } from \"@/components/ui/liquid-toolbar\"\n\nexport default function Demo() {\n  const [bold, setBold] = useState(false)\n  const [italic, setItalic] = useState(false)\n  const [underline, setUnderline] = useState(false)\n  return (\n    <div className=\"space-y-8 text-center\">\n      <LiquidToolbar\n        aria-label=\"Text formatting\"\n        items={[\n          {\n            label: \"Bold\",\n            icon: <Bold />,\n            pressed: bold,\n            onClick: () => setBold(!bold),\n          },\n          {\n            label: \"Italic\",\n            icon: <Italic />,\n            pressed: italic,\n            onClick: () => setItalic(!italic),\n          },\n          \"divider\",\n          {\n            label: \"Underline\",\n            icon: <Underline />,\n            pressed: underline,\n            onClick: () => setUnderline(!underline),\n          },\n        ]}\n      />\n      <p\n        style={{\n          fontWeight: bold ? 700 : 400,\n          fontStyle: italic ? \"italic\" : \"normal\",\n          textDecoration: underline ? \"underline\" : \"none\",\n        }}\n      >\n        Make it yours.\n      </p>\n    </div>\n  )\n}\n",
+    "notes": "Give icon actions a label. Use pressed for toggle actions and insert divider entries between groups. Arrow keys move between toolbar buttons."
+  },
+  "liquid-menu": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { Copy, Share, MoreHorizontal } from \"lucide-react\"\nimport { LiquidMenu } from \"@/components/ui/liquid-menu\"\n\nexport default function Demo() {\n  const [action, setAction] = useState(\"Choose an action\")\n  return (\n    <div className=\"min-h-64 space-y-6 pt-8 text-center\">\n      <LiquidMenu\n        trigger={<MoreHorizontal />}\n        triggerLabel=\"More actions\"\n        items={[\n          {\n            label: \"Copy link\",\n            icon: <Copy />,\n            onSelect: () => setAction(\"Link copied\"),\n          },\n          {\n            label: \"Share\",\n            icon: <Share />,\n            onSelect: () => setAction(\"Ready to share\"),\n          },\n        ]}\n      />\n      <p className=\"text-sm text-muted-foreground\" role=\"status\">\n        {action}\n      </p>\n    </div>\n  )\n}\n",
+    "notes": "Use triggerLabel for an icon-only trigger. The menu supports arrow keys, Home, End, Escape, and selection with Enter. onSelect connects each action to your application."
+  },
+  "magnetic-dock": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { Home, Mail, Music, Settings } from \"lucide-react\"\nimport { MagneticDock } from \"@/components/ui/magnetic-dock\"\n\nexport default function Demo() {\n  const [app, setApp] = useState(\"Choose an app\")\n  return (\n    <div className=\"space-y-8 text-center\">\n      <MagneticDock\n        size={42}\n        magnification={64}\n        items={[\n          {\n            label: \"Home\",\n            icon: <Home />,\n            onClick: () => setApp(\"Home\"),\n          },\n          {\n            label: \"Mail\",\n            icon: <Mail />,\n            onClick: () => setApp(\"Mail\"),\n          },\n          {\n            label: \"Music\",\n            icon: <Music />,\n            onClick: () => setApp(\"Music\"),\n          },\n          \"divider\",\n          {\n            label: \"Settings\",\n            icon: <Settings />,\n            onClick: () => setApp(\"Settings\"),\n          },\n        ]}\n      />\n      <p role=\"status\" className=\"text-sm text-muted-foreground\">\n        {app}\n      </p>\n    </div>\n  )\n}\n",
+    "notes": "The pointer enlarges nearby tiles. Set size, magnification, and range to suit your available space. Each item needs a label and can provide an action."
+  },
+  "rail-nav": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { RailNav } from \"@/components/ui/rail-nav\"\n\nexport default function Demo() {\n  const [value, setValue] = useState(\"overview\")\n  return (\n    <div className=\"w-full max-w-xs\">\n      <RailNav\n        value={value}\n        onValueChange={setValue}\n        items={[\n          { heading: \"Workspace\" },\n          { id: \"overview\", label: \"Overview\" },\n          { id: \"projects\", label: \"Projects\", badge: \"4\" },\n          { id: \"settings\", label: \"Settings\" },\n        ]}\n      />\n      <p className=\"mt-6 text-sm text-muted-foreground\">\n        Selected: {value}\n      </p>\n    </div>\n  )\n}\n",
+    "notes": "Use value and onValueChange for a controlled sidebar. Entries can include href to become real links. Heading entries separate groups."
+  },
+  "reading-rail": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { ReadingRail } from \"@/components/ui/reading-rail\"\n\nexport default function Demo() {\n  const [container, setContainer] = useState<HTMLDivElement | null>(\n    null,\n  )\n  const items = [\n    { id: \"demo-material\", label: \"The material\" },\n    { id: \"demo-edge\", label: \"The edge\", depth: 1 },\n    { id: \"demo-motion\", label: \"The movement\" },\n    { id: \"demo-response\", label: \"The response\", depth: 1 },\n  ]\n  return (\n    <div className=\"ag-rail-example\">\n      <ReadingRail\n        title=\"Contents\"\n        container={container}\n        items={items}\n      />\n      <div ref={setContainer} className=\"ag-rail-article\">\n        {items.map((item) => (\n          <section key={item.id} id={item.id}>\n            <h2>{item.label}</h2>\n            <p>\n              A shared material, a considered edge, and motion that\n              follows your touch.\n            </p>\n            <p>Select a heading or scroll to follow the path.</p>\n          </section>\n        ))}\n      </div>\n    </div>\n  )\n}\n",
+    "notes": "Match IDs to headings in the scrolling container. Omit container to track the page. The rail follows nested depths and respects reduced motion."
+  },
+  "scroll-rail": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { ScrollRail } from \"@/components/ui/scroll-rail\"\n\nexport default function Demo() {\n  const [container, setContainer] = useState<HTMLDivElement | null>(\n    null,\n  )\n  const items = [\"Material\", \"Motion\", \"Color\", \"Details\"].map(\n    (title, i) => ({\n      id: `scroll-demo-${i}`,\n      title,\n      excerpt: `Explore the ${title.toLowerCase()} of Afterglow.`,\n    }),\n  )\n  return (\n    <div className=\"relative w-full max-w-lg pr-16\">\n      <div\n        ref={setContainer}\n        className=\"h-96 overflow-auto rounded-2xl border p-6\"\n      >\n        {items.map((item) => (\n          <section\n            key={item.id}\n            data-rail-id={item.id}\n            className=\"min-h-64 py-8\"\n          >\n            <h2 className=\"text-xl\">{item.title}</h2>\n            <p className=\"mt-4 text-muted-foreground\">{item.excerpt}</p>\n          </section>\n        ))}\n      </div>\n      <ScrollRail\n        className=\"absolute right-3 top-8\"\n        items={items}\n        container={container}\n      />\n    </div>\n  )\n}\n",
+    "notes": "Targets use data-rail-id, not a heading ID. Pass the actual scrollable element as container. Hover a tick to inspect its preview, then select it to jump."
+  },
+  "rail-path": {
+    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { buildTrack } from \"@/components/ui/rail-path\"\n\nexport default function Demo() {\n  const [nested, setNested] = useState(true)\n  const track = buildTrack([\n    { x: 16, y: 20 },\n    { x: nested ? 40 : 16, y: 100 },\n    { x: 16, y: 180 },\n    { x: nested ? 40 : 16, y: 260 },\n  ])\n  return (\n    <div className=\"flex items-center gap-8\">\n      <svg\n        width=\"90\"\n        height=\"300\"\n        viewBox=\"0 0 90 300\"\n        aria-label=\"Rounded rail geometry\"\n      >\n        <path\n          d={track.d}\n          fill=\"none\"\n          stroke=\"var(--glow)\"\n          strokeWidth=\"3\"\n        />\n      </svg>\n      <button\n        className=\"rounded-xl border px-5 py-3\"\n        onClick={() => setNested(!nested)}\n      >\n        Toggle nested rows\n      </button>\n    </div>\n  )\n}\n",
+    "notes": "This is a geometry utility used by the rail components. buildTrack returns a path, distances at each row, and total length. It has no standalone UI or Props API."
+  },
+  "glass-toaster": {
+    "code": "\"use client\"\n\nimport { GlassToaster, toast } from \"@/components/ui/glass-toaster\"\nimport { GlossButton } from \"@/components/ui/gloss-button\"\n\nexport default function Demo() {\n  return (\n    <>\n      <GlossButton\n        onClick={() =>\n          toast(\"Changes saved\", {\n            description: \"Your project is up to date.\",\n          })\n        }\n      >\n        Show notification\n      </GlossButton>\n      <GlassToaster position=\"bottom-center\" />\n    </>\n  )\n}\n",
+    "notes": "Mount one toaster in your application. Call toast from client interactions. Toasts can be dismissed and are announced as status updates."
+  },
+  "flame-field": {
+    "code": "\"use client\"\n\nimport { FlameField } from \"@/components/ui/flame-field\"\n\nexport default function Demo() {\n  return (\n    <div className=\"relative isolate flex h-[420px] w-full items-end overflow-hidden rounded-3xl p-8\">\n      <FlameField className=\"absolute inset-0 -z-10\" />\n      <h2 className=\"text-4xl font-medium\">A little afterglow.</h2>\n    </div>\n  )\n}\n",
+    "notes": "Give the field a positioned parent with an explicit height. It follows the shared accent and theme, and becomes still under reduced motion."
+  },
+  "flame-footer": {
+    "code": "\"use client\"\n\nimport { FlameFooter } from \"@/components/ui/flame-footer\"\n\nexport default function Demo() {\n  return (\n    <FlameFooter\n      className=\"w-full\"\n      headline=\"A little afterglow.\"\n      links={[\n        { label: \"Components\", href: \"/docs/components/fan-cards\" },\n        { label: \"Getting started\", href: \"/docs/installation\" },\n      ]}\n      legal=\"Afterglow UI\"\n    />\n  )\n}\n",
+    "notes": "Provide headline content and real navigation links. The footer includes the accent-driven Flame Field and responds to the current theme."
+  },
+  "liquid-metal": {
+    "code": "\"use client\"\n\nimport { LiquidMetal } from \"@/components/ui/liquid-metal\"\n\nexport default function Demo() {\n  return (\n    <div className=\"relative h-80 w-full max-w-md overflow-hidden rounded-3xl\">\n      <LiquidMetal className=\"absolute inset-0\" />\n      <div className=\"relative flex h-full items-center justify-center\">\n        <span className=\"rounded-full bg-black/50 px-6 py-3 text-white\">\n          Moving chrome\n        </span>\n      </div>\n    </div>\n  )\n}\n",
+    "notes": "Set dimensions on the wrapper. Multiple pieces share a GPU context. Lower quality for smaller decorative surfaces; pattern silk produces diagonal folds."
+  },
+  "metal-button": {
+    "code": "\"use client\"\n\nimport { MetalButton } from \"@/components/ui/metal-button\"\n\nexport default function Demo() {\n  return (\n    <div className=\"flex flex-wrap justify-center gap-4\">\n      <MetalButton>Continue</MetalButton>\n      <MetalButton variant=\"silver\">Save changes</MetalButton>\n    </div>\n  )\n}\n",
+    "notes": "Choose rim for a dark surface with a chrome edge or silver for brushed metal. Standard button attributes are supported."
+  },
+  "metal-card": {
+    "code": "\"use client\"\n\nimport { MetalCard } from \"@/components/ui/metal-card\"\n\nexport default function Demo() {\n  return (\n    <MetalCard className=\"w-full max-w-sm rounded-3xl p-10\">\n      <p className=\"text-sm text-muted-foreground\">Afterglow studio</p>\n      <h2 className=\"mt-4 text-3xl font-medium\">\n        Consider every edge.\n      </h2>\n      <p className=\"mt-6 text-sm leading-6 text-muted-foreground\">\n        A quiet surface, framed in moving chrome.\n      </p>\n    </MetalCard>\n  )\n}\n",
+    "notes": "The frame prop controls the width of the metallic edge. Give the card its shape and spacing through className."
+  },
+  "metal-text": {
+    "code": "\"use client\"\n\nimport { MetalText } from \"@/components/ui/metal-text\"\n\nexport default function Demo() {\n  return (\n    <MetalText className=\"text-5xl font-semibold tracking-tight\">\n      Afterglow\n    </MetalText>\n  )\n}\n",
+    "notes": "Use for short display text. The every prop controls the interval between glints. Preserve an accessible text label when styling decorative content."
+  },
+  "auth-parts": {
+    "code": "\"use client\"\n\nimport {\n  Field,\n  Divider,\n  ProviderButton,\n} from \"@/components/ui/auth-parts\"\n\nexport default function Demo() {\n  return (\n    <div className=\"w-full max-w-xs space-y-5\">\n      <ProviderButton provider=\"google\" />\n      <Divider />\n      <Field\n        label=\"Email address\"\n        type=\"email\"\n        placeholder=\"you@example.com\"\n        autoComplete=\"email\"\n      />\n    </div>\n  )\n}\n",
+    "notes": "These are shared form primitives, not an authentication backend. Field connects its label and error text; ProviderButton supplies a provider mark and accessible text."
+  },
+  "auth-silk": {
+    "code": "\"use client\"\n\nimport { AuthSilk } from \"@/components/blocks/auth-silk\"\n\nexport default function Demo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-3xl\">\n      <AuthSilk\n        onSubmit={async () => {\n          await new Promise((resolve) => setTimeout(resolve, 800))\n        }}\n      />\n    </div>\n  )\n}\n",
+    "notes": "The preview simulates submission only. Connect onSubmit to your authentication service and onProvider to your OAuth flow. Never place provider secrets in client code. Errors thrown by onSubmit are shown by the form."
+  },
+  "auth-glass": {
+    "code": "\"use client\"\n\nimport { AuthGlass } from \"@/components/blocks/auth-glass\"\n\nexport default function Demo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-3xl\">\n      <AuthGlass\n        onSubmit={async () => {\n          await new Promise((resolve) => setTimeout(resolve, 800))\n        }}\n      />\n    </div>\n  )\n}\n",
+    "notes": "The preview simulates submission only. Connect onSubmit to your authentication service and onProvider to your OAuth flow. Never place provider secrets in client code. Errors thrown by onSubmit are shown by the form."
+  },
+  "auth-split": {
+    "code": "\"use client\"\n\nimport { AuthSplit } from \"@/components/blocks/auth-split\"\n\nexport default function Demo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-3xl\">\n      <AuthSplit\n        onSubmit={async () => {\n          await new Promise((resolve) => setTimeout(resolve, 800))\n        }}\n      />\n    </div>\n  )\n}\n",
+    "notes": "The preview simulates submission only. Connect onSubmit to your authentication service and onProvider to your OAuth flow. Never place provider secrets in client code. Errors thrown by onSubmit are shown by the form."
+  },
+  "auth-steps": {
+    "code": "\"use client\"\n\nimport { AuthSteps } from \"@/components/blocks/auth-steps\"\n\nexport default function Demo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-3xl\">\n      <AuthSteps\n        onSubmit={async () => {\n          await new Promise((resolve) => setTimeout(resolve, 800))\n        }}\n      />\n    </div>\n  )\n}\n",
+    "notes": "The preview simulates submission only. Connect onSubmit to your authentication service and onProvider to your OAuth flow. Never place provider secrets in client code. Errors thrown by onSubmit are shown by the form."
+  }
+}
