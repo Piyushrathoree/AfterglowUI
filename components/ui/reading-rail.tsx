@@ -10,6 +10,8 @@ type ReadingRailItem = {
   /** matches the `id` of the heading it points to */
   id: string
   label: string
+  /** Optional destination when the rail is used for page navigation. */
+  href?: string
   /** indents the row, and bends the rail sideways to reach it; 0 is a top level heading */
   depth?: number
 }
@@ -21,6 +23,8 @@ type ReadingRailProps = Omit<React.ComponentProps<"nav">, "children"> & {
   /** how far below the top of the view a heading counts as reached, in px */
   offset?: number
   title?: string
+  /** Controls the active item for route-based navigation instead of scroll tracking. */
+  activeId?: string
 }
 
 const RAIL_X = 7
@@ -28,7 +32,7 @@ const STEP = 14
 
 // a table of contents on a dashed rail that bends in where a heading is indented. a solid line fills
 // the rail as you read, and a small ember at its tip turns with every bend
-function ReadingRail({ items, container = null, offset = 24, title = "On this page", className, ...props }: ReadingRailProps) {
+function ReadingRail({ items, container = null, offset = 24, title = "On this page", activeId, className, ...props }: ReadingRailProps) {
   const reduceMotion = useReducedMotion()
   const list = React.useRef<HTMLUListElement>(null)
   const base = React.useRef<SVGPathElement>(null)
@@ -80,6 +84,17 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
     let frame = 0
     const measure = () => {
       frame = 0
+      if (activeId !== undefined) {
+        const index = items.findIndex((item) => item.id === activeId)
+        if (index < 0) { position.set(0); reached.jump(0); setCurrent(-1); setPercent(0); return }
+        position.set(index)
+        const length = lengthAt(trackRef.current ?? track, index)
+        if (reduceMotion) reached.jump(length)
+        else reached.set(length)
+        setCurrent(index)
+        setPercent(items.length > 1 ? Math.round(index / (items.length - 1) * 100) : 0)
+        return
+      }
       const top = container ? container.getBoundingClientRect().top : 0
       const line = top + offset
       const tops = items.map((item) => document.getElementById(item.id)?.getBoundingClientRect().top ?? Infinity)
@@ -119,7 +134,7 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
       scroller.removeEventListener("scroll", schedule)
       window.removeEventListener("resize", schedule)
     }
-  }, [container, items, offset, position, reached, reduceMotion, track])
+  }, [activeId, container, items, offset, position, reached, reduceMotion, track])
 
   function go(id: string) {
     const target = document.getElementById(id)
@@ -154,16 +169,19 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
                 strokeWidth="1.25"
               />
             ))}
-            <motion.g style={{ x, y, rotate: angle }}>
+            <motion.g style={{ x, y, rotate: angle, opacity: current < 0 ? 0 : 1 }}>
               <rect x="-2.5" y="-6.5" width="5" height="13" rx="2.5" className="fill-glow stroke-background" strokeWidth="2" paintOrder="stroke" />
             </motion.g>
           </svg>
         )}
-        {items.map((item, index) => (
+        {items.map((item, index) => {
+          const Element = item.href ? "a" : "button"
+          return (
           <li key={item.id} data-rail-row data-depth={item.depth ?? 0} className="relative">
-            <button
-              type="button"
-              onClick={() => go(item.id)}
+            <Element
+              type={item.href ? undefined : "button"}
+              href={item.href}
+              onClick={item.href ? undefined : () => go(item.id)}
               aria-current={index === current ? "location" : undefined}
               className={cn(
                 "flex min-h-8 w-full cursor-pointer items-center rounded-lg py-1.5 pr-2 text-left text-[13px] leading-snug outline-none transition-colors duration-150 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
@@ -172,9 +190,9 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
               style={{ paddingLeft: 28 + (item.depth ?? 0) * STEP }}
             >
               {item.label}
-            </button>
+            </Element>
           </li>
-        ))}
+        )})}
       </ul>
     </nav>
   )
