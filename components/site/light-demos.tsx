@@ -25,6 +25,7 @@ import {
 import { AnimatePresence, inView, motion, useReducedMotion } from "motion/react"
 
 
+import { BorderBeam } from "@/components/ui/border-beam"
 import { AccentPicker } from "@/components/ui/accent-picker"
 import { CopyButton } from "@/components/ui/copy-button"
 import { LiquidGlass } from "@/components/ui/liquid-glass"
@@ -102,7 +103,7 @@ export function DeployDemo() {
   } as const
 
   return (
-    <div ref={ref} className="w-full max-w-md">
+    <div ref={ref} className="relative w-full max-w-md rounded-[28px]">
       {/* a 28px pane of liquid glass */}
       <LiquidGlass className="rounded-[28px] p-5 text-foreground" bezel={28} frost={10} tint={readable}>
       <div className="flex items-center justify-between gap-3">
@@ -154,6 +155,7 @@ export function DeployDemo() {
         </button>
       </div>
       </LiquidGlass>
+      <BorderBeam active={!done} className="rounded-[28px]" />
     </div>
   )
 }
@@ -376,7 +378,7 @@ export function TabsDemo() {
   return (
     // a 34px pane with 12px of padding, so the 44px tab capsule, the inputs and the button
     // inside (all ~22px radius) sit concentric with its corners
-    <div className="w-full max-w-lg rounded-[34px] bg-glass p-3 shadow-glass backdrop-blur-xl backdrop-saturate-150">
+    <div className="@container w-full min-w-0 max-w-lg rounded-[34px] bg-glass p-3 shadow-glass backdrop-blur-xl backdrop-saturate-150">
       <TrailTabs
         tabs={[
           {
@@ -386,7 +388,7 @@ export function TabsDemo() {
             iconGesture: "turn",
             content: (
               <div className="flex flex-col gap-5 pt-1">
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 @min-[420px]:grid-cols-2">
                   <Field label="Project name" value="afterglow" />
                   <Field label="Domain" value="afterglow" suffix=".dev" />
                 </div>
@@ -485,6 +487,15 @@ const apps = [
 ]
 
 export function DockDemo() {
+  const bounds = React.useRef<HTMLDivElement>(null)
+  const [tileSize, setTileSize] = React.useState(48)
+  React.useEffect(() => {
+    const node = bounds.current
+    if (!node) return
+    const observer = new ResizeObserver(() => setTileSize(Math.max(24, Math.min(48, Math.floor((node.clientWidth - 108) / (apps.length + 1))))))
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
   const [open, setOpen] = React.useState(() => new Set(["Browser", "Mail", "Music"]))
 
   function toggle(label: string) {
@@ -497,8 +508,11 @@ export function DockDemo() {
   }
 
   return (
-    <div className="flex h-full w-full items-end justify-center pt-24">
+    <div ref={bounds} className="flex min-h-48 w-full min-w-0 items-center overflow-x-auto py-10">
       <MagneticDock
+        className="mx-auto shrink-0"
+        size={tileSize}
+        magnification={tileSize + 20}
         items={[
           ...apps.map((app) => ({
             ...app,
