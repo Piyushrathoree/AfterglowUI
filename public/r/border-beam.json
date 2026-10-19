@@ -1,0 +1,74 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "border-beam",
+  "title": "Border Beam",
+  "description": "A beam of light that circles a border while work runs and fades out slowly when you turn it off, spun on the GPU.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/border-beam.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { motion, useReducedMotion, type HTMLMotionProps } from \"motion/react\"\n\nimport { afterglow, ringMask } from \"@/lib/afterglow\"\nimport { cn } from \"@/lib/utils\"\n\ntype BorderBeamProps = Omit<HTMLMotionProps<\"div\">, \"children\"> & {\n  /** seconds per lap */\n  duration?: number\n  /** thickness of the beam in px */\n  width?: number\n  /** length of the fading tail, in degrees of the lap */\n  tail?: number\n  color?: string\n  /** a color the tail passes through on its way out; by default it simply fades */\n  tailColor?: string\n  /** a second beam on the opposite side, in its own color */\n  twin?: string\n  reverse?: boolean\n  /** turn it off and the beam fades out slowly, still circling, instead of vanishing */\n  active?: boolean\n}\n\nfunction BorderBeam({\n  className,\n  style,\n  duration = 6,\n  width = 1.5,\n  tail = 120,\n  color = \"var(--glow)\",\n  tailColor,\n  twin,\n  reverse = false,\n  active = true,\n  ...props\n}: BorderBeamProps) {\n  const reduceMotion = useReducedMotion()\n  const ref = React.useRef<HTMLDivElement>(null)\n  const [diagonal, setDiagonal] = React.useState(0)\n\n  // the rotating disc must cover the box at every angle, so it spans the diagonal\n  React.useEffect(() => {\n    const node = ref.current\n    if (!node) return\n    const observer = new ResizeObserver(() =>\n      setDiagonal(Math.ceil(Math.hypot(node.offsetWidth, node.offsetHeight)))\n    )\n    observer.observe(node)\n    return () => observer.disconnect()\n  }, [])\n\n  // each beam: a bright head with a long tail fading behind it\n  const head = (at: number, beam: string) =>\n    `transparent ${at - tail}deg, ${\n      tailColor ?? `color-mix(in oklch, ${beam} 30%, transparent)`\n    } ${at - tail * 0.4}deg, ${beam} ${at - 1}deg, transparent ${at}deg`\n  const stops = twin\n    ? `${head(180, color)}, ${head(360, twin)}`\n    : `transparent 0deg, ${head(360, color)}`\n  const background = `conic-gradient(from 0deg, ${stops})`\n\n  return (\n    <motion.div\n      ref={ref}\n      data-slot=\"border-beam\"\n      data-state={active ? \"active\" : \"idle\"}\n      aria-hidden\n      className={cn(\n        \"pointer-events-none absolute inset-0 rounded-[inherit]\",\n        className\n      )}\n      style={style}\n      initial={false}\n      animate={{ opacity: active ? 1 : 0 }}\n      transition={\n        active\n          ? { duration: 0.4, ease: \"easeOut\" }\n          : // ease in-out, so the light holds for a beat before it lets go\n            { duration: afterglow.linger * 1.6, ease: \"easeInOut\" }\n      }\n      {...props}\n    >\n      <div\n        className=\"absolute inset-0 overflow-hidden rounded-[inherit]\"\n        style={{ ...ringMask, padding: width }}\n      >\n        {/* a transform-only spin, so the compositor runs it without repaints */}\n        <motion.div\n          className=\"absolute top-1/2 left-1/2\"\n          style={{\n            width: diagonal,\n            height: diagonal,\n            marginLeft: -diagonal / 2,\n            marginTop: -diagonal / 2,\n            background,\n          }}\n          initial={{ rotate: 0 }}\n          animate={reduceMotion ? { rotate: 45 } : { rotate: reverse ? -360 : 360 }}\n          transition={\n            reduceMotion\n              ? { duration: 0 }\n              : { duration, ease: \"linear\", repeat: Infinity }\n          }\n        />\n      </div>\n    </motion.div>\n  )\n}\n\nexport { BorderBeam, type BorderBeamProps }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/afterglow.ts",
+      "content": "import type { CSSProperties } from \"react\"\nimport type { TargetAndTransition, Transition } from \"motion/react\"\n\n// shared spring presets, every component picks from these\nexport const springs = {\n  snappy: { stiffness: 520, damping: 34, mass: 0.6 },\n  soft: { stiffness: 260, damping: 26, mass: 0.8 },\n  glide: { stiffness: 120, damping: 20, mass: 1 },\n} as const\n\nexport type SpringName = keyof typeof springs\n\nexport function spring(name: SpringName): Transition {\n  return { type: \"spring\", ...springs[name] }\n}\n\n// how a glow fades once its source moves away: slow, with a long tail\nexport const afterglow = {\n  linger: 0.9,\n  ease: [0.22, 1, 0.36, 1],\n} as const satisfies { linger: number; ease: Transition[\"ease\"] }\n\n// paints only the padding ring of an element, used for glowing borders\nexport const ringMask: CSSProperties = {\n  WebkitMask:\n    \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  WebkitMaskComposite: \"xor\",\n  mask: \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  maskComposite: \"exclude\",\n}\n\n// small icon gestures, played when a control is pressed or selected\nexport const iconGestures = {\n  pop: { scale: [1, 1.2, 1] },\n  ring: { rotate: [0, -18, 14, -9, 4, 0], scale: [1, 1.12, 1] },\n  // a gear looks the same after half a turn, so it can rest there and snap back unseen\n  turn: { rotate: [0, 180], scale: [1, 1.12, 1] },\n  hop: { y: [0, -3, 0], scale: [1, 1.1, 1] },\n  nudge: { x: [0, 2.5, 0], scale: [1, 1.1, 1] },\n} satisfies Record<string, TargetAndTransition>\n\nexport type IconGesture = keyof typeof iconGestures\n\n// leaving a gesture is instant: every gesture already ends at, or looks like, its resting pose\nexport const iconRest: TargetAndTransition = { scale: 1, rotate: 0, x: 0, y: 0, transition: { duration: 0 } }\n",
+      "type": "registry:lib"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "color-glow": "var(--glow)",
+      "color-glow-foreground": "var(--glow-foreground)",
+      "color-glow-2": "var(--glow-2)",
+      "color-glow-3": "var(--glow-3)",
+      "color-glass": "var(--glass)",
+      "color-gloss-highlight": "var(--gloss-highlight)",
+      "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
+      "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
+      "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
+    },
+    "light": {
+      "glow": "oklch(0.7 0.19 45)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.64 0.22 12)",
+      "glow-3": "oklch(0.56 0.21 300)",
+      "glass": "oklch(1 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 95%)",
+      "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
+      "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
+      "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
+      "liquid-tint": "oklch(1 0 0 / 18%)",
+      "liquid-fallback": "oklch(1 0 0 / 55%)",
+      "liquid-rim": "oklch(1 0 0 / 95%)",
+      "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
+      "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
+      "liquid-glow": "oklch(1 0 0 / 55%)",
+      "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
+    },
+    "dark": {
+      "glow": "oklch(0.8 0.16 55)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.7 0.2 15)",
+      "glow-3": "oklch(0.65 0.2 300)",
+      "glass": "oklch(0.19 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 16%)",
+      "gloss-shade": "oklch(0 0 0 / 30%)",
+      "gloss-depth": "oklch(0.04 0 0 / 55%)",
+      "gloss-edge": "oklch(1 0 0 / 8%)",
+      "liquid-tint": "oklch(0.2 0 0 / 22%)",
+      "liquid-fallback": "oklch(0.2 0 0 / 45%)",
+      "liquid-rim": "oklch(1 0 0 / 60%)",
+      "liquid-edge": "oklch(1 0 0 / 10%)",
+      "liquid-shadow": "oklch(0 0 0 / 45%)",
+      "liquid-glow": "oklch(1 0 0 / 24%)",
+      "liquid-shade": "oklch(0 0 0 / 28%)"
+    }
+  },
+  "type": "registry:ui"
+}
