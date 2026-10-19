@@ -1,0 +1,47 @@
+---
+title: "Auth Glass"
+description: "A clear glass pane over dusk waves, with the sun setting behind its rim."
+---
+
+The preview simulates submission only. Connect onSubmit to your authentication service and onProvider to your OAuth flow. Never place provider secrets in client code. Errors thrown by onSubmit are shown by the form.
+
+## Installation
+
+<InstallCommand name="auth-glass" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { AuthGlass } from "@/components/blocks/auth-glass"
+
+export default function Demo() {
+  return (
+    <div className="w-full overflow-hidden rounded-3xl">
+      <AuthGlass
+        onSubmit={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 800))
+        }}
+      />
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `onSubmit?` | `(values: Credentials) => Promise<void> \| void` | The on submit option. |
+| `onProvider?` | `(provider: Provider) => void` | The on provider option. |
+| `background?` | `React.ReactNode` | what the glass sits on; defaults to layered dusk waves |
+| `className?` | `string` | The class name option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`lucide-react`, `motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
