@@ -1,0 +1,42 @@
+---
+title: "Flame Field"
+description: "A slow field of flame drawn on the GPU in the page's accent color, soft, cheap, and still under reduced motion."
+---
+
+Give the field a positioned parent with an explicit height. It follows the shared accent and theme, and becomes still under reduced motion.
+
+## Installation
+
+<InstallCommand name="flame-field" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { FlameField } from "@/components/ui/flame-field"
+
+export default function Demo() {
+  return (
+    <div className="relative isolate flex h-[420px] w-full items-end overflow-hidden rounded-3xl p-8">
+      <FlameField className="absolute inset-0 -z-10" />
+      <h2 className="text-4xl font-medium">A little afterglow.</h2>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `speed?` | `number` | movement multiplier; defaults to 0.35 for slow, rolling waves |
+| `softness?` | `number` | how much smaller than the screen it is drawn; higher is softer and cheaper |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+No additional runtime packages beyond the project setup.
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
