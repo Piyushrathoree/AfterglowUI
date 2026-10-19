@@ -1,0 +1,58 @@
+---
+title: "Trail Tabs"
+description: "Tabs that fold down to their icons; the picked tab opens to show its name, its icon moves, and panels slide in."
+---
+
+Use a controlled value to update related content. Choices have stable values and labels. Use arrow keys to move between tabs or segments.
+
+## Installation
+
+<InstallCommand name="trail-tabs" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { Home, Settings, Bell } from "lucide-react"
+import { TrailTabs } from "@/components/ui/trail-tabs"
+
+export default function Demo() {
+  const [value, setValue] = useState("home")
+  return (
+    <div className="space-y-8 text-center">
+      <TrailTabs
+        aria-label="Workspace section"
+        value={value}
+        onValueChange={setValue}
+        tabs={[
+          { value: "home", label: "Home", icon: <Home /> },
+          { value: "updates", label: "Updates", icon: <Bell /> },
+          { value: "settings", label: "Settings", icon: <Settings /> },
+        ]}
+      />
+      <p className="text-sm text-muted-foreground">Selected: {value}</p>
+    </div>
+  )
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `tabs` | `TrailTab[]` | The tabs option. |
+| `value?` | `string` | The value option. |
+| `defaultValue?` | `string` | The default value option. |
+| `onValueChange?` | `(value: string) => void` | The on value change option. |
+| `listClassName?` | `string` | classes for the tab strip, when panels sit below it |
+| `labels?` | `"active" \| "all"` | "active" folds every other tab down to its icon; "all" always shows every label |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.
