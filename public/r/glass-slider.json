@@ -1,0 +1,74 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "glass-slider",
+  "title": "Glass Slider",
+  "description": "A slider that's hottest at the thumb and stretches at the ends.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/glass-slider.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport {\n  AnimatePresence,\n  animate,\n  motion,\n  useMotionValue,\n  useReducedMotion,\n  useSpring,\n  useTransform,\n  useVelocity,\n} from \"motion/react\"\n\nimport { afterglow, spring, springs } from \"@/lib/afterglow\"\nimport { cn } from \"@/lib/utils\"\n\nconst THUMB = 22\n// the thumb's center travels from one radius in to one radius short of the end\nconst INSET = THUMB / 2\nconst MAX_STRETCH = 26\n\ntype GlassSliderProps = Omit<\n  React.ComponentProps<\"div\">,\n  \"defaultValue\" | \"onChange\"\n> & {\n  value?: number\n  defaultValue?: number\n  min?: number\n  max?: number\n  step?: number\n  disabled?: boolean\n  onValueChange?: (value: number) => void\n  onValueCommit?: (value: number) => void\n  formatValue?: (value: number) => React.ReactNode\n}\n\nfunction GlassSlider({\n  value,\n  defaultValue,\n  min = 0,\n  max = 100,\n  step = 1,\n  disabled,\n  onValueChange,\n  onValueCommit,\n  formatValue = (v) => v,\n  className,\n  \"aria-label\": ariaLabel,\n  \"aria-labelledby\": ariaLabelledBy,\n  ...props\n}: GlassSliderProps) {\n  const reduceMotion = useReducedMotion()\n  const rootRef = React.useRef<HTMLDivElement>(null)\n  const thumbRef = React.useRef<HTMLDivElement>(null)\n  const [internal, setInternal] = React.useState(defaultValue ?? min)\n  const [dragging, setDragging] = React.useState(false)\n  const [focusVisible, setFocusVisible] = React.useState(false)\n\n  const clamp = (v: number) => Math.min(Math.max(v, min), max)\n  const current = clamp(value ?? internal)\n  // the newest value, readable between renders while a drag is in flight\n  const latest = React.useRef(current)\n  React.useEffect(() => {\n    latest.current = current\n  }, [current])\n  const ratio = max > min ? (current - min) / (max - min) : 0\n  const label = formatValue(current)\n\n  const progress = useSpring(ratio, springs.snappy)\n  const width = useMotionValue(0)\n  // signed rubber-band distance while dragging past either end\n  const band = useSpring(0, springs.snappy)\n  const halo = useMotionValue(0)\n\n  const baseX = useTransform(\n    () => INSET + progress.get() * Math.max(width.get() - THUMB, 0)\n  )\n  const thumbX = useTransform(() => baseX.get() + band.get())\n  const fillX = useTransform(() => baseX.get() - width.get())\n  const trackScale = useTransform(() => {\n    const w = width.get()\n    return w ? 1 + Math.abs(band.get()) / w : 1\n  })\n  const trackOrigin = useTransform(band, (b) => (b < 0 ? 1 : 0))\n  // the value bubble leans into fast movement, then settles upright\n  const tilt = useTransform(useVelocity(progress), [-3, 0, 3], [-14, 0, 14])\n\n  React.useEffect(() => {\n    if (reduceMotion) progress.jump(ratio)\n    else progress.set(ratio)\n  }, [progress, ratio, reduceMotion])\n\n  React.useLayoutEffect(() => {\n    const node = rootRef.current\n    if (!node) return\n    width.jump(node.offsetWidth)\n    const observer = new ResizeObserver(() => width.jump(node.offsetWidth))\n    observer.observe(node)\n    return () => observer.disconnect()\n  }, [width])\n\n  function commit(next: number) {\n    const decimals = (String(step).split(\".\")[1] ?? \"\").length\n    const snapped = clamp(\n      Number((Math.round((next - min) / step) * step + min).toFixed(decimals))\n    )\n    if (snapped === latest.current) return snapped\n    latest.current = snapped\n    if (value === undefined) setInternal(snapped)\n    onValueChange?.(snapped)\n    return snapped\n  }\n\n  function fromPointer(clientX: number) {\n    const rect = rootRef.current?.getBoundingClientRect()\n    if (!rect) return\n    const usable = Math.max(rect.width - THUMB, 1)\n    const r = Math.min(Math.max((clientX - rect.left - INSET) / usable, 0), 1)\n    commit(min + r * (max - min))\n    if (reduceMotion) return\n    const over =\n      clientX < rect.left\n        ? clientX - rect.left\n        : clientX > rect.right\n          ? clientX - rect.right\n          : 0\n    // resistance grows the further you pull, so it never stretches past MAX_STRETCH\n    band.set(Math.sign(over) * MAX_STRETCH * (1 - 1 / (1 + Math.abs(over) / 60)))\n  }\n\n  function glowUp() {\n    animate(halo, 1, { duration: 0.15 })\n  }\n\n  function glowDown() {\n    animate(halo, 0, { duration: afterglow.linger, ease: afterglow.ease })\n  }\n\n  function stopDrag() {\n    if (!dragging) return\n    setDragging(false)\n    band.set(0)\n    glowDown()\n    onValueCommit?.(latest.current)\n  }\n\n  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {\n    const big = Math.max(step, (max - min) / 10)\n    const delta = {\n      ArrowRight: step,\n      ArrowUp: step,\n      ArrowLeft: -step,\n      ArrowDown: -step,\n      PageUp: big,\n      PageDown: -big,\n    }[event.key]\n    let next: number | undefined\n    if (delta !== undefined) next = latest.current + delta\n    else if (event.key === \"Home\") next = min\n    else if (event.key === \"End\") next = max\n    if (next === undefined) return\n    event.preventDefault()\n    setFocusVisible(true)\n    const committed = commit(next)\n    onValueCommit?.(committed)\n    halo.jump(1)\n    glowDown()\n  }\n\n  return (\n    <div\n      ref={rootRef}\n      data-slot=\"glass-slider\"\n      data-disabled={disabled ? \"\" : undefined}\n      className={cn(\n        \"relative flex h-8 w-full touch-pan-y items-center select-none data-disabled:pointer-events-none data-disabled:opacity-50\",\n        className\n      )}\n      onPointerDown={(event) => {\n        if (disabled || event.button !== 0) return\n        event.preventDefault()\n        event.currentTarget.setPointerCapture(event.pointerId)\n        thumbRef.current?.focus({ preventScroll: true })\n        setDragging(true)\n        glowUp()\n        fromPointer(event.clientX)\n      }}\n      onPointerMove={(event) => {\n        if (dragging) fromPointer(event.clientX)\n      }}\n      onPointerUp={stopDrag}\n      onPointerCancel={stopDrag}\n      {...props}\n    >\n      <motion.div\n        className=\"relative h-2 w-full overflow-hidden rounded-full bg-foreground/12 shadow-well\"\n        style={{ scaleX: trackScale, originX: trackOrigin }}\n      >\n        {/* hottest at the thumb, cooling to violet behind it */}\n        <motion.div\n          className=\"absolute inset-0 rounded-full bg-linear-to-r from-glow-3/60 via-glow-2/85 to-glow\"\n          style={{ x: fillX }}\n        />\n        <div className=\"absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/25 to-transparent\" />\n      </motion.div>\n\n      <motion.div className=\"absolute top-1/2 left-0\" style={{ x: thumbX }}>\n        <AnimatePresence>\n          {(dragging || focusVisible) && (\n            <motion.div\n              aria-hidden\n              className=\"absolute bottom-5 left-0 origin-bottom -translate-x-1/2\"\n              style={{ rotate: reduceMotion ? 0 : tilt }}\n            >\n              <motion.div\n                className=\"mb-1 min-w-9 rounded-lg bg-card px-2 py-1 text-center font-mono text-xs font-medium text-foreground tabular-nums shadow-glass\"\n                initial={{ opacity: 0, y: 6, scale: 0.9 }}\n                animate={{ opacity: 1, y: 0, scale: 1 }}\n                exit={{ opacity: 0, y: 4, scale: 0.95, transition: { duration: 0.12 } }}\n                transition={spring(\"snappy\")}\n              >\n                {label}\n              </motion.div>\n            </motion.div>\n          )}\n        </AnimatePresence>\n\n        <motion.div\n          ref={thumbRef}\n          role=\"slider\"\n          tabIndex={disabled ? -1 : 0}\n          aria-label={ariaLabel}\n          aria-labelledby={ariaLabelledBy}\n          aria-valuemin={min}\n          aria-valuemax={max}\n          aria-valuenow={current}\n          aria-valuetext={typeof label === \"string\" ? label : undefined}\n          aria-disabled={disabled || undefined}\n          className=\"relative -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:cursor-grabbing\"\n          style={{ width: THUMB, height: THUMB }}\n          animate={{ scale: dragging && !reduceMotion ? 1.15 : 1 }}\n          transition={spring(\"snappy\")}\n          onKeyDown={handleKeyDown}\n          onFocus={(event) =>\n            setFocusVisible(event.currentTarget.matches(\":focus-visible\"))\n          }\n          onBlur={() => setFocusVisible(false)}\n        >\n          <motion.span\n            aria-hidden\n            className=\"absolute -inset-1.5 rounded-full bg-glow blur-md\"\n            style={{ opacity: halo }}\n          />\n          <span\n            aria-hidden\n            className=\"absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_28%,oklch(1_0_0),oklch(0.93_0.01_285)_55%,oklch(0.84_0.015_285))] shadow-gloss\"\n          />\n          <span\n            aria-hidden\n            className=\"absolute inset-x-1 top-0.5 h-1/2 rounded-full bg-linear-to-b from-white/90 to-transparent\"\n          />\n        </motion.div>\n      </motion.div>\n    </div>\n  )\n}\n\nexport { GlassSlider, type GlassSliderProps }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/afterglow.ts",
+      "content": "import type { CSSProperties } from \"react\"\nimport type { TargetAndTransition, Transition } from \"motion/react\"\n\n// shared spring presets, every component picks from these\nexport const springs = {\n  snappy: { stiffness: 520, damping: 34, mass: 0.6 },\n  soft: { stiffness: 260, damping: 26, mass: 0.8 },\n  glide: { stiffness: 120, damping: 20, mass: 1 },\n} as const\n\nexport type SpringName = keyof typeof springs\n\nexport function spring(name: SpringName): Transition {\n  return { type: \"spring\", ...springs[name] }\n}\n\n// how a glow fades once its source moves away: slow, with a long tail\nexport const afterglow = {\n  linger: 0.9,\n  ease: [0.22, 1, 0.36, 1],\n} as const satisfies { linger: number; ease: Transition[\"ease\"] }\n\n// paints only the padding ring of an element, used for glowing borders\nexport const ringMask: CSSProperties = {\n  WebkitMask:\n    \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  WebkitMaskComposite: \"xor\",\n  mask: \"linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)\",\n  maskComposite: \"exclude\",\n}\n\n// small icon gestures, played when a control is pressed or selected\nexport const iconGestures = {\n  pop: { scale: [1, 1.2, 1] },\n  ring: { rotate: [0, -18, 14, -9, 4, 0], scale: [1, 1.12, 1] },\n  // a gear looks the same after half a turn, so it can rest there and snap back unseen\n  turn: { rotate: [0, 180], scale: [1, 1.12, 1] },\n  hop: { y: [0, -3, 0], scale: [1, 1.1, 1] },\n  nudge: { x: [0, 2.5, 0], scale: [1, 1.1, 1] },\n} satisfies Record<string, TargetAndTransition>\n\nexport type IconGesture = keyof typeof iconGestures\n\n// leaving a gesture is instant: every gesture already ends at, or looks like, its resting pose\nexport const iconRest: TargetAndTransition = { scale: 1, rotate: 0, x: 0, y: 0, transition: { duration: 0 } }\n",
+      "type": "registry:lib"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "color-glow": "var(--glow)",
+      "color-glow-foreground": "var(--glow-foreground)",
+      "color-glow-2": "var(--glow-2)",
+      "color-glow-3": "var(--glow-3)",
+      "color-glass": "var(--glass)",
+      "color-gloss-highlight": "var(--gloss-highlight)",
+      "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
+      "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
+      "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
+    },
+    "light": {
+      "glow": "oklch(0.7 0.19 45)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.64 0.22 12)",
+      "glow-3": "oklch(0.56 0.21 300)",
+      "glass": "oklch(1 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 95%)",
+      "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
+      "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
+      "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
+      "liquid-tint": "oklch(1 0 0 / 18%)",
+      "liquid-fallback": "oklch(1 0 0 / 55%)",
+      "liquid-rim": "oklch(1 0 0 / 95%)",
+      "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
+      "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
+      "liquid-glow": "oklch(1 0 0 / 55%)",
+      "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
+    },
+    "dark": {
+      "glow": "oklch(0.8 0.16 55)",
+      "glow-foreground": "oklch(0.22 0.05 40)",
+      "glow-2": "oklch(0.7 0.2 15)",
+      "glow-3": "oklch(0.65 0.2 300)",
+      "glass": "oklch(0.19 0 0 / 55%)",
+      "gloss-highlight": "oklch(1 0 0 / 16%)",
+      "gloss-shade": "oklch(0 0 0 / 30%)",
+      "gloss-depth": "oklch(0.04 0 0 / 55%)",
+      "gloss-edge": "oklch(1 0 0 / 8%)",
+      "liquid-tint": "oklch(0.2 0 0 / 22%)",
+      "liquid-fallback": "oklch(0.2 0 0 / 45%)",
+      "liquid-rim": "oklch(1 0 0 / 60%)",
+      "liquid-edge": "oklch(1 0 0 / 10%)",
+      "liquid-shadow": "oklch(0 0 0 / 45%)",
+      "liquid-glow": "oklch(1 0 0 / 24%)",
+      "liquid-shade": "oklch(0 0 0 / 28%)"
+    }
+  },
+  "type": "registry:ui"
+}
