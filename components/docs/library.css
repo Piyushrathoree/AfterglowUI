@@ -1,8 +1,8 @@
-.ag-concept { --ag-line: color-mix(in oklch,var(--foreground) 8%,transparent); --ag-text: color-mix(in oklch,var(--foreground) 66%,transparent); display:grid; grid-template-columns:224px minmax(0,1fr); gap:10px; height:100dvh; padding:8px; background:var(--background); color:var(--foreground); }
+.ag-concept { --ag-line: color-mix(in oklch,var(--foreground) 8%,transparent); --ag-text: color-mix(in oklch,var(--foreground) 66%,transparent); display:grid; grid-template-columns:240px minmax(0,1fr); gap:8px; height:100dvh; padding:4px; background:var(--background); color:var(--foreground); }
 body:has(.ag-concept) { overflow:hidden; }
 .ag-concept :where(button,a,input):focus-visible { outline:2px solid var(--ring); outline-offset:3px; }
 .ag-concept button { cursor:pointer; }
-.ag-sidebar { position:relative; min-height:0; border-radius:20px; background:transparent; }
+.ag-sidebar { position:relative; width:100%; max-width:none; height:100%; min-height:0; border-radius:24px; }
 .ag-sidebar-content { position:relative; display:flex; flex-direction:column; height:100%; min-height:0; padding:20px 16px 16px; }
 .ag-brand { display:flex; align-items:center; gap:10px; margin-bottom:30px; font-size:20px; line-height:28px; font-weight:550; letter-spacing:-.7px; }
 .ag-brand > svg { color:var(--glow); }
@@ -84,13 +84,13 @@ body:has(.ag-concept) { overflow:hidden; }
 .ag-rail-article p { font-size:13px; line-height:1.8; color:var(--ag-text); margin-bottom:14px; }
 .ag-mobile-menu { display:none; }
 @keyframes ag-content-in { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
-@media(min-width:1536px) { .ag-concept { grid-template-columns:240px minmax(0,1fr); } }
-@media(min-width:1800px) { .ag-concept { grid-template-columns:256px minmax(0,1fr); } }
-@media(min-width:2200px) { .ag-concept { grid-template-columns:272px minmax(0,1fr); } }
-@media(max-width:1100px) { .ag-concept { grid-template-columns:192px minmax(0,1fr); padding:8px; gap:8px; } .ag-sidebar-content { padding-inline:14px; } .ag-header { align-items:start; } .ag-header-actions { flex-direction:column-reverse; gap:10px; align-items:end; } }
+@media(min-width:1536px) { .ag-concept { grid-template-columns:256px minmax(0,1fr); } }
+@media(min-width:1800px) { .ag-concept { grid-template-columns:272px minmax(0,1fr); } }
+@media(min-width:2200px) { .ag-concept { grid-template-columns:288px minmax(0,1fr); } }
+@media(max-width:1100px) { .ag-concept { grid-template-columns:224px minmax(0,1fr); padding:4px; gap:8px; } .ag-sidebar-content { padding-inline:14px; } .ag-header { align-items:start; } .ag-header-actions { flex-direction:column-reverse; gap:10px; align-items:end; } }
 @media(max-width:1023px) {
-  .ag-concept { display:flex; flex-direction:column; padding:8px; }
-  .ag-sidebar { position:fixed; z-index:30; inset:12px auto 12px 12px; width:240px; transform:translateX(calc(-100% - 24px)); visibility:hidden; transition:transform 220ms ease,visibility 220ms; background:var(--card); border:1px solid var(--ag-line); }
+  .ag-concept { display:flex; flex-direction:column; padding:4px; }
+  .ag-sidebar { position:fixed; z-index:30; inset:4px auto 4px 4px; width:min(272px,calc(100vw - 32px)); height:auto; transform:translateX(calc(-100% - 24px)); visibility:hidden; transition:transform 220ms ease,visibility 220ms; background:var(--card); border:1px solid var(--ag-line); }
   .ag-sidebar[data-open="true"] { transform:translateX(0); visibility:visible; }
   .ag-mobile-menu { display:grid; place-items:center; position:absolute; top:14px; left:8px; z-index:35; width:30px; height:30px; border-radius:8px; background:color-mix(in oklch,var(--foreground) 5%,var(--background)); }
   .ag-sidebar-content { padding-top:56px; padding-inline:20px; }
@@ -212,3 +212,18 @@ body:has(.ag-concept) { overflow:hidden; }
 }
 
 @container (max-width:360px) { .ag-showcase-sheen [data-slot="sheen-card"] { padding:16px; } .ag-showcase-sheen .font-mono { font-size:clamp(10px,3.6cqw,14px); letter-spacing:.1em; } }
+
+/* The library uses the same contour navigation as the component preview. */
+.ag-docs-brand { display:flex; align-items:center; gap:9px; min-height:32px; padding-inline:8px; font-size:16px; font-weight:550; letter-spacing:-.5px; }
+.ag-docs-brand > svg { color:var(--glow); flex-shrink:0; }
+.ag-docs-brand-note { margin-left:auto; color:var(--ag-text); font-size:10px; font-weight:400; letter-spacing:0; }
+.ag-docs-accent > p { margin:0 0 8px; padding-inline:4px; color:var(--ag-text); font-size:11px; }
+.ag-docs-accent [data-slot="accent-picker"] { padding:2px; background:transparent; box-shadow:none; backdrop-filter:none; }
+.ag-docs-accent [data-slot="accent-picker"] button { width:26px; height:26px; }
+.ag-sidebar [data-slot="liquid-search"] input:focus-visible { outline:none; }
+.ag-showcase.ag-showcase-contour { padding:8px; }
+.ag-nav-backdrop { display:none; }
+@media(max-width:1023px) {
+  .ag-library .ag-sidebar > [data-slot="sidebar-header"] { padding-top:44px; }
+  .ag-nav-backdrop { display:block; position:fixed; inset:0; z-index:29; background:rgb(0 0 0 / 25%); }
+}

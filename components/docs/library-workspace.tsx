@@ -8,7 +8,6 @@ import {
   BookOpen,
   CodeXml,
   Eye,
-  Search,
   PanelLeft,
   X,
   Maximize2,
@@ -16,7 +15,7 @@ import {
 } from "lucide-react"
 import { getShowcase, showcases } from "@/lib/docs/showcases"
 import { componentCatalog } from "@/lib/docs/catalog"
-import { ReadingRail } from "@/components/ui/reading-rail"
+import { GlassSidebar, type GlassSidebarHeading, type GlassSidebarItem } from "@/components/ui/glass-sidebar"
 import { LiquidGlass } from "@/components/ui/liquid-glass"
 import { LiquidSegmented } from "@/components/ui/liquid-segmented"
 import { AccentPicker } from "@/components/ui/accent-picker"
@@ -59,44 +58,47 @@ export function LibraryWorkspace({
     ) ?? []
   const [view, setView] = useState("docs")
   const [expanded, setExpanded] = useState(false)
-  const [query, setQuery] = useState("")
   const [menu, setMenu] = useState(false)
   const sidebar = useRef<HTMLElement>(null)
   const items = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    const scenes = showcases.filter((item) =>
-      `${item.title} ${item.group} ${item.description} ${item.components.join(" ")}`
-        .toLowerCase()
-        .includes(q),
-    )
-    const rows = scenes.map((item, index) => ({
-      id: item.id,
+    const rows: (GlassSidebarHeading | GlassSidebarItem)[] = [
+      { heading: "Getting started" },
+      { id: "introduction", label: "Introduction", href: "/docs" },
+      { id: "installation", label: "Installation", href: "/docs/installation" },
+      { id: "theming", label: "Theming", href: "/docs/theming" },
+    ]
+    const groups = new Map<string, typeof showcases[number][]>()
+    for (const scene of showcases) {
+      const group = groups.get(scene.group) ?? []
+      group.push(scene)
+      groups.set(scene.group, group)
+    }
+    for (const [group, scenes] of groups) {
+      rows.push({ heading: group })
+      rows.push(...scenes.map(scene => ({
+        id: scene.id,
+        label: scene.title,
+        href: `/docs/components/${scene.components[0]}`,
+        keywords: `${scene.group} ${scene.description} ${scene.components.join(" ")}`,
+      })))
+    }
+    const foundations = componentCatalog.filter(item => !getShowcase(item.name))
+    if (foundations.length) rows.push({ heading: "Foundations" })
+    rows.push(...foundations.map(item => ({
+      id: item.name,
       label: item.title,
-      href: `/docs/components/${item.components[0]}`,
-      depth: scenes[index - 1]?.group === item.group ? 1 : 0,
-    }))
-    const foundations = componentCatalog
-      .filter(
-        (item) =>
-          !getShowcase(item.name) &&
-          (!q || `${item.title} ${item.description}`.toLowerCase().includes(q)),
-      )
-      .map((item) => ({
-        id: item.name,
-        label: item.title,
-        href: `/docs/components/${item.name}`,
-        depth: 1,
-      }))
-    return q ? [...rows, ...foundations] : rows
-  }, [query])
+      href: `/docs/components/${item.name}`,
+      keywords: `${item.name} ${item.description}`,
+    })))
+    return rows
+  }, [])
   useEffect(() => {
-    const current = sidebar.current?.querySelector(
-      `a[href="/docs/components/${showcase?.components[0] ?? name}"]`,
-    )
+    const current = sidebar.current?.querySelector('[aria-current="page"]')
     current?.scrollIntoView({ block: "nearest" })
   }, [name, showcase])
   useEffect(() => {
     function key(event: KeyboardEvent) {
+      if (event.defaultPrevented) return
       if (event.key === "Escape") {
         setMenu(false)
         setExpanded(false)
@@ -152,72 +154,25 @@ export function LibraryWorkspace({
         className="ag-mobile-menu"
         aria-label="Toggle component sidebar"
         aria-expanded={menu}
+        aria-controls="docs-navigation"
         onClick={() => setMenu((value) => !value)}
       >
         <PanelLeft size={18} />
       </button>
-      <aside
+      {menu && <button className="ag-nav-backdrop" aria-label="Close component sidebar" onClick={() => setMenu(false)} />}
+      <GlassSidebar
         ref={sidebar}
+        id="docs-navigation"
         className="ag-sidebar"
         data-open={menu}
         aria-label="Library navigation"
-      >
-        <LiquidGlass
-          className="ag-shell-glass absolute inset-0 rounded-[inherit]"
-          refraction={0}
-          frost={16}
-          tint="color-mix(in oklch, var(--card) 65%, transparent)"
-        />
-        <div className="ag-sidebar-content">
-          <Link href="/" prefetch={false} className="ag-brand">
-            <AfterglowMark className="size-6" />
-            <span>afterglow</span>
-          </Link>
-          <label className="ag-search">
-            <Search size={15} />
-            <input
-              aria-label="Find a component"
-              placeholder="Find a component"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </label>
-          <div className="ag-guide-links">
-            {[
-              { href: "/docs", label: "Introduction" },
-              { href: "/docs/installation", label: "Installation" },
-              { href: "/docs/theming", label: "Theming" },
-            ].map((item) => (
-              <Link
-                prefetch={false}
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenu(false)}
-                aria-current={
-                  guide && title === item.label ? "page" : undefined
-                }
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          <div className="ag-nav" onClick={navigate}>
-            {items.length ? (
-              <ReadingRail
-                title="Components"
-                activeId={showcase?.id ?? name}
-                items={items}
-              />
-            ) : (
-              <p className="ag-empty">No matching components.</p>
-            )}
-          </div>
-          <div className="ag-sidebar-bottom">
-            <p>Accent color</p>
-            <AccentPicker />
-          </div>
-        </div>
-      </aside>
+        items={items}
+        value={guide ? name : (showcase?.id ?? name)}
+        searchPlaceholder="Find a component"
+        onClick={navigate}
+        header={<Link href="/" prefetch={false} className="ag-docs-brand"><AfterglowMark className="size-6" /><span>afterglow</span><span className="ag-docs-brand-note">UI</span></Link>}
+        footer={<div className="ag-docs-accent"><p>Accent color</p><AccentPicker /></div>}
+      />
       <main className="ag-main" id="docs-content" tabIndex={-1}>
         <header className="ag-header">
           <div>
