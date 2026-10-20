@@ -30,7 +30,7 @@ import {
 import { FlameField } from "@/components/ui/flame-field"
 import { FlameFooter } from "@/components/ui/flame-footer"
 import { AccentPicker } from "@/components/ui/accent-picker"
-import { DocsDemo } from "@/components/site/nav-demos"
+import { DocsDemo, GlassSidebarDemo } from "@/components/site/nav-demos"
 import { PageRail } from "@/components/site/page-rail"
 import { RailDemo } from "@/components/site/rail-demos"
 import { ThemeToggle } from "@/components/site/theme-toggle"
@@ -125,7 +125,7 @@ export default function Home() {
       <main className="mx-auto max-w-6xl px-6 pb-24">
         <div className="py-16 sm:py-24">
           <p className="mb-5 font-mono text-xs tracking-wide text-muted-foreground uppercase">
-            30 components · 4 auth forms · copy, paste, own the code
+            32 components · 4 auth forms · copy, paste, own the code
           </p>
           <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
             Components that leave a little{" "}
@@ -376,6 +376,14 @@ export default function Home() {
             flush
           >
             <RailDemo />
+          </Preview>
+
+          <Preview
+            name="glass-sidebar"
+            description="A workspace sidebar with a continuous contour that opens around hovered links and flows back to your selection."
+            className="lg:col-span-2"
+          >
+            <GlassSidebarDemo />
           </Preview>
         </Group>
       </main>

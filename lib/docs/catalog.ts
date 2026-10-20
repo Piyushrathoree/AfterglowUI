@@ -92,6 +92,23 @@ export const componentCatalog = [
     ]
   },
   {
+    "name": "glass-sidebar",
+    "title": "Glass Sidebar",
+    "description": "A workspace sidebar with a continuous contour that opens around hovered links and flows back to your selection.",
+    "group": "Navigation",
+    "dependencies": [
+      "motion",
+      "lucide-react"
+    ]
+  },
+  {
+    "name": "liquid-search",
+    "title": "Liquid Search",
+    "description": "A frosted search capsule with a glass icon lens, accent focus, and one-click clearing.",
+    "group": "Forms & controls",
+    "dependencies": ["motion", "lucide-react"]
+  },
+  {
     "name": "magnetic-dock",
     "title": "Magnetic Dock",
     "description": "A frosted dock of glossy app tiles that grow toward your pointer and bounce as they open.",

@@ -1,0 +1,58 @@
+---
+title: "Glass Sidebar"
+description: "A workspace sidebar with a continuous contour that opens around hovered links and flows back to your selection."
+---
+
+A continuous seam opens around the hovered or focused row, then rejoins below it. One damped spring drives the contour and its fill together, so the line can reverse smoothly and return to the selected page. Search filters grouped links. Supports href, controlled selection, custom header and footer, keyboard navigation, and reduced motion.
+
+## Installation
+
+<InstallCommand name="glass-sidebar" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { LayoutDashboard, FolderOpen, Inbox, Settings } from "lucide-react"
+import { GlassSidebar } from "@/components/ui/glass-sidebar"
+
+export default function Navigation() {
+  const [value, setValue] = useState("projects")
+  return <GlassSidebar
+    className="h-[620px]"
+    value={value}
+    onValueChange={setValue}
+    items={[
+      { heading: "Workspace" },
+      { id: "overview", label: "Overview", icon: <LayoutDashboard /> },
+      { id: "projects", label: "Projects", icon: <FolderOpen />, badge: "3" },
+      { id: "inbox", label: "Inbox", icon: <Inbox />, badge: "2" },
+      { heading: "Manage" },
+      { id: "settings", label: "Settings", icon: <Settings /> },
+    ]}
+  />
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` | `(GlassSidebarItem \| GlassSidebarHeading)[]` | The items option. |
+| `value?` | `string` | The value option. |
+| `defaultValue?` | `string` | The default value option. |
+| `onValueChange?` | `(id: string) => void` | The on value change option. |
+| `header?` | `React.ReactNode` | Replaces the brand row above search. |
+| `footer?` | `React.ReactNode` | Account details or other content anchored below navigation. |
+| `searchable?` | `boolean` | Shows a local filter for the navigation rows. |
+| `searchPlaceholder?` | `string` | The search placeholder option. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`, `lucide-react`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.

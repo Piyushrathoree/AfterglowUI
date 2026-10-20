@@ -1,0 +1,41 @@
+---
+title: "Liquid Search"
+description: "A frosted search capsule with a glass icon lens, accent focus, and one-click clearing."
+---
+
+A reusable liquid search input with a frosted capsule and a glass lens around the search icon. Focus uses your accent color. The clear button and Escape reset the query and keep focus in the field. Supports controlled or uncontrolled values, disabled and read-only states, native input attributes, and an input ref. Uses flat frosting to avoid expensive refraction maps while typing.
+
+## Installation
+
+<InstallCommand name="liquid-search" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { useState } from "react"
+import { LiquidSearch } from "@/components/ui/liquid-search"
+
+export default function SearchExample() {
+  const [query, setQuery] = useState("")
+  return <LiquidSearch value={query} onValueChange={setQuery} placeholder="Find something good" className="max-w-sm" />
+}
+```
+
+## API
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value?` | `string` | The value option. |
+| `defaultValue?` | `string` | The default value option. |
+| `onValueChange?` | `(value: string) => void` | The on value change option. |
+| `inputClassName?` | `string` | Styles the input text separately from the glass capsule. |
+
+Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
+
+## Dependencies
+
+`motion`
+
+Shared local files are included in the Code panel. See [project setup](/docs/installation) for Tailwind, path aliases, and theme tokens.

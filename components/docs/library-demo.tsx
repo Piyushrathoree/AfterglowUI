@@ -5,6 +5,7 @@ import { getShowcase } from "@/lib/docs/showcases"
 import type { ComponentName } from "@/lib/docs/catalog"
 
 const scenes = {
+  "glass-sidebar": dynamic(() => import("./showcases/glass-sidebar")),
   controls: dynamic(() => import("./showcases/controls"), {
     loading: () => (
       <p role="status" className="ag-demo-loading">

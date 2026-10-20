@@ -3,6 +3,12 @@
 import * as React from "react"
 import {
   Accessibility,
+  Activity,
+  FolderOpen,
+  Inbox,
+  LayoutDashboard,
+  Settings,
+  Users,
   BookOpen,
   ChevronsUpDown,
   Download,
@@ -14,6 +20,7 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { AfterglowMark } from "@/components/ui/auth-parts"
+import { GlassSidebar, type GlassSidebarHeading, type GlassSidebarItem } from "@/components/ui/glass-sidebar"
 import { RailNav, type RailNavHeading, type RailNavItem } from "@/components/ui/rail-nav"
 import { ReadingRail } from "@/components/ui/reading-rail"
 
@@ -240,4 +247,44 @@ export function DocsDemo() {
     </div>
     </div>
   )
+}
+
+const sidebarPages: (GlassSidebarItem | GlassSidebarHeading)[] = [
+  { heading: "Workspace" },
+  { id: "overview", label: "Overview", icon: <LayoutDashboard /> },
+  { id: "projects", label: "Projects", icon: <FolderOpen />, badge: "3" },
+  { id: "inbox", label: "Inbox", icon: <Inbox />, badge: "2" },
+  { id: "activity", label: "Activity", icon: <Activity /> },
+  { heading: "Manage" },
+  { id: "members", label: "Members", icon: <Users /> },
+  { id: "settings", label: "Settings", icon: <Settings /> },
+]
+
+const workspaceViews: Record<string, { description: string; rows: [string, string][] }> = {
+  overview: { description: "A little space to see the bigger picture.", rows: [["3 active projects", "Your team's work, in one place"], ["2 updates", "Waiting in your inbox"]] },
+  projects: { description: "Good work starts with a little clarity.", rows: [["Website refresh", "Design · In progress"], ["Component library", "Development · In progress"], ["Brand exploration", "Research · Planning"]] },
+  inbox: { description: "The conversations that need your attention.", rows: [["Aria left a comment", "Component library · 12 minutes ago"], ["Devon shared an update", "Website refresh · 1 hour ago"]] },
+  activity: { description: "A quiet record of what is moving forward.", rows: [["Navigation updated", "Mira · Today"], ["New palette shared", "Aria · Yesterday"]] },
+  members: { description: "The people making it happen.", rows: [["Mira Okafor", "Workspace owner"], ["Aria Taylor", "Designer"], ["Devon Kim", "Engineer"]] },
+  settings: { description: "Make room for the way you work.", rows: [["Afterglow Studio", "Workspace name"], ["Personal workspace", "Workspace type"]] },
+}
+
+export function GlassSidebarDemo() {
+  const [value, setValue] = React.useState("projects")
+  const selected = sidebarPages.find(entry => "id" in entry && entry.id === value)
+  const title = selected && "label" in selected ? selected.label : "Projects"
+  const page = workspaceViews[value] ?? workspaceViews.projects
+  return <div className="@container w-full min-w-0">
+    <div className="grid min-w-0 grid-cols-1 items-center gap-8 @min-[640px]:grid-cols-[264px_minmax(0,1fr)]">
+      <GlassSidebar searchPlaceholder="Find a page" className="mx-auto min-h-0 h-[620px]" items={sidebarPages} value={value} onValueChange={setValue} />
+      <div className="hidden min-w-0 self-center py-6 pr-2 @min-[640px]:block">
+        <p className="flex items-center gap-2 text-[11px] text-muted-foreground"><FolderOpen size={12} /> Workspace <span className="text-foreground/20">/</span> {title}</p>
+        <h4 className="mt-5 text-[28px] font-semibold tracking-tight">{title}</h4>
+        <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{page.description}</p>
+        <div className="mt-7 divide-y divide-foreground/[0.06] border-y border-foreground/[0.06]">
+          {page.rows.map(([name, detail], index) => <div key={name} className="flex items-center gap-3 py-4"><span className="grid size-8 shrink-0 place-items-center rounded-[10px] border border-foreground/[0.08] bg-foreground/[0.025] text-glow"><FolderOpen size={14} /></span><div className="min-w-0"><p className="truncate text-xs font-medium">{name}</p><p className="mt-1 text-[11px] text-muted-foreground">{detail}</p></div>{value === "projects" && <span className="ml-auto size-1.5 shrink-0 rounded-full bg-glow" style={{ opacity: index === 2 ? 0.35 : 0.8 }} />}</div>)}
+        </div>
+      </div>
+    </div>
+  </div>
 }

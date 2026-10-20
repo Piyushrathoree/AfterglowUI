@@ -233,6 +233,7 @@ export const showcases: readonly Showcase[] = [
       "A complete sign-in block with validation and submission states.",
     demo: "auth-steps",
   },
+  { id: "glass-sidebar", title: "Contour sidebar", group: "Navigation", components: ["glass-sidebar", "liquid-search"], description: "A continuous seam opens around each page as you move through the workspace.", demo: "glass-sidebar" },
 ]
 
 export function getShowcase(name: string) {
