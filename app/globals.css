@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tailwindcss-concentric";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
