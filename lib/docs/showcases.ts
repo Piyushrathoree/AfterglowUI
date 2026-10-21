@@ -7,6 +7,8 @@ export type Showcase = {
   components: readonly ComponentName[]
   description: string
   demo: string
+  /** words people search for, used by the sidebar search and page metadata */
+  keywords: readonly string[]
 }
 
 export const showcases: readonly Showcase[] = [
@@ -18,6 +20,7 @@ export const showcases: readonly Showcase[] = [
     description:
       "Glass buttons and a control center with switches and sliders.",
     demo: "controls",
+    keywords: ["button", "switch", "toggle", "slider", "liquid glass", "glassmorphism"],
   },
   {
     id: "liquid-desktop",
@@ -32,6 +35,7 @@ export const showcases: readonly Showcase[] = [
     description:
       "A complete glass desktop with toolbars, menus, and live widgets.",
     demo: "desktop",
+    keywords: ["liquid glass", "glassmorphism", "frosted glass", "window", "desktop", "macOS", "menu bar"],
   },
   {
     id: "liquid-tabs",
@@ -40,14 +44,7 @@ export const showcases: readonly Showcase[] = [
     components: ["liquid-tabs"],
     description: "A music feed with a glass tab bar.",
     demo: "phone",
-  },
-  {
-    id: "liquid-glass",
-    title: "Glass lens",
-    group: "Liquid glass",
-    components: ["liquid-glass"],
-    description: "Drag the lens across its backdrop to explore the material.",
-    demo: "lens",
+    keywords: ["tabs", "tab bar", "segmented control", "liquid glass"],
   },
   {
     id: "metal-controls",
@@ -57,6 +54,7 @@ export const showcases: readonly Showcase[] = [
     description:
       "Polished lettering, brushed silver, and chrome-edged buttons.",
     demo: "metal-hero",
+    keywords: ["button", "text effect", "metallic", "chrome", "shiny text", "WebGL"],
   },
   {
     id: "metal-card",
@@ -65,6 +63,7 @@ export const showcases: readonly Showcase[] = [
     components: ["metal-card"],
     description: "A pricing card framed in a moving chrome edge.",
     demo: "metal-card",
+    keywords: ["card", "metallic card", "credit card", "membership card", "chrome"],
   },
   {
     id: "liquid-metal",
@@ -73,6 +72,7 @@ export const showcases: readonly Showcase[] = [
     components: ["liquid-metal"],
     description: "A titanium pass drawn with the shared metal shader.",
     demo: "metal-pass",
+    keywords: ["background", "shader", "WebGL", "metallic", "chrome", "animated background"],
   },
   {
     id: "gloss-button",
@@ -81,14 +81,7 @@ export const showcases: readonly Showcase[] = [
     components: ["gloss-button"],
     description: "Gloss and frosted buttons, in their full range of sizes.",
     demo: "gloss",
-  },
-  {
-    id: "sheen-card",
-    title: "Sheen card",
-    group: "Gloss",
-    components: ["sheen-card"],
-    description: "A membership pass that responds to light and movement.",
-    demo: "sheen",
+    keywords: ["button", "glossy button", "3D button", "skeuomorphic", "primary button"],
   },
   {
     id: "fan-cards",
@@ -98,6 +91,7 @@ export const showcases: readonly Showcase[] = [
     description:
       "Team profiles that lift into focus and adapt to the available space.",
     demo: "fan",
+    keywords: ["cards", "card stack", "team", "profile cards", "carousel"],
   },
   {
     id: "glass-switch",
@@ -106,6 +100,7 @@ export const showcases: readonly Showcase[] = [
     components: ["glass-switch"],
     description: "A settings panel with soft, draggable toggles.",
     demo: "switches",
+    keywords: ["switch", "toggle", "checkbox", "settings"],
   },
   {
     id: "glass-slider",
@@ -114,6 +109,7 @@ export const showcases: readonly Showcase[] = [
     components: ["glass-slider"],
     description: "Adjust glow intensity and color temperature.",
     demo: "sliders",
+    keywords: ["slider", "range input", "volume", "progress"],
   },
   {
     id: "glass-toaster",
@@ -122,6 +118,7 @@ export const showcases: readonly Showcase[] = [
     components: ["glass-toaster"],
     description: "Notifications that stack, fan out, and support actions.",
     demo: "toasts",
+    keywords: ["toast", "notification", "snackbar", "alert"],
   },
   {
     id: "deploy-card",
@@ -130,6 +127,7 @@ export const showcases: readonly Showcase[] = [
     components: ["border-beam"],
     description: "Follow a deployment from queued to ready.",
     demo: "deploy",
+    keywords: ["border beam", "animated border", "glowing border", "loading", "status card"],
   },
   {
     id: "copy-button",
@@ -138,6 +136,7 @@ export const showcases: readonly Showcase[] = [
     components: ["copy-button"],
     description: "A command and a secret key, with copy and reveal feedback.",
     demo: "copy",
+    keywords: ["copy button", "clipboard", "copy to clipboard", "code block"],
   },
   {
     id: "trail-tabs",
@@ -146,6 +145,7 @@ export const showcases: readonly Showcase[] = [
     components: ["trail-tabs"],
     description: "A complete settings panel with animated tabs.",
     demo: "tabs",
+    keywords: ["tabs", "animated tabs", "navigation"],
   },
   {
     id: "accent-picker",
@@ -154,6 +154,7 @@ export const showcases: readonly Showcase[] = [
     components: ["accent-picker"],
     description: "See the shared accent update a set of controls.",
     demo: "accent",
+    keywords: ["color picker", "theme picker", "accent color", "swatches", "theme switcher", "dark mode"],
   },
   {
     id: "flame-field",
@@ -162,6 +163,7 @@ export const showcases: readonly Showcase[] = [
     components: ["flame-field"],
     description: "Slow waves of accent color follow the current theme.",
     demo: "flame",
+    keywords: ["fire", "flame", "shader", "WebGL", "animated background", "footer"],
   },
   {
     id: "magnetic-dock",
@@ -170,15 +172,25 @@ export const showcases: readonly Showcase[] = [
     components: ["magnetic-dock"],
     description: "App tiles respond to your pointer and bounce when opened.",
     demo: "dock",
+    keywords: ["dock", "macOS dock", "app bar", "toolbar", "magnification"],
   },
   {
-    id: "navigation-rails",
-    title: "Navigation rails",
+    id: "rail-nav",
+    title: "Side navigation",
     group: "Navigation",
-    components: ["rail-nav", "reading-rail"],
-    description:
-      "A working documentation view with navigation and a reading rail.",
-    demo: "navigation",
+    components: ["rail-nav"],
+    description: "A sidebar on a dashed rail that hooks into the page you are on.",
+    demo: "rail-nav",
+    keywords: ["sidebar", "side navigation", "nav menu", "vertical navigation", "docs sidebar"],
+  },
+  {
+    id: "reading-rail",
+    title: "Table of contents",
+    group: "Navigation",
+    components: ["reading-rail"],
+    description: "Page contents on a rail that fills in as you read.",
+    demo: "reading-rail",
+    keywords: ["table of contents", "toc", "on this page", "scroll spy", "reading progress"],
   },
   {
     id: "scroll-rail",
@@ -187,15 +199,7 @@ export const showcases: readonly Showcase[] = [
     components: ["scroll-rail"],
     description: "A working conversation with a rail for every message.",
     demo: "chat",
-  },
-  {
-    id: "flame-footer",
-    title: "Flame footer",
-    group: "Page sections",
-    components: ["flame-footer"],
-    description:
-      "The complete footer with navigation, headline, and slow fire.",
-    demo: "footer",
+    keywords: ["chat", "AI chat", "scroll progress", "minimap", "message list"],
   },
   {
     id: "auth-silk",
@@ -205,6 +209,7 @@ export const showcases: readonly Showcase[] = [
     description:
       "A complete sign-in block with validation and submission states.",
     demo: "auth-silk",
+    keywords: ["login", "sign in", "sign up", "authentication", "auth form"],
   },
   {
     id: "auth-glass",
@@ -214,6 +219,7 @@ export const showcases: readonly Showcase[] = [
     description:
       "A complete sign-in block with validation and submission states.",
     demo: "auth-glass",
+    keywords: ["login", "sign in", "sign up", "authentication", "glass form"],
   },
   {
     id: "auth-split",
@@ -223,6 +229,7 @@ export const showcases: readonly Showcase[] = [
     description:
       "A complete sign-in block with validation and submission states.",
     demo: "auth-split",
+    keywords: ["login", "sign in", "sign up", "authentication", "split screen"],
   },
   {
     id: "auth-steps",
@@ -232,12 +239,21 @@ export const showcases: readonly Showcase[] = [
     description:
       "A complete sign-in block with validation and submission states.",
     demo: "auth-steps",
+    keywords: ["login", "sign in", "multi-step form", "one-time code", "authentication"],
   },
-  { id: "glass-sidebar", title: "Contour sidebar", group: "Navigation", components: ["glass-sidebar", "liquid-search"], description: "A continuous seam opens around each page as you move through the workspace.", demo: "glass-sidebar" },
+  { id: "glass-sidebar", title: "Contour sidebar", group: "Navigation", components: ["glass-sidebar", "liquid-search"], description: "A continuous seam opens around each page as you move through the workspace.", demo: "glass-sidebar", keywords: ["sidebar", "navigation", "menu", "search", "app sidebar", "dashboard"] },
 ]
 
 export function getShowcase(name: string) {
   return showcases.find((item) =>
     item.components.some((component) => component === name),
   )
+}
+
+/** Building blocks shown on their own, outside a showcase scene. */
+export const foundationDemos: readonly ComponentName[] = ["afterglow-theme"]
+
+/** Components without a scene or a foundation demo read as plain guides. */
+export function hasDemo(name: string) {
+  return Boolean(getShowcase(name)) || foundationDemos.includes(name as ComponentName)
 }
