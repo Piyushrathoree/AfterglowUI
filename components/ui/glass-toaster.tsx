@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { X } from "lucide-react"
+import { AnimateIcon } from "@/components/animate-ui/icons/icon"
+import { X } from "@/components/animate-ui/icons/x"
 import {
   AnimatePresence,
   animate,
@@ -302,14 +303,16 @@ function ToastCard({
               </button>
             )}
           </div>
+          <AnimateIcon animateOnHover asChild>
           <button
             type="button"
             aria-label="Dismiss notification"
             className="absolute top-3 right-3 grid size-6 place-items-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
             onClick={() => toast.dismiss(item.id)}
           >
-            <X className="size-3.5" />
+            <X aria-hidden className="size-3.5" />
           </button>
+          </AnimateIcon>
         </motion.div>
         {Number.isFinite(duration) && (
           <motion.span
