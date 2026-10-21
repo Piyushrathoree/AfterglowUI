@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useSyncExternalStore } from "react"
-import { Terminal } from "lucide-react"
+import { Terminal } from "@/components/animate-ui/icons/terminal"
 import { CopyButton } from "./copy-button"
 
 const subscribe = () => () => {}
@@ -24,8 +24,9 @@ export function InstallCommand({ name }: { name: string }) {
         <select id={`manager-${name}`} value={manager} onChange={(event) => setManager(event.target.value as keyof typeof runners)}>
           {Object.keys(runners).map((item) => <option key={item}>{item}</option>)}
         </select>
+        <CopyButton text={command} label="Copy install command" />
       </div>
-      <div className="docs-command-body"><pre><code>{command}</code></pre><CopyButton text={command} label="Copy install command" /></div>
+      <div className="docs-command-body"><pre><code>{command}</code></pre></div>
     </div>
   )
 }
