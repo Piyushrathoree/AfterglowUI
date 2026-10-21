@@ -1,7 +1,23 @@
 "use client"
 
-import { Check, Copy } from "lucide-react"
+import { Check } from "@/components/animate-ui/icons/check"
+import { Copy } from "@/components/animate-ui/icons/copy"
 import { useEffect, useRef, useState } from "react"
+
+// navigator.clipboard only exists on https or localhost, so a phone on the LAN falls back to a hidden textarea
+async function writeClipboard(text: string) {
+  if (window.isSecureContext && navigator.clipboard) return navigator.clipboard.writeText(text)
+  const area = document.createElement("textarea")
+  area.value = text
+  area.readOnly = true
+  area.style.cssText = "position:fixed;top:0;left:0;opacity:0;font-size:16px"
+  document.body.append(area)
+  area.select()
+  area.setSelectionRange(0, text.length)
+  const ok = document.execCommand("copy")
+  area.remove()
+  if (!ok) throw new Error("Copy failed")
+}
 
 export function CopyButton({ text, label = "Copy code" }: { text: string; label?: string }) {
   const [status, setStatus] = useState<"idle" | "copied" | "error">("idle")
@@ -10,7 +26,7 @@ export function CopyButton({ text, label = "Copy code" }: { text: string; label?
   async function copy() {
     clearTimeout(timer.current)
     try {
-      await navigator.clipboard.writeText(text)
+      await writeClipboard(text)
       setStatus("copied")
     } catch {
       setStatus("error")
