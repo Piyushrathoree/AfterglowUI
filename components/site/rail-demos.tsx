@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { ArrowUp, ChevronDown } from "lucide-react"
+import { ArrowUp } from "@/components/animate-ui/icons/arrow-up"
+import { ChevronDown } from "@/components/animate-ui/icons/chevron-down"
 import { motion, useReducedMotion } from "motion/react"
 
 import { AfterglowMark } from "@/components/ui/auth-parts"

@@ -1,22 +1,18 @@
 "use client"
 
 import * as React from "react"
-import {
-  Accessibility,
-  Activity,
-  FolderOpen,
-  Inbox,
-  LayoutDashboard,
-  Settings,
-  Users,
-  BookOpen,
-  ChevronsUpDown,
-  Download,
-  Palette,
-  PanelTop,
-  Search,
-  MousePointerClick,
-} from "lucide-react"
+import { Inbox, ChevronsUpDown, MousePointerClick } from "lucide-react"
+import { Accessibility } from "@/components/animate-ui/icons/accessibility"
+import { Activity } from "@/components/animate-ui/icons/activity"
+import { FolderOpen } from "@/components/animate-ui/icons/folder-open"
+import { LayoutDashboard } from "@/components/animate-ui/icons/layout-dashboard"
+import { Settings } from "@/components/animate-ui/icons/settings"
+import { Users } from "@/components/animate-ui/icons/users"
+import { BookOpen } from "@/components/animate-ui/icons/book-open"
+import { Download } from "@/components/animate-ui/icons/download"
+import { Palette } from "@/components/animate-ui/icons/palette"
+import { PanelTop } from "@/components/animate-ui/icons/panel-top"
+import { Search } from "@/components/animate-ui/icons/search"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { AfterglowMark } from "@/components/ui/auth-parts"
@@ -119,17 +115,9 @@ const nav: (RailNavItem | RailNavHeading)[] = [
   { id: "a11y", label: "Accessibility", icon: <Accessibility /> },
 ]
 
-// a whole docs page: the sidebar picks the page, the article scrolls, and the contents list on the
-// right fills as you read it
-export function DocsDemo() {
-  const reduceMotion = useReducedMotion()
-  const [page, setPage] = React.useState("intro")
-  const [query, setQuery] = React.useState("")
-  const [scroller, setScroller] = React.useState<HTMLDivElement | null>(null)
-  const current = pages[page]
-
-  // the search box narrows the sidebar, and a group disappears when none of its rows match
-  const visible = React.useMemo(() => {
+// the search box narrows the sidebar, and a group disappears when none of its rows match
+function useFilteredNav(query: string) {
+  return React.useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!q) return nav
     const out: (RailNavItem | RailNavHeading)[] = []
@@ -144,6 +132,18 @@ export function DocsDemo() {
     })
     return out
   }, [query])
+}
+
+// a whole docs page: the sidebar picks the page, the article scrolls, and the contents list on the
+// right fills as you read it
+export function DocsDemo() {
+  const reduceMotion = useReducedMotion()
+  const [page, setPage] = React.useState("intro")
+  const [query, setQuery] = React.useState("")
+  const [scroller, setScroller] = React.useState<HTMLDivElement | null>(null)
+  const current = pages[page]
+
+  const visible = useFilteredNav(query)
 
   const contents = React.useMemo(
     () => current.sections.map((section) => ({ id: `docs-${page}-${section.id}`, label: section.title, depth: section.depth })),
@@ -175,7 +175,7 @@ export function DocsDemo() {
             aria-label="Search docs"
             className="min-w-0 flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-foreground/45"
           />
-          <kbd className="rounded-md border border-foreground/10 px-1.5 text-[11px] text-foreground/45">⌘K</kbd>
+          <kbd className="rounded-concentric border border-foreground/10 px-1.5 text-[11px] text-foreground/45">⌘K</kbd>
         </label>
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <RailNav items={visible} value={page} onValueChange={setPage} aria-label="Docs" />
@@ -206,36 +206,7 @@ export function DocsDemo() {
             exit={{ opacity: 0, transition: { duration: 0.1 } }}
             transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
           >
-            <p className="text-[13px] text-foreground/45">Docs <span className="mx-1 text-foreground/25">/</span> {current.group}</p>
-            <h4 className="mt-2 text-[34px] leading-[1.1] font-semibold tracking-[-0.03em] text-balance">{current.title}</h4>
-            <p className="mt-4 text-[17px] leading-relaxed text-foreground/60 text-pretty">{current.lead}</p>
-            <div className="mt-10 flex flex-col gap-10">
-              {current.sections.map((section) => {
-                const id = `docs-${page}-${section.id}`
-                const Heading = section.depth === 0 ? "h5" : "h6"
-                return (
-                  <section key={id}>
-                    <Heading id={id} className={section.depth === 0 ? "text-xl font-semibold tracking-tight" : "text-base font-semibold tracking-tight text-foreground/90"}>
-                      {section.title}
-                    </Heading>
-                    <div className="mt-3 flex flex-col gap-4">
-                      {section.blocks.map((block, index) =>
-                        block.kind === "p" ? (
-                          <p key={index} className="text-[15px] leading-relaxed text-foreground/65 text-pretty">{block.text}</p>
-                        ) : block.kind === "code" ? (
-                          <pre key={index} className="overflow-x-auto rounded-[14px] border border-foreground/[0.08] bg-foreground/[0.04] px-4 py-3 font-mono text-[13px] text-foreground/85">{block.text}</pre>
-                        ) : (
-                          <p key={index} className="rounded-[14px] border border-glow/25 bg-glow/[0.06] px-4 py-3 text-[14px] leading-relaxed text-foreground/75">
-                            <span className="mr-2 font-medium text-glow">Tip</span>
-                            {block.text}
-                          </p>
-                        )
-                      )}
-                    </div>
-                  </section>
-                )
-              })}
-            </div>
+            <PageArticle page={page} />
             <div className="h-96" aria-hidden />
           </motion.article>
         </AnimatePresence>
@@ -245,6 +216,142 @@ export function DocsDemo() {
         <ReadingRail items={contents} container={scroller} offset={32} />
       </div>
     </div>
+    </div>
+  )
+}
+
+// one page of the demo docs: breadcrumb, title, lead, then its sections with ids the rail can follow
+function PageArticle({ page }: { page: string }) {
+  const current = pages[page]
+  return (
+    <>
+      <p className="text-[13px] text-foreground/45">Docs <span className="mx-1 text-foreground/25">/</span> {current.group}</p>
+      <h4 className="mt-2 text-[34px] leading-[1.1] font-semibold tracking-[-0.03em] text-balance">{current.title}</h4>
+      <p className="mt-4 text-[17px] leading-relaxed text-foreground/60 text-pretty">{current.lead}</p>
+      <div className="mt-10 flex flex-col gap-10">
+        {current.sections.map((section) => {
+          const id = `docs-${page}-${section.id}`
+          const Heading = section.depth === 0 ? "h5" : "h6"
+          return (
+            <section key={id}>
+              <Heading id={id} className={section.depth === 0 ? "text-xl font-semibold tracking-tight" : "text-base font-semibold tracking-tight text-foreground/90"}>
+                {section.title}
+              </Heading>
+              <div className="mt-3 flex flex-col gap-4">
+                {section.blocks.map((block, index) =>
+                  block.kind === "p" ? (
+                    <p key={index} className="text-[15px] leading-relaxed text-foreground/65 text-pretty">{block.text}</p>
+                  ) : block.kind === "code" ? (
+                    <pre key={index} className="overflow-x-auto rounded-[14px] border border-foreground/[0.08] bg-foreground/[0.04] px-4 py-3 font-mono text-[13px] text-foreground/85">{block.text}</pre>
+                  ) : (
+                    <p key={index} className="rounded-[14px] border border-glow/25 bg-glow/[0.06] px-4 py-3 text-[14px] leading-relaxed text-foreground/75">
+                      <span className="mr-2 font-medium text-glow">Tip</span>
+                      {block.text}
+                    </p>
+                  )
+                )}
+              </div>
+            </section>
+          )
+        })}
+      </div>
+    </>
+  )
+}
+
+const panel = "rounded-[24px] border border-foreground/[0.09] bg-card/95 shadow-[inset_0_1px_0_var(--gloss-highlight),0_16px_40px_-24px_var(--gloss-depth)]"
+
+// the rail nav on its own panel: pick a page and the preview beside it follows
+export function RailNavDemo() {
+  const reduceMotion = useReducedMotion()
+  const [page, setPage] = React.useState("intro")
+  const [query, setQuery] = React.useState("")
+  const visible = useFilteredNav(query)
+  const current = pages[page]
+  return (
+    <div className="@container w-full min-w-0">
+      <div className="grid min-w-0 grid-cols-1 items-center gap-10 @min-[600px]:grid-cols-[248px_minmax(0,1fr)]">
+        <aside data-rail-demo className={`mx-auto flex h-[620px] w-full max-w-[248px] min-h-0 flex-col overflow-hidden ${panel}`}>
+          <div className="flex items-center gap-2.5 px-5 pt-5">
+            <span className="grid size-8 place-items-center rounded-[10px] bg-foreground/[0.09] shadow-[inset_0_1px_0_oklch(1_0_0/10%)] [&_svg]:size-[18px]">
+              <AfterglowMark />
+            </span>
+            <p className="text-sm font-semibold tracking-tight">Afterglow</p>
+            <span className="ml-auto rounded-full border border-foreground/10 px-2 py-px text-[11px] text-foreground/55">v1.0</span>
+          </div>
+          <label className="mx-4 mt-5 flex h-9 items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 text-foreground/50 transition-[border-color,box-shadow] duration-150 focus-within:border-glow/60 focus-within:ring-2 focus-within:ring-glow/20">
+            <Search className="size-3.5 shrink-0" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search"
+              aria-label="Search pages"
+              className="min-w-0 flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-foreground/45"
+            />
+          </label>
+          <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <RailNav items={visible} value={page} onValueChange={setPage} aria-label="Docs" />
+            {visible.length === 0 && <p className="pl-8 text-[13px] text-foreground/45">Nothing matches.</p>}
+          </div>
+          {/* 8px in from a 24px panel, so its corners are 16px */}
+          <div className="m-2 flex items-center gap-3 rounded-[16px] border border-foreground/[0.08] bg-foreground/[0.04] p-2.5">
+            <span className="grid size-9 place-items-center rounded-full bg-linear-to-br from-glow to-glow-2 text-sm font-semibold text-glow-foreground">M</span>
+            <div className="min-w-0 flex-1 leading-tight">
+              <p className="truncate text-[13px] font-medium">Mira Okafor</p>
+              <p className="truncate text-xs text-foreground/50">Pro plan</p>
+            </div>
+            <ChevronsUpDown className="size-4 text-foreground/40" />
+          </div>
+        </aside>
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+            key={page}
+            className="hidden min-w-0 pr-2 @min-[600px]:block"
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+            transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+          >
+            <p className="text-[12px] text-foreground/45">Docs <span className="mx-1 text-foreground/25">/</span> {current.group}</p>
+            <h4 className="mt-3 text-[28px] leading-[1.15] font-semibold tracking-[-0.02em] text-balance">{current.title}</h4>
+            <p className="mt-3 text-[14px] leading-relaxed text-foreground/60 text-pretty">{current.lead}</p>
+            <ul className="mt-7 divide-y divide-foreground/[0.06] border-y border-foreground/[0.06]">
+              {current.sections.filter((section) => section.depth === 0).slice(0, 4).map((section) => (
+                <li key={section.id} className="py-3.5">
+                  <p className="text-[13px] font-medium">{section.title}</p>
+                  <p className="mt-1 line-clamp-1 text-[12px] text-foreground/50">{section.blocks[0].text}</p>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+}
+
+// the reading rail beside a scrolling article: the path fills and the current heading lights up as you read
+export function ReadingRailDemo() {
+  const [scroller, setScroller] = React.useState<HTMLDivElement | null>(null)
+  const contents = React.useMemo(
+    () => pages.intro.sections.map((section) => ({ id: `docs-intro-${section.id}`, label: section.title, depth: section.depth })),
+    []
+  )
+  return (
+    <div className="@container w-full min-w-0">
+      <div data-rail-demo className="grid h-[620px] min-w-0 grid-cols-1 @min-[440px]:grid-cols-[minmax(0,1fr)_150px] @min-[720px]:grid-cols-[minmax(0,1fr)_184px]">
+        <div ref={setScroller} className="min-h-0 min-w-0 overflow-y-auto px-5 pt-8 @min-[720px]:px-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {/* too narrow for a side column: the rail sits above the article instead */}
+          <div className="mb-8 rounded-[16px] border border-foreground/[0.08] p-4 @min-[440px]:hidden"><ReadingRail items={contents} container={scroller} offset={24} /></div>
+          <article className="mx-auto max-w-xl">
+            <PageArticle page="intro" />
+            <div className="h-80" aria-hidden />
+          </article>
+        </div>
+        <div className="hidden min-h-0 overflow-y-auto border-l border-foreground/[0.08] px-4 pt-8 @min-[440px]:block @min-[720px]:px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <ReadingRail items={contents} container={scroller} offset={32} />
+        </div>
+      </div>
     </div>
   )
 }
