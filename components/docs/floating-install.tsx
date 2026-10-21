@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { X } from "lucide-react"
+import { X } from "@/components/animate-ui/icons/x"
 import { CopyButton } from "./copy-button"
 import { useInstallCommand, runners } from "./install-command"
 

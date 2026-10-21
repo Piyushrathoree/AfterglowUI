@@ -2,7 +2,12 @@
 
 import dynamic from "next/dynamic"
 import { AnimatePresence, motion, useDragControls, useReducedMotion } from "motion/react"
-import { CodeXml, Maximize, Minimize, Palette, RotateCcw, X } from "lucide-react"
+import { CodeXml } from "lucide-react"
+import { Maximize } from "@/components/animate-ui/icons/maximize"
+import { Minimize } from "@/components/animate-ui/icons/minimize"
+import { Palette } from "@/components/animate-ui/icons/palette"
+import { RotateCcw } from "@/components/animate-ui/icons/rotate-ccw"
+import { X } from "@/components/animate-ui/icons/x"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { AccentPicker } from "@/components/ui/accent-picker"
 import { ThemeToggle } from "@/components/site/theme-toggle"

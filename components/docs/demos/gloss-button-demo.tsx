@@ -1,4 +1,5 @@
-import { ArrowUpRight, Plus } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
+import { Plus } from "@/components/animate-ui/icons/plus"
 import { GlossButton } from "@/components/ui/gloss-button"
 
 export function GlossButtonDemo() {

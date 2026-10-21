@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { PanelLeft, PanelLeftClose, X } from "lucide-react"
+import { PanelLeft } from "@/components/animate-ui/icons/panel-left"
+import { PanelLeftClose } from "@/components/animate-ui/icons/panel-left-close"
+import { X } from "@/components/animate-ui/icons/x"
 import { useRef, useState, type ReactNode } from "react"
 import type { DocsGroup } from "@/lib/docs/navigation"
 import { DocsNavigation } from "./navigation"

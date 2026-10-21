@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, Search, X } from "lucide-react"
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right"
+import { Search } from "@/components/animate-ui/icons/search"
+import { X } from "@/components/animate-ui/icons/x"
 import { useEffect, useRef, useState } from "react"
 import type { DocsLink } from "@/lib/docs/navigation"
 
