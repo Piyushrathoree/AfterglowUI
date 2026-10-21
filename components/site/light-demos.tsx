@@ -1,27 +1,25 @@
 "use client"
 
 import * as React from "react"
-import {
-  Aperture,
-  Compass,
-  Mail,
-  MessageCircle,
-  Music,
-  NotebookPen,
-  SquareTerminal,
-  Trash2,
-  Settings2,
-  LoaderCircle,
-  Eye,
-  EyeOff,
-  Check,
-  RotateCw,
-  Bell,
-  CreditCard,
-  Settings,
-  Users,
-  KeyRound,
-} from "lucide-react"
+import { Aperture } from "lucide-react"
+import { Compass } from "@/components/animate-ui/icons/compass"
+import { Mail } from "@/components/animate-ui/icons/mail"
+import { MessageCircle } from "@/components/animate-ui/icons/message-circle"
+import { Music } from "@/components/animate-ui/icons/music"
+import { NotebookPen } from "@/components/animate-ui/icons/notebook-pen"
+import { Terminal as SquareTerminal } from "@/components/animate-ui/icons/terminal"
+import { Trash2 } from "@/components/animate-ui/icons/trash-2"
+import { Settings as Settings2 } from "@/components/animate-ui/icons/settings"
+import { LoaderCircle } from "@/components/animate-ui/icons/loader-circle"
+import { Eye } from "@/components/animate-ui/icons/eye"
+import { EyeOff } from "@/components/animate-ui/icons/eye-off"
+import { Check } from "@/components/animate-ui/icons/check"
+import { RotateCw } from "@/components/animate-ui/icons/rotate-cw"
+import { Bell } from "@/components/animate-ui/icons/bell"
+import { CreditCard } from "@/components/animate-ui/icons/credit-card"
+import { Settings } from "@/components/animate-ui/icons/settings"
+import { Users } from "@/components/animate-ui/icons/users"
+import { KeyRound } from "@/components/animate-ui/icons/key-round"
 import { AnimatePresence, inView, motion, useReducedMotion } from "motion/react"
 
 
@@ -379,12 +377,13 @@ export function TabsDemo() {
     // a 34px pane with 12px of padding, so the 44px tab capsule, the inputs and the button
     // inside (all ~22px radius) sit concentric with its corners
     <div className="@container w-full min-w-0 max-w-lg rounded-[34px] bg-glass p-3 shadow-glass backdrop-blur-xl backdrop-saturate-150">
+      {/* these tabs play their own gesture when picked, so the icons skip the hover animation */}
       <TrailTabs
         tabs={[
           {
             value: "general",
             label: "General",
-            icon: <Settings />,
+            icon: <Settings animate={false} />,
             iconGesture: "turn",
             content: (
               <div className="flex flex-col gap-5 pt-1">
@@ -402,7 +401,7 @@ export function TabsDemo() {
           {
             value: "members",
             label: "Members",
-            icon: <Users />,
+            icon: <Users animate={false} />,
             iconGesture: "hop",
             content: (
               <ul className="flex flex-col px-4 pt-1 pb-2">
@@ -426,7 +425,7 @@ export function TabsDemo() {
           {
             value: "billing",
             label: "Billing",
-            icon: <CreditCard />,
+            icon: <CreditCard animate={false} />,
             iconGesture: "nudge",
             content: (
               <div className="flex flex-col gap-4 px-4 pt-1 pb-2">
@@ -445,7 +444,7 @@ export function TabsDemo() {
           {
             value: "alerts",
             label: "Alerts",
-            icon: <Bell />,
+            icon: <Bell animate={false} />,
             iconGesture: "ring",
             content: (
               <div className="flex flex-col gap-4 px-4 pt-1 pb-2">
