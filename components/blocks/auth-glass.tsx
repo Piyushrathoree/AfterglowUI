@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check } from "lucide-react"
+import { Check } from "@/components/animate-ui/icons/check"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import {
@@ -138,7 +138,7 @@ export function AuthGlass({ onSubmit, onProvider, background, className }: AuthG
           {status === "done" ? (
             <motion.div key="done" className="flex flex-col items-center py-16 text-center" {...swap}>
               <span className="grid size-12 place-items-center rounded-full bg-foreground text-background shadow-[0_8px_20px_-8px_oklch(0_0_0/50%)]">
-                <Check className="size-5" strokeWidth={2.5} />
+                <Check animate aria-hidden className="size-5" strokeWidth={2.5} />
               </span>
               <p className="mt-5 text-[22px] font-medium tracking-[-0.02em]">You&rsquo;re in</p>
               <p className="mt-1.5 text-[13px] text-foreground/65">Opening your workspace…</p>
