@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft } from "@/components/animate-ui/icons/arrow-left"
 
 import { AuthShowcase } from "@/components/site/auth-demos"
 import { ThemeToggle } from "@/components/site/theme-toggle"
