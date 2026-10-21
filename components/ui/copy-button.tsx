@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Check, Copy } from "lucide-react"
+import { AnimateIcon } from "@/components/animate-ui/icons/icon"
+import { Check } from "@/components/animate-ui/icons/check"
+import { Copy } from "@/components/animate-ui/icons/copy"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { spring } from "@/lib/afterglow"
@@ -19,6 +21,21 @@ type CopyButtonProps = Omit<
   /** a small "Copied" bubble pops up above the button */
   tooltip?: boolean
   onCopy?: (value: string) => void
+}
+
+// navigator.clipboard only exists on https or localhost, so plain http (a phone on the LAN) uses a hidden textarea
+async function writeClipboard(text: string) {
+  if (window.isSecureContext && navigator.clipboard) return navigator.clipboard.writeText(text)
+  const area = document.createElement("textarea")
+  area.value = text
+  area.readOnly = true
+  area.style.cssText = "position:fixed;top:0;left:0;opacity:0;font-size:16px"
+  document.body.append(area)
+  area.select()
+  area.setSelectionRange(0, text.length)
+  const ok = document.execCommand("copy")
+  area.remove()
+  if (!ok) throw new Error("Copy failed")
 }
 
 function CopyButton({
@@ -47,12 +64,12 @@ function CopyButton({
     onClick?.(event)
     if (event.defaultPrevented) return
     try {
-      await navigator.clipboard.writeText(value)
+      await writeClipboard(value)
       setCopied(true)
       setPulse((count) => count + 1)
       onCopy?.(value)
     } catch {
-      // clipboard blocked (insecure context or denied permission): stay idle
+      // clipboard blocked or denied: stay idle
     }
   }
 
@@ -82,87 +99,89 @@ function CopyButton({
   const state = copied ? "copied" : "idle"
 
   return (
-    <button
-      data-slot="copy-button"
-      data-state={state}
-      type="button"
-      aria-label={copied ? "Copied" : showLabel ? "Copy" : "Copy to clipboard"}
-      className={cn(
-        // a capsule with no rim of its own, so it sits cleanly inside a bordered field. 32px tall,
-        // its 16px radius nests concentric in a 48px row with 8px of padding
-        "relative inline-flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-[13px] font-medium outline-none transition-[background-color,color,scale] duration-150 ease-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
-        variant === "soft"
-          ? "bg-foreground/[0.07] text-foreground hover:bg-foreground/[0.12]"
-          : "text-foreground/65 hover:bg-foreground/[0.08] hover:text-foreground",
-        showLabel ? "px-3" : "w-8",
-        className
-      )}
-      onClick={handleClick}
-      {...props}
-    >
-      {/* an invisible copy of the widest state sets the width, so the button never resizes */}
-      <span className="grid place-items-center">
-        {showLabel && (
-          <span aria-hidden className="invisible col-start-1 row-start-1 inline-flex items-center gap-1.5">
-            <span className="size-4" />
-            Copied
-          </span>
+    <AnimateIcon animateOnHover asChild>
+      <button
+        data-slot="copy-button"
+        data-state={state}
+        type="button"
+        aria-label={copied ? "Copied" : showLabel ? "Copy" : "Copy to clipboard"}
+        className={cn(
+          // a capsule with no rim of its own, so it sits cleanly inside a bordered field. 32px tall,
+          // its 16px radius nests concentric in a 48px row with 8px of padding
+          "relative inline-flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-[13px] font-medium outline-none transition-[background-color,color,scale] duration-150 ease-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
+          variant === "soft"
+            ? "bg-foreground/[0.07] text-foreground hover:bg-foreground/[0.12]"
+            : "text-foreground/65 hover:bg-foreground/[0.08] hover:text-foreground",
+          showLabel ? "px-3" : "w-8",
+          className
         )}
-        <span className="col-start-1 row-start-1 inline-flex items-center gap-1.5">
-          {/* the icon glides as the label beside it changes width, so the pair stays centered */}
-          <motion.span
-            aria-hidden
-            layout={showLabel ? "position" : false}
-            transition={reduceMotion ? { duration: 0 } : iconTransition}
-            className="grid size-4 place-items-center [&_svg]:size-3.5"
-          >
-            <AnimatePresence initial={false}>
-              <motion.span
-                key={state}
-                className="col-start-1 row-start-1 grid place-items-center"
-                transition={iconTransition}
-                {...swap}
-              >
-                {copied ? <Check className="text-glow" /> : <Copy />}
-              </motion.span>
-            </AnimatePresence>
-          </motion.span>
-
+        onClick={handleClick}
+        {...props}
+      >
+        {/* an invisible copy of the widest state sets the width, so the button never resizes */}
+        <span className="grid place-items-center">
           {showLabel && (
-            <span aria-hidden className="relative grid overflow-hidden">
-              <AnimatePresence initial={false} mode="popLayout">
-                <motion.span key={state} transition={spring("snappy")} {...slide}>
-                  {copied ? "Copied" : "Copy"}
-                </motion.span>
-              </AnimatePresence>
+            <span aria-hidden className="invisible col-start-1 row-start-1 inline-flex items-center gap-1.5">
+              <span className="size-4" />
+              Copied
             </span>
           )}
+          <span className="col-start-1 row-start-1 inline-flex items-center gap-1.5">
+            {/* the icon glides as the label beside it changes width, so the pair stays centered */}
+            <motion.span
+              aria-hidden
+              layout={showLabel ? "position" : false}
+              transition={reduceMotion ? { duration: 0 } : iconTransition}
+              className="grid size-4 place-items-center [&_svg]:size-3.5"
+            >
+              <AnimatePresence initial={false}>
+                <motion.span
+                  key={state}
+                  className="col-start-1 row-start-1 grid place-items-center"
+                  transition={iconTransition}
+                  {...swap}
+                >
+                  {copied ? <Check aria-hidden className="text-glow" /> : <Copy aria-hidden />}
+                </motion.span>
+              </AnimatePresence>
+            </motion.span>
+
+            {showLabel && (
+              <span aria-hidden className="relative grid overflow-hidden">
+                <AnimatePresence initial={false} mode="popLayout">
+                  <motion.span key={state} transition={spring("snappy")} {...slide}>
+                    {copied ? "Copied" : "Copy"}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            )}
+          </span>
         </span>
-      </span>
 
-      <AnimatePresence>
-        {tooltip && copied && (
-          <motion.span
-            aria-hidden
-            className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-md bg-foreground px-2 py-1 text-xs font-medium whitespace-nowrap text-background shadow-lg"
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 4, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={
-              reduceMotion
-                ? { opacity: 0 }
-                : { opacity: 0, y: -4, filter: "blur(4px)", transition: { duration: 0.15 } }
-            }
-            transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-          >
-            Copied
-          </motion.span>
-        )}
-      </AnimatePresence>
+        <AnimatePresence>
+          {tooltip && copied && (
+            <motion.span
+              aria-hidden
+              className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-full bg-foreground px-2.5 py-1 text-xs font-medium whitespace-nowrap text-background shadow-lg"
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 4, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={
+                reduceMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, y: -4, filter: "blur(4px)", transition: { duration: 0.15 } }
+              }
+              transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+            >
+              Copied
+            </motion.span>
+          )}
+        </AnimatePresence>
 
-      <span className="sr-only" aria-live="polite">
-        {copied ? "Copied to clipboard" : ""}
-      </span>
-    </button>
+        <span className="sr-only" aria-live="polite">
+          {copied ? "Copied to clipboard" : ""}
+        </span>
+      </button>
+    </AnimateIcon>
   )
 }
 
