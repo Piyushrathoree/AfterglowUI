@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import ts from 'typescript'
 const registry = JSON.parse(fs.readFileSync('registry.json', 'utf8'))
 const examples = JSON.parse(fs.readFileSync('lib/docs/examples.json', 'utf8'))
-const title = (name) => name === 'reading-rail' ? 'Rail TOC' : name.split('-').map(s => s[0].toUpperCase()+s.slice(1)).join(' ')
+const title = (name) => ({ 'rail-nav': 'Side Navigation', 'reading-rail': 'Table of Contents' })[name] ?? name.split('-').map(s => s[0].toUpperCase()+s.slice(1)).join(' ')
 for (const item of registry.items) {
   const example = examples[item.name]
   if (!example) throw new Error(`Missing example for ${item.name}`)

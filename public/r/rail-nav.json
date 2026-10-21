@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "rail-nav",
-  "title": "Rail Nav",
+  "title": "Side Navigation",
   "description": "A sidebar on a dashed rail: a solid line hooks into the current page and a quieter one reaches out to the row under your pointer.",
   "dependencies": [
     "motion"

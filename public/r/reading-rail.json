@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "reading-rail",
-  "title": "Reading Rail",
+  "title": "Table of Contents",
   "description": "A table of contents on a dashed rail that bends where headings are indented and fills as you read, with an ember at its tip.",
   "dependencies": [
     "motion"
