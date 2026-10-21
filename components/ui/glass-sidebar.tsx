@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { ChevronRight } from "lucide-react"
+import { AnimateIcon } from "@/components/animate-ui/icons/icon"
+import { ChevronRight } from "@/components/animate-ui/icons/chevron-right"
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react"
 import { cn } from "@/lib/utils"
 import { LiquidSearch } from "@/components/ui/liquid-search"
@@ -59,23 +60,26 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
   const target = track?.rows[highlighted ?? ""]
   // One continuous seam opens out around the current row, then rejoins below it.
   // Keeping the same path commands lets direction changes stay interruptible.
-  const contour = useTransform([lineY, lineWidth, rowHeight], ([y, width, height]: number[]) => {
+  const box = (y: number, width: number, height: number) => {
     const top = y - height / 2
     const bottom = y + height / 2
-    const right = Math.max(32, width - 1)
-    return `M 9 ${top - 9} Q 9 ${top} 18 ${top} H ${right - 16} Q ${right} ${top} ${right} ${top + 16} V ${bottom - 16} Q ${right} ${bottom} ${right - 16} ${bottom} H 18 Q 9 ${bottom} 9 ${bottom + 9}`
+    // every corner shares one radius, and the row stops short of the scrollbar
+    const r = Math.min(12, height / 2)
+    const right = Math.max(32, width - 6)
+    return { top, bottom, r, right, edge: `H ${right - r} Q ${right} ${top} ${right} ${top + r} V ${bottom - r} Q ${right} ${bottom} ${right - r} ${bottom} H ${9 + r}` }
+  }
+  const contour = useTransform([lineY, lineWidth, rowHeight], ([y, width, height]: number[]) => {
+    const { top, bottom, r, edge } = box(y, width, height)
+    return `M 9 ${top - r} Q 9 ${top} ${9 + r} ${top} ${edge} Q 9 ${bottom} 9 ${bottom + r}`
   })
   const seam = useTransform([lineStart, lineEnd, lineY, lineWidth, rowHeight], ([start, end, y, width, height]: number[]) => {
-    const top = y - height / 2
-    const bottom = y + height / 2
-    const right = Math.max(32, width - 1)
-    return `M 9 ${start} V ${top - 9} Q 9 ${top} 18 ${top} H ${right - 16} Q ${right} ${top} ${right} ${top + 16} V ${bottom - 16} Q ${right} ${bottom} ${right - 16} ${bottom} H 18 Q 9 ${bottom} 9 ${bottom + 9} V ${end}`
+    const { top, bottom, r, edge } = box(y, width, height)
+    return `M 9 ${start} V ${top - r} Q 9 ${top} ${9 + r} ${top} ${edge} Q 9 ${bottom} 9 ${bottom + r} V ${end}`
   })
+  // the fill follows the outline's rounded left corners instead of poking past them
   const rowFill = useTransform([lineY, lineWidth, rowHeight], ([y, width, height]: number[]) => {
-    const top = y - height / 2
-    const bottom = y + height / 2
-    const right = Math.max(32, width - 1)
-    return `M 9 ${top} H ${right - 16} Q ${right} ${top} ${right} ${top + 16} V ${bottom - 16} Q ${right} ${bottom} ${right - 16} ${bottom} H 9 Z`
+    const { top, bottom, r, edge } = box(y, width, height)
+    return `M 9 ${top + r} Q 9 ${top} ${9 + r} ${top} ${edge} Q 9 ${bottom} 9 ${bottom - r} Z`
   })
 
   function choose(id: string) {
@@ -148,7 +152,7 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
   return <aside data-slot="glass-sidebar" aria-label={label} className={cn("relative flex min-h-96 w-full max-w-[264px] min-w-0 flex-col overflow-hidden rounded-[24px] border border-foreground/[0.09] bg-card/95 text-foreground antialiased shadow-[inset_0_1px_0_var(--gloss-highlight),0_16px_40px_-24px_var(--gloss-depth)] backdrop-blur-xl", className)} {...props}>
     <div data-slot="sidebar-header" className="shrink-0 px-2 pb-1 pt-3">
       {header ?? <div className="flex items-center gap-3">
-        <span className="grid size-8 shrink-0 place-items-center rounded-[10px] border border-foreground/[0.08] bg-linear-to-b from-foreground/[0.055] to-foreground/[0.025] shadow-[inset_0_1px_0_var(--gloss-highlight)]"><svg aria-hidden viewBox="0 0 24 24" className="size-5 text-glow"><path d="M5.5 14a6.5 6.5 0 0 1 13 0Z" fill="currentColor" /><path d="M3 17h18M7.5 20h9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg></span>
+        <span className="grid size-8 shrink-0 place-items-center rounded-concentric border border-foreground/[0.08] bg-linear-to-b from-foreground/[0.055] to-foreground/[0.025] shadow-[inset_0_1px_0_var(--gloss-highlight)]"><svg aria-hidden viewBox="0 0 24 24" className="size-5 text-glow"><path d="M5.5 14a6.5 6.5 0 0 1 13 0Z" fill="currentColor" /><path d="M3 17h18M7.5 20h9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg></span>
         <div className="min-w-0"><p className="text-sm font-semibold tracking-tight">Afterglow</p><p className="mt-0.5 text-[11px] text-muted-foreground">Workspace</p></div>
         <span className="ml-auto rounded-md border border-foreground/[0.08] px-1.5 py-0.5 text-[10px] tabular-nums text-foreground/40">1.0</span>
       </div>}
@@ -158,29 +162,31 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
     <div data-slot="sidebar-scroll" className="min-h-0 flex-1 overflow-y-auto px-2 pb-2 pt-1 [scrollbar-width:thin]">
       {visible.length ? <nav ref={nav} className="relative py-3" aria-label={`${label} links`} onKeyDown={onKeyDown} onPointerLeave={() => setHovered(null)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(null) }}>
         {track && target !== undefined && <svg aria-hidden data-sidebar-line className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
-          <defs><linearGradient id={`${uid}-line`} x1="0" y1="0" x2="1" y2="0"><stop stopColor="var(--glow)" stopOpacity="0.25" /><stop offset="0.45" stopColor="var(--glow)" stopOpacity="0.8" /><stop offset="1" stopColor="var(--glow)" stopOpacity="0.45" /></linearGradient></defs>
-          <motion.path d={rowFill} fill="currentColor" fillOpacity="0.035" />
+          <defs><linearGradient id={`${uid}-line`} x1="0" y1="0" x2="1" y2="0"><stop stopColor="var(--glow)" stopOpacity="0.2" /><stop offset="0.5" stopColor="var(--glow)" stopOpacity="0.5" /><stop offset="1" stopColor="var(--glow)" stopOpacity="0.3" /></linearGradient></defs>
+          <motion.path data-sidebar-fill d={rowFill} fill="currentColor" fillOpacity="0.055" />
           <motion.path data-sidebar-seam d={seam} fill="none" stroke="currentColor" strokeOpacity="0.13" strokeWidth="1" strokeLinecap="round" />
-          <motion.path data-sidebar-contour d={contour} fill="none" stroke={`url(#${uid}-line)`} strokeWidth="1.1" strokeLinecap="round" />
+          <motion.path data-sidebar-contour d={contour} fill="none" stroke={`url(#${uid}-line)`} strokeWidth="1" strokeLinecap="round" />
         </svg>}
         <ul className="space-y-0.5 pl-5">
           {visible.map((item, index) => {
             if ("heading" in item) return <li key={`heading-${index}`} className={cn("flex items-center gap-3 px-3 pb-1.5 pt-3 text-[11px] font-medium text-foreground/45", index === 0 && "pt-0")}><span>{item.heading}</span><span aria-hidden className="h-px flex-1 bg-foreground/[0.06]" /></li>
             const selected = active === item.id
             const contents = <>
+              {/* concentric-ignore: mid-row, not in a corner of the panel */}
               {item.icon && <span aria-hidden className={cn("relative grid size-7 shrink-0 place-items-center rounded-[8px] transition-colors duration-200 [&>svg]:size-[15px] [&>svg]:stroke-[1.65]", selected || highlighted === item.id ? "text-glow" : "text-foreground/50 group-hover:text-foreground/80")}>{item.icon}</span>}
               <span className="relative min-w-0 flex-1 truncate">{item.label}</span>
+              {/* concentric-ignore: mid-row, not in a corner of the panel */}
               {item.badge ? <span className={cn("relative min-w-5 shrink-0 rounded-md border border-foreground/[0.07] bg-foreground/[0.025] px-1.5 py-0.5 text-center text-[10px] leading-none tabular-nums transition-colors duration-150", selected ? "text-glow" : "text-foreground/45")}>{item.badge}</span> : <ChevronRight aria-hidden size={13} className={cn("relative shrink-0 transition-[opacity,translate] duration-200 motion-reduce:transition-none", highlighted === item.id ? "translate-x-0 opacity-50" : "-translate-x-1 opacity-0")} />}
             </>
             const common = {
               "data-sidebar-item": item.id,
               "aria-current": selected ? "page" as const : undefined,
-              className: cn("group relative flex min-h-9 scroll-my-3 w-full cursor-pointer items-center gap-2.5 rounded-[16px] px-2.5 py-1 text-left text-[13px] outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-glow/60 motion-reduce:transition-none", selected ? "font-medium text-foreground" : "text-foreground/60 hover:text-foreground focus-visible:text-foreground"),
+              className: cn("group relative flex min-h-9 scroll-my-3 w-full cursor-pointer items-center gap-2.5 rounded-[12px] px-2.5 py-1 text-left text-[13px] outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-glow/60 motion-reduce:transition-none", selected ? "font-medium text-foreground" : "text-foreground/60 hover:text-foreground focus-visible:text-foreground"),
               onPointerEnter: (event: React.PointerEvent) => { if (event.pointerType !== "touch") setHovered(item.id) },
               onFocus: () => setFocused(item.id),
               onClick: () => choose(item.id),
             }
-            return <li key={item.id}>{item.href ? <a {...common} href={item.href}>{contents}</a> : <button {...common} type="button">{contents}</button>}</li>
+            return <li key={item.id}><AnimateIcon animateOnHover asChild>{item.href ? <a {...common} href={item.href}>{contents}</a> : <button {...common} type="button">{contents}</button>}</AnimateIcon></li>
           })}
         </ul>
       </nav> : <p role="status" className="px-3 text-xs text-muted-foreground">No matching pages.</p>}
