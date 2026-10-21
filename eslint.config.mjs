@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // third-party reference code, never linted or shipped
     "reference/**",
+    // vendored animate-ui icons, kept as upstream ships them
+    "components/animate-ui/**",
   ]),
 ]);
 
