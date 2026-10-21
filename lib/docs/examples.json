@@ -39,10 +39,6 @@
     "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { LiquidButton } from \"@/components/ui/liquid-button\"\n\nexport default function Demo() {\n  const [count, setCount] = useState(0)\n  return (\n    <LiquidButton size=\"lg\" onClick={() => setCount(count + 1)}>\n      {count ? `Pressed ${count} times` : \"Press the glass\"}\n    </LiquidButton>\n  )\n}\n",
     "notes": "The glass swells while pressed. The component accepts standard button events and attributes."
   },
-  "sheen-card": {
-    "code": "\"use client\"\n\nimport { SheenCard } from \"@/components/ui/sheen-card\"\n\nexport default function Demo() {\n  return (\n    <SheenCard className=\"w-full max-w-sm rounded-3xl border p-10\">\n      <p className=\"text-sm text-muted-foreground\">Afterglow studio</p>\n      <h2 className=\"mt-3 text-3xl font-medium\">\n        A different perspective.\n      </h2>\n      <p className=\"mt-6 text-muted-foreground\">\n        Move your pointer across the surface.\n      </p>\n    </SheenCard>\n  )\n}\n",
-    "notes": "The card responds to the pointer with tilt and reflected light. Keep interactive content accessible without relying on the tilt."
-  },
   "fan-cards": {
     "code": "import { FanCards } from \"@/components/ui/fan-cards\"\n\nexport default function Team() {\n  return (\n    <FanCards\n      aria-label=\"Our team\"\n      items={[\n        {\n          id: \"maya\",\n          label: \"Maya, Designer\",\n          content: <div className=\"h-72 p-6\">Maya \u00b7 Designer</div>,\n        },\n        {\n          id: \"devon\",\n          label: \"Devon, Engineer\",\n          content: <div className=\"h-72 p-6\">Devon \u00b7 Engineer</div>,\n        },\n      ]}\n    />\n  )\n}\n",
     "notes": "Cards fan out on larger screens and form a grid in narrow containers. Hover or focus a card to bring it forward."
@@ -95,10 +91,6 @@
     "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { LayoutDashboard, FolderOpen, Inbox, Settings } from \"lucide-react\"\nimport { GlassSidebar } from \"@/components/ui/glass-sidebar\"\n\nexport default function Navigation() {\n  const [value, setValue] = useState(\"projects\")\n  return <GlassSidebar\n    className=\"h-[620px]\"\n    value={value}\n    onValueChange={setValue}\n    items={[\n      { heading: \"Workspace\" },\n      { id: \"overview\", label: \"Overview\", icon: <LayoutDashboard /> },\n      { id: \"projects\", label: \"Projects\", icon: <FolderOpen />, badge: \"3\" },\n      { id: \"inbox\", label: \"Inbox\", icon: <Inbox />, badge: \"2\" },\n      { heading: \"Manage\" },\n      { id: \"settings\", label: \"Settings\", icon: <Settings /> },\n    ]}\n  />\n}\n",
     "notes": "A continuous seam opens around the hovered or focused row, then rejoins below it. One damped spring drives the contour and its fill together, so the line can reverse smoothly and return to the selected page. Search filters grouped links. Supports href, controlled selection, custom header and footer, keyboard navigation, and reduced motion."
   },
-  "rail-path": {
-    "code": "\"use client\"\n\nimport { useState } from \"react\"\nimport { buildTrack } from \"@/components/ui/rail-path\"\n\nexport default function Demo() {\n  const [nested, setNested] = useState(true)\n  const track = buildTrack([\n    { x: 16, y: 20 },\n    { x: nested ? 40 : 16, y: 100 },\n    { x: 16, y: 180 },\n    { x: nested ? 40 : 16, y: 260 },\n  ])\n  return (\n    <div className=\"flex items-center gap-8\">\n      <svg\n        width=\"90\"\n        height=\"300\"\n        viewBox=\"0 0 90 300\"\n        aria-label=\"Rounded rail geometry\"\n      >\n        <path\n          d={track.d}\n          fill=\"none\"\n          stroke=\"var(--glow)\"\n          strokeWidth=\"3\"\n        />\n      </svg>\n      <button\n        className=\"rounded-xl border px-5 py-3\"\n        onClick={() => setNested(!nested)}\n      >\n        Toggle nested rows\n      </button>\n    </div>\n  )\n}\n",
-    "notes": "This is a geometry utility used by the rail components. buildTrack returns a path, distances at each row, and total length. It has no standalone UI or Props API."
-  },
   "glass-toaster": {
     "code": "\"use client\"\n\nimport { GlassToaster, toast } from \"@/components/ui/glass-toaster\"\nimport { GlossButton } from \"@/components/ui/gloss-button\"\n\nexport default function Demo() {\n  return (\n    <>\n      <GlossButton\n        onClick={() =>\n          toast(\"Changes saved\", {\n            description: \"Your project is up to date.\",\n          })\n        }\n      >\n        Show notification\n      </GlossButton>\n      <GlassToaster position=\"bottom-center\" />\n    </>\n  )\n}\n",
     "notes": "Mount one toaster in your application. Call toast from client interactions. Toasts can be dismissed and are announced as status updates."
@@ -106,10 +98,6 @@
   "flame-field": {
     "code": "\"use client\"\n\nimport { FlameField } from \"@/components/ui/flame-field\"\n\nexport default function Demo() {\n  return (\n    <div className=\"relative isolate flex h-[420px] w-full items-end overflow-hidden rounded-3xl p-8\">\n      <FlameField className=\"absolute inset-0 -z-10\" />\n      <h2 className=\"text-4xl font-medium\">A little afterglow.</h2>\n    </div>\n  )\n}\n",
     "notes": "Give the field a positioned parent with an explicit height. It follows the shared accent and theme, and becomes still under reduced motion."
-  },
-  "flame-footer": {
-    "code": "\"use client\"\n\nimport { FlameFooter } from \"@/components/ui/flame-footer\"\n\nexport default function Demo() {\n  return (\n    <FlameFooter\n      className=\"w-full\"\n      headline=\"A little afterglow.\"\n      links={[\n        { label: \"Components\", href: \"/docs/components/fan-cards\" },\n        { label: \"Getting started\", href: \"/docs/installation\" },\n      ]}\n      legal=\"Afterglow UI\"\n    />\n  )\n}\n",
-    "notes": "Provide headline content and real navigation links. The footer includes the accent-driven Flame Field and responds to the current theme."
   },
   "liquid-metal": {
     "code": "\"use client\"\n\nimport { LiquidMetal } from \"@/components/ui/liquid-metal\"\n\nexport default function Demo() {\n  return (\n    <div className=\"relative h-80 w-full max-w-md overflow-hidden rounded-3xl\">\n      <LiquidMetal className=\"absolute inset-0\" />\n      <div className=\"relative flex h-full items-center justify-center\">\n        <span className=\"rounded-full bg-black/50 px-6 py-3 text-white\">\n          Moving chrome\n        </span>\n      </div>\n    </div>\n  )\n}\n",
@@ -126,10 +114,6 @@
   "metal-text": {
     "code": "\"use client\"\n\nimport { MetalText } from \"@/components/ui/metal-text\"\n\nexport default function Demo() {\n  return (\n    <MetalText className=\"text-5xl font-semibold tracking-tight\">\n      Afterglow\n    </MetalText>\n  )\n}\n",
     "notes": "Use for short display text. The every prop controls the interval between glints. Preserve an accessible text label when styling decorative content."
-  },
-  "auth-parts": {
-    "code": "\"use client\"\n\nimport {\n  Field,\n  Divider,\n  ProviderButton,\n} from \"@/components/ui/auth-parts\"\n\nexport default function Demo() {\n  return (\n    <div className=\"w-full max-w-xs space-y-5\">\n      <ProviderButton provider=\"google\" />\n      <Divider />\n      <Field\n        label=\"Email address\"\n        type=\"email\"\n        placeholder=\"you@example.com\"\n        autoComplete=\"email\"\n      />\n    </div>\n  )\n}\n",
-    "notes": "These are shared form primitives, not an authentication backend. Field connects its label and error text; ProviderButton supplies a provider mark and accessible text."
   },
   "auth-silk": {
     "code": "\"use client\"\n\nimport { AuthSilk } from \"@/components/blocks/auth-silk\"\n\nexport default function Demo() {\n  return (\n    <div className=\"w-full overflow-hidden rounded-3xl\">\n      <AuthSilk\n        onSubmit={async () => {\n          await new Promise((resolve) => setTimeout(resolve, 800))\n        }}\n      />\n    </div>\n  )\n}\n",

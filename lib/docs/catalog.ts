@@ -21,7 +21,6 @@ export const componentCatalog = [
     "description": "A copy button whose icon morphs into a check, with an optional Copied bubble.",
     "group": "Forms & controls",
     "dependencies": [
-      "lucide-react",
       "motion"
     ]
   },
@@ -51,22 +50,8 @@ export const componentCatalog = [
     "dependencies": []
   },
   {
-    "name": "flame-footer",
-    "title": "Flame Footer",
-    "description": "A page footer on a field of flame: brand and links on top, a big headline, and small print resting on the fire.",
-    "group": "Materials",
-    "dependencies": []
-  },
-  {
-    "name": "rail-path",
-    "title": "Rail Path",
-    "description": "The geometry the rail components share: a path through every row, with rounded jogs and hooks.",
-    "group": "Foundations",
-    "dependencies": []
-  },
-  {
     "name": "rail-nav",
-    "title": "Rail Nav",
+    "title": "Side Navigation",
     "description": "A sidebar on a dashed rail: a solid line hooks into the current page and a quieter one reaches out to the row under your pointer.",
     "group": "Navigation",
     "dependencies": [
@@ -75,7 +60,7 @@ export const componentCatalog = [
   },
   {
     "name": "reading-rail",
-    "title": "Rail TOC",
+    "title": "Table of Contents",
     "description": "A table of contents on a dashed rail that bends where headings are indented and fills as you read, with an ember at its tip.",
     "group": "Navigation",
     "dependencies": [
@@ -98,7 +83,7 @@ export const componentCatalog = [
     "group": "Navigation",
     "dependencies": [
       "motion",
-      "lucide-react"
+      "tailwindcss-concentric"
     ]
   },
   {
@@ -106,7 +91,7 @@ export const componentCatalog = [
     "title": "Liquid Search",
     "description": "A frosted search capsule with a glass icon lens, accent focus, and one-click clearing.",
     "group": "Forms & controls",
-    "dependencies": ["motion", "lucide-react"]
+    "dependencies": ["motion", "tailwindcss-concentric"]
   },
   {
     "name": "magnetic-dock",
@@ -122,15 +107,6 @@ export const componentCatalog = [
     "title": "Gloss Button",
     "description": "A glossy button with a sheen, a pointer hotspot, and a press that squishes.",
     "group": "Forms & controls",
-    "dependencies": [
-      "motion"
-    ]
-  },
-  {
-    "name": "sheen-card",
-    "title": "Sheen Card",
-    "description": "A card that tilts toward your pointer while reflected light slides across it.",
-    "group": "Cards",
     "dependencies": [
       "motion"
     ]
@@ -168,7 +144,6 @@ export const componentCatalog = [
     "description": "Frosted toasts that stack, fan out, swipe away, and burn down like an ember.",
     "group": "Forms & controls",
     "dependencies": [
-      "lucide-react",
       "motion"
     ]
   },
@@ -286,16 +261,6 @@ export const componentCatalog = [
     "description": "Polished lettering, bright above and dim below, with a glint now and then.",
     "group": "Materials",
     "dependencies": [
-      "motion"
-    ]
-  },
-  {
-    "name": "auth-parts",
-    "title": "Auth Parts",
-    "description": "Shared pieces for auth forms: provider buttons with brand marks, fields, a divider and a submit hook.",
-    "group": "Foundations",
-    "dependencies": [
-      "lucide-react",
       "motion"
     ]
   },
