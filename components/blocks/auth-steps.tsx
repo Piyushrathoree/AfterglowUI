@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { ArrowLeft, CornerDownLeft, Fingerprint, KeyRound, Mail } from "lucide-react"
+import { CornerDownLeft, KeyRound, Mail } from "lucide-react"
+import { AnimateIcon } from "@/components/animate-ui/icons/icon"
+import { ArrowLeft } from "@/components/animate-ui/icons/arrow-left"
+import { Fingerprint } from "@/components/animate-ui/icons/fingerprint"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { AfterglowMark, GoogleMark, SubmitLabel, checkEmail, useSubmit, type Provider } from "@/components/ui/auth-parts"
@@ -107,10 +110,12 @@ export function AuthSteps({ onSubmit, onProvider, className }: AuthStepsProps) {
                   <KeyRound />
                   Continue with SAML SSO
                 </button>
-                <button type="button" className={cn(pill, outline)} onClick={() => onProvider?.("passkey")}>
-                  <Fingerprint />
-                  Log in with a passkey
-                </button>
+                <AnimateIcon animateOnHover asChild>
+                  <button type="button" className={cn(pill, outline)} onClick={() => onProvider?.("passkey")}>
+                    <Fingerprint aria-hidden />
+                    Log in with a passkey
+                  </button>
+                </AnimateIcon>
               </div>
               <p className="text-[13px] text-muted-foreground">
                 Don&rsquo;t have an account?{" "}
@@ -160,11 +165,13 @@ export function AuthSteps({ onSubmit, onProvider, className }: AuthStepsProps) {
                   <SubmitLabel loading={status === "loading"}>Continue with email</SubmitLabel>
                 </button>
               </form>
-              <button type="button" onClick={() => go("choose")} className="inline-flex cursor-pointer items-center justify-center gap-2 rounded text-[13px] text-muted-foreground transition-colors duration-150 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-foreground/40">
-                <ArrowLeft className="size-3.5" />
-                Back to login
-                <Kbd>Esc</Kbd>
-              </button>
+              <AnimateIcon animateOnHover asChild>
+                <button type="button" onClick={() => go("choose")} className="inline-flex cursor-pointer items-center justify-center gap-2 rounded text-[13px] text-muted-foreground transition-colors duration-150 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-foreground/40">
+                  <ArrowLeft aria-hidden className="size-3.5" />
+                  Back to login
+                  <Kbd>Esc</Kbd>
+                </button>
+              </AnimateIcon>
             </motion.div>
           )}
 

@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { ArrowLeft } from "lucide-react"
+import { AnimateIcon } from "@/components/animate-ui/icons/icon"
+import { ArrowLeft } from "@/components/animate-ui/icons/arrow-left"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import {
@@ -97,14 +98,16 @@ export function AuthSplit({ onSubmit, onProvider, stories = defaultStories, clas
                     Open Outlook
                   </a>
                 </div>
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="mt-6 inline-flex cursor-pointer items-center gap-1.5 rounded text-[13px] text-muted-foreground transition-colors duration-150 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-foreground/40"
-                >
-                  <ArrowLeft className="size-3.5" />
-                  Use a different email
-                </button>
+                <AnimateIcon animateOnHover asChild>
+                  <button
+                    type="button"
+                    onClick={reset}
+                    className="mt-6 inline-flex cursor-pointer items-center gap-1.5 rounded text-[13px] text-muted-foreground transition-colors duration-150 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-foreground/40"
+                  >
+                    <ArrowLeft aria-hidden className="size-3.5" />
+                    Use a different email
+                  </button>
+                </AnimateIcon>
               </motion.div>
             ) : (
               <motion.div key="form" className="flex flex-col" {...swap}>
