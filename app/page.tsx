@@ -1,10 +1,7 @@
-import { SheenPassShowcase } from "@/components/site/sheen-showcase"
 import { GlossButtonsShowcase } from "@/components/site/gloss-showcase"
 import { ControlCenterShowcase } from "@/components/site/controls-showcase"
 import Link from "next/link"
-import {
-  ArrowRight,
-} from "lucide-react"
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right"
 
 import { AfterglowMark } from "@/components/ui/auth-parts"
 import { FanCardsDemo } from "@/components/site/fan-cards-demo"
@@ -257,15 +254,9 @@ export default function Home() {
           <Preview
             name="gloss-button"
             description="A glossy button with a sheen, a hotspot that follows your pointer, and a press that squishes."
+            className="lg:col-span-2"
           >
             <GlossButtonsShowcase />
-          </Preview>
-
-          <Preview
-            name="sheen-card"
-            description="A card that tilts toward your pointer while a band of reflected light slides across it."
-          >
-            <SheenPassShowcase />
           </Preview>
 
           <Preview
