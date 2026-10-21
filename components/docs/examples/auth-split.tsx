@@ -6,6 +6,7 @@ export default function Demo() {
   return (
     <div className="w-full overflow-hidden rounded-3xl">
       <AuthSplit
+        className="ag-auth-demo ag-auth-split"
         onSubmit={async () => {
           await new Promise((resolve) => setTimeout(resolve, 800))
         }}

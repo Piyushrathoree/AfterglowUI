@@ -16,7 +16,7 @@ function FanCardsDemo({ eager = false }: { eager?: boolean }) {
     <div className="w-full bg-background pt-12 sm:pt-16">
       <div className="px-6 text-center">
         <h3 className="text-2xl font-medium tracking-tight sm:text-3xl">Meet the team.</h3>
-        <p className="mt-3 text-sm text-muted-foreground">Hover to bring someone into focus.</p>
+        <p className="mt-3 text-sm text-muted-foreground">Bring someone into focus.</p>
       </div>
       <FanCards
         aria-label="Example team profiles"

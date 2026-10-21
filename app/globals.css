@@ -4,6 +4,7 @@
 
 /* afterglow palette: dusk sky. ember is the light, rose and violet are its fading tail */
 :root {
+  --app-font-scale: 1.125;
   --background: oklch(0.985 0.005 80);
   --foreground: oklch(0.22 0.02 285);
   --card: oklch(1 0 0);
@@ -84,6 +85,25 @@
   --radius-xl: calc(var(--radius) + 4px);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Scale type independently from layout spacing and control dimensions. */
+  --text-xs: calc(0.75rem * var(--app-font-scale));
+  --text-sm: calc(0.875rem * var(--app-font-scale));
+  --text-base: calc(1rem * var(--app-font-scale));
+  --text-lg: calc(1.125rem * var(--app-font-scale));
+  --text-xl: calc(1.25rem * var(--app-font-scale));
+  --text-2xl: calc(1.5rem * var(--app-font-scale));
+  --text-3xl: calc(1.875rem * var(--app-font-scale));
+  --text-4xl: calc(2.25rem * var(--app-font-scale));
+  --text-5xl: calc(3rem * var(--app-font-scale));
+  --text-6xl: calc(3.75rem * var(--app-font-scale));
+  --text-7xl: calc(4.5rem * var(--app-font-scale));
+  --text-8xl: calc(6rem * var(--app-font-scale));
+  --text-9xl: calc(8rem * var(--app-font-scale));
+}
+
+/* Keep explicit sizes and responsive font utilities on the same type scale. */
+@utility text-* {
+  font-size: calc(--value([length]) * var(--app-font-scale));
 }
 
 @layer base {
@@ -93,6 +113,7 @@
 
   body {
     @apply bg-background font-sans text-foreground;
+    font-size: calc(1rem * var(--app-font-scale));
   }
 
   ::selection {

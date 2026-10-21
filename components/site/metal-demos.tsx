@@ -8,7 +8,7 @@ import { MetalText } from "@/components/ui/metal-text"
 export function MetalHeroDemo() {
   return (
     <div className="flex flex-col items-center gap-5 py-10 text-center">
-      <h3 className="text-5xl font-semibold tracking-[-0.045em] sm:text-7xl">
+      <h3 className="text-[clamp(32px,8cqw,72px)] font-semibold tracking-[-0.045em]">
         <MetalText>Liquid metal</MetalText>
       </h3>
       <p className="max-w-sm text-[15px] text-balance text-muted-foreground">

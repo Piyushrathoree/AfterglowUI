@@ -59,12 +59,12 @@ function Preview({
       data-rail-id={`c-${name.replace(/[^a-z0-9]+/gi, "-")}`}
       data-rail-title={name}
       data-rail-excerpt={description}
-      className={cn("flex scroll-mt-10 flex-col gap-3", className)}
+      className={cn("flex min-w-0 scroll-mt-10 flex-col gap-3", className)}
     >
       <div
         className={cn(
-          "relative isolate grid min-h-80 grid-cols-1 place-items-center overflow-hidden rounded-3xl border bg-card",
-          flush ? "p-0" : "p-8",
+          "@container relative isolate grid min-h-80 w-full min-w-0 grid-cols-1 place-items-center overflow-hidden rounded-3xl border bg-card",
+          flush ? "p-0" : "p-3 sm:p-5",
           stretch && "flex-1"
         )}
       >
@@ -103,12 +103,12 @@ function Group({
 export default function Home() {
   return (
     <div className="relative isolate min-h-screen">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+      <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6">
         <div className="flex items-center gap-2.5">
           <AfterglowMark className="size-5" />
           <span className="font-medium tracking-tight">afterglow</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-4">
           <Link href="/docs" className="text-[13px] text-muted-foreground transition-colors hover:text-foreground">
             Documentation
           </Link>

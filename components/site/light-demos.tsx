@@ -530,14 +530,14 @@ export function DockDemo() {
 // the picker recolors the whole page, so the demo shows a few things that carry the accent
 export function AccentDemo() {
   return (
-    <div className="flex flex-col items-center gap-7">
+    <div className="flex w-full min-w-0 flex-col items-center gap-7">
       <AccentPicker />
-      <div className="flex items-center gap-5">
+      <div className="flex w-full max-w-sm items-center justify-center gap-3">
         <GlassSwitch defaultChecked aria-label="Example switch" />
-        <div className="h-1.5 w-32 overflow-hidden rounded-full bg-foreground/10">
+        <div className="h-1.5 min-w-0 max-w-32 flex-1 overflow-hidden rounded-full bg-foreground/10">
           <div className="h-full w-2/3 rounded-full bg-linear-to-r from-glow-2 to-glow" />
         </div>
-        <span className="text-sm font-medium text-glow">Accent</span>
+        <span className="shrink-0 text-sm font-medium text-glow">Accent</span>
       </div>
     </div>
   )

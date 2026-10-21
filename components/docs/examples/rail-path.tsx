@@ -12,7 +12,7 @@ export default function Demo() {
     { x: nested ? 40 : 16, y: 260 },
   ])
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex flex-wrap items-center justify-center gap-6">
       <svg
         width="90"
         height="300"

@@ -157,7 +157,7 @@ export function DocsDemo() {
 
   return (
     <div className="@container w-full min-w-0">
-    <div className="grid h-[640px] w-full min-w-0 grid-cols-1 @min-[600px]:grid-cols-[minmax(0,1fr)_140px] @min-[900px]:grid-cols-[180px_minmax(0,1fr)_140px] @min-[1040px]:grid-cols-[208px_minmax(0,1fr)_180px]">
+    <div className="ag-navigation-demo grid h-[640px] w-full min-w-0 grid-cols-1 @min-[600px]:grid-cols-[minmax(0,1fr)_140px] @min-[900px]:grid-cols-[180px_minmax(0,1fr)_140px] @min-[1040px]:grid-cols-[208px_minmax(0,1fr)_180px]">
       <aside className="hidden min-h-0 flex-col @min-[900px]:flex border-r border-foreground/[0.08]">
         <div className="flex items-center gap-2.5 px-5 pt-5">
           <span className="grid size-8 place-items-center rounded-[10px] bg-foreground/[0.09] shadow-[inset_0_1px_0_oklch(1_0_0/10%)] [&_svg]:size-[18px]">

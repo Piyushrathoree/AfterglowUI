@@ -373,6 +373,7 @@ export function DesktopDemo() {
             ]}
           />
           <LiquidMenu
+            align="end"
             trigger={
               <>
                 <Plus />
@@ -414,7 +415,7 @@ export function DesktopDemo() {
         />
       </div>
 
-      <div className="grid min-w-0 grid-cols-1 gap-4 @min-[520px]:grid-cols-2 @min-[840px]:grid-cols-3">
+      <div className="ag-desktop-widgets grid min-w-0 grid-cols-1 gap-4 @min-[520px]:grid-cols-2 @min-[840px]:grid-cols-3">
         <Widget
           label="Now playing"
           aside={<span className="text-[11px] text-foreground/55 tabular-nums">{BPM} BPM</span>}
