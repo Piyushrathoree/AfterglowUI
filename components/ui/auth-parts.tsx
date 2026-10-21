@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Eye, EyeOff, Fingerprint, KeyRound, Loader2 } from "lucide-react"
+import { Eye, EyeOff, KeyRound } from "lucide-react"
+import { AnimateIcon } from "@/components/animate-ui/icons/icon"
+import { Fingerprint } from "@/components/animate-ui/icons/fingerprint"
+import { LoaderCircle as Loader2 } from "@/components/animate-ui/icons/loader-circle"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -26,8 +29,8 @@ function GoogleMark({ mono = false, ...props }: React.ComponentProps<"svg"> & { 
 function AfterglowMark(props: React.ComponentProps<"svg">) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
-      <path d="M5.5 12a6.5 6.5 0 0 1 13 0Z" fill="currentColor" />
-      <path d="M3 15h18M7.5 18h9" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M5.5 11a6.5 6.5 0 0 1 13 0Z" fill="currentColor" />
+      <path d="M3 14h18M7 18h10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }
@@ -44,7 +47,7 @@ const providers = {
   google: { label: "Google", icon: <GoogleMark /> },
   github: { label: "GitHub", icon: <GitHubMark /> },
   sso: { label: "SSO", icon: <KeyRound /> },
-  passkey: { label: "passkey", icon: <Fingerprint /> },
+  passkey: { label: "passkey", icon: <Fingerprint aria-hidden /> },
 }
 
 type Provider = keyof typeof providers
@@ -67,22 +70,24 @@ function ProviderButton({
 }: ProviderButtonProps) {
   const { label, icon } = providers[provider]
   return (
-    <button
-      type={type}
-      className={cn(
-        "relative inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border bg-background/60 px-4 text-sm font-medium transition-[background-color,scale] duration-150 ease-out outline-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring enabled:active:scale-[0.98] disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
-        className
-      )}
-      {...props}
-    >
-      {icon}
-      <span>{verb ? `${verb} ${label}` : label}</span>
-      {lastUsed && (
-        <span className="absolute -top-2 right-2 rounded-full border bg-card px-1.5 py-px text-[10px] font-medium text-muted-foreground">
-          Last used
-        </span>
-      )}
-    </button>
+    <AnimateIcon animateOnHover asChild>
+      <button
+        type={type}
+        className={cn(
+          "relative inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border bg-background/60 px-4 text-sm font-medium transition-[background-color,scale] duration-150 ease-out outline-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring enabled:active:scale-[0.98] disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
+          className
+        )}
+        {...props}
+      >
+        {icon}
+        <span>{verb ? `${verb} ${label}` : label}</span>
+        {lastUsed && (
+          <span className="absolute -top-2 right-2 rounded-full border bg-card px-1.5 py-px text-[10px] font-medium text-muted-foreground">
+            Last used
+          </span>
+        )}
+      </button>
+    </AnimateIcon>
   )
 }
 
