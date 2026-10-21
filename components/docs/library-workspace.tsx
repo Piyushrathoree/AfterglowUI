@@ -9,15 +9,12 @@ import {
   CodeXml,
   Eye,
   PanelLeft,
-  X,
   Maximize2,
   Minimize2,
 } from "lucide-react"
 import { getShowcase, showcases } from "@/lib/docs/showcases"
 import { componentCatalog } from "@/lib/docs/catalog"
 import { GlassSidebar, type GlassSidebarHeading, type GlassSidebarItem } from "@/components/ui/glass-sidebar"
-import { LiquidGlass } from "@/components/ui/liquid-glass"
-import { LiquidSegmented } from "@/components/ui/liquid-segmented"
 import { AccentPicker } from "@/components/ui/accent-picker"
 import { AfterglowMark } from "@/components/ui/auth-parts"
 import { ThemeToggle } from "@/components/site/theme-toggle"
@@ -186,12 +183,23 @@ export function LibraryWorkspace({
           </div>
           <div className="ag-header-actions">
             {!guide && (
-              <LiquidSegmented
-                aria-label="Workspace view"
-                options={views}
-                value={view}
-                onValueChange={changeView}
-              />
+              <div className="ag-workspace-tools">
+                <div className="ag-view-switch" role="group" aria-label="Workspace view">
+                  {views.map((item) => (
+                    <button key={item.value} aria-pressed={view === item.value}
+                      onClick={() => changeView(item.value)}>
+                      {item.icon}<span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+                {view !== "preview" && (
+                  <button className="ag-expand-reading"
+                    aria-label={expanded ? "Reduce panel" : "Expand panel"}
+                    aria-pressed={expanded} onClick={() => setExpanded(value => !value)}>
+                    {expanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                  </button>
+                )}
+              </div>
             )}
             <ThemeToggle />
           </div>
@@ -222,37 +230,13 @@ export function LibraryWorkspace({
               aria-hidden={view === "preview"}
               inert={view === "preview"}
             >
-              <LiquidGlass
-                className="ag-shell-glass absolute inset-0 rounded-[inherit]"
-                refraction={0}
-                frost={16}
-                tint="color-mix(in oklch, var(--card) 88%, transparent)"
-              />
               <div className="ag-detail-content">
-                <header className="ag-detail-header">
-                  <span>
-                    {view === "code" ? "Source files" : "Documentation"}
-                  </span>
-                  <div>
-                    <button
-                      aria-label={expanded ? "Reduce panel" : "Expand panel"}
-                      aria-pressed={expanded}
-                      onClick={() => setExpanded((value) => !value)}
-                    >
-                      {expanded ? (
-                        <Minimize2 size={15} />
-                      ) : (
-                        <Maximize2 size={15} />
-                      )}
-                    </button>
-                    <button
-                      aria-label="Close documentation panel"
-                      onClick={() => setView("preview")}
-                    >
-                      <X size={16} />
-                    </button>
-                  </div>
-                </header>
+                <div
+                  className="ag-reading-panel"
+                  key={`${name}-${view}`}
+                  tabIndex={0}
+                  aria-label={`${title} ${view === "code" ? "code" : "docs"}`}
+                >
                 {references.length > 1 && (
                   <label className="ag-reference-picker">
                     Component reference
@@ -273,17 +257,11 @@ export function LibraryWorkspace({
                     </select>
                   </label>
                 )}
-                <div
-                  className="ag-reading-panel"
-                  key={`${name}-${view}`}
-                  tabIndex={0}
-                  aria-label={`${title} ${view === "code" ? "code" : "docs"}`}
-                >
                   <div className="ag-reading-heading">
                     <h2>{referenceTitle}</h2>
-                    {view === "code" && (
-                      <p>The component and its shared local dependencies.</p>
-                    )}
+                    <p>{view === "code"
+                      ? "The component and its shared local dependencies. Select a file to read or copy its source."
+                      : referenceDescription}</p>
                   </div>
                   {view === "code" ? (
                     <LibrarySource key={name} name={name} />
