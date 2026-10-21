@@ -2,22 +2,22 @@
 
 import { useEffect, useState } from "react"
 import { CopyButton } from "./copy-button"
+import { loadSource, loadedSource, type SourceFile } from "./source-cache"
 
-type File = { path: string; code: string; html: string }
 export default function LibrarySource({ name }: { name: string }) {
-  const [files, setFiles] = useState<File[] | null>(null)
+  const [files, setFiles] = useState<SourceFile[] | null>(() => loadedSource(name))
   const [selected, setSelected] = useState(0)
   const [error, setError] = useState(false)
   const [attempt, setAttempt] = useState(0)
   useEffect(() => {
-    const controller = new AbortController()
-    fetch(`/api/docs/source/${encodeURIComponent(name)}`, { signal: controller.signal }).then(async (response) => {
-      if (!response.ok) throw new Error("Source unavailable")
-      const result = await response.json() as { files: File[] }
-      if (!controller.signal.aborted) { setFiles(result.files); setSelected(0) }
-    }).catch(() => { if (!controller.signal.aborted) setError(true) })
-    return () => controller.abort()
-  }, [name, attempt])
+    if (files) return
+    let active = true
+    loadSource(name).then(
+      (result) => { if (active) setFiles(result) },
+      () => { if (active) setError(true) },
+    )
+    return () => { active = false }
+  }, [name, attempt, files])
   if (error) return <div role="alert"><p>Source could not be loaded.</p><button className="ag-retry" onClick={() => { setError(false); setAttempt(value => value + 1) }}>Try again</button></div>
   if (!files) return <p role="status">Loading source…</p>
   const file = files[selected]

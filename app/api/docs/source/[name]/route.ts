@@ -13,5 +13,5 @@ export async function GET(_request: Request, { params }: { params: Promise<{ nam
   if (!documentedComponents.includes(name)) return Response.json({ error: "Component not found" }, { status: 404 })
   const files = await getHighlightedSources(name)
   if (!files) return Response.json({ error: "Source not found" }, { status: 404 })
-  return Response.json({ files }, { headers: { "Cache-Control": "public, max-age=0, must-revalidate" } })
+  return Response.json({ files }, { headers: { "Cache-Control": "public, max-age=300, stale-while-revalidate=86400" } })
 }
