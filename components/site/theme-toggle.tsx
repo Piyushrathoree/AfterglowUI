@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import { Moon } from "@/components/animate-ui/icons/moon"
+import { Sun } from "@/components/animate-ui/icons/sun"
 import { useTheme } from "next-themes"
 
 export function ThemeToggle() {
