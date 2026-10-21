@@ -1,37 +1,35 @@
 "use client"
 
 import * as React from "react"
-import {
-  ArrowLeft,
-  ArrowRight,
-  Bell,
-  CloudSun,
-  Copy,
-  FilePlus2,
-  FolderPlus,
-  ImagePlus,
-  MoreHorizontal,
-  PanelLeft,
-  Pause,
-  Play,
-  Plus,
-  Share as ShareIcon,
-  SkipBack,
-  SkipForward,
-  Star,
-  Sun as SunIcon,
-  Tag,
-  Trash2,
-  Compass,
-  Flame,
-  House,
-  Library,
-  Moon,
-  Search,
-  Sun,
-  Volume2,
-  Wifi,
-} from "lucide-react"
+import { FolderPlus } from "lucide-react"
+import { ArrowLeft } from "@/components/animate-ui/icons/arrow-left"
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right"
+import { Bell } from "@/components/animate-ui/icons/bell"
+import { CloudSun } from "@/components/animate-ui/icons/cloud-sun"
+import { Copy } from "@/components/animate-ui/icons/copy"
+import { FilePlus as FilePlus2 } from "@/components/animate-ui/icons/file-plus"
+import { Image as ImagePlus } from "@/components/animate-ui/icons/image"
+import { Ellipsis as MoreHorizontal } from "@/components/animate-ui/icons/ellipsis"
+import { PanelLeft } from "@/components/animate-ui/icons/panel-left"
+import { Pause } from "@/components/animate-ui/icons/pause"
+import { Play } from "@/components/animate-ui/icons/play"
+import { Plus } from "@/components/animate-ui/icons/plus"
+import { Share as ShareIcon } from "@/components/animate-ui/icons/share"
+import { SkipBack } from "@/components/animate-ui/icons/skip-back"
+import { SkipForward } from "@/components/animate-ui/icons/skip-forward"
+import { Star } from "@/components/animate-ui/icons/star"
+import { Sun as SunIcon } from "@/components/animate-ui/icons/sun"
+import { Tag } from "@/components/animate-ui/icons/tag"
+import { Trash2 } from "@/components/animate-ui/icons/trash-2"
+import { Compass } from "@/components/animate-ui/icons/compass"
+import { Flame } from "@/components/animate-ui/icons/flame"
+import { House } from "@/components/animate-ui/icons/house"
+import { LibraryBig as Library } from "@/components/animate-ui/icons/library-big"
+import { Moon } from "@/components/animate-ui/icons/moon"
+import { Search } from "@/components/animate-ui/icons/search"
+import { Sun } from "@/components/animate-ui/icons/sun"
+import { Volume2 } from "@/components/animate-ui/icons/volume-2"
+import { Wifi } from "@/components/animate-ui/icons/wifi"
 import {
   AnimatePresence,
   animate,
@@ -113,12 +111,13 @@ const feed = [
 
 export function PhoneDemo() {
   return (
-    <div className="relative h-[560px] w-full max-w-[300px] overflow-hidden rounded-[44px] border-[6px] border-foreground/10 bg-background shadow-2xl">
-      <div className="h-full overflow-y-auto px-4 pt-14 pb-28 [scrollbar-width:none]">
+    <div className="relative h-[640px] w-full max-w-[340px] overflow-hidden rounded-[48px] border-[6px] border-foreground/10 bg-background shadow-2xl">
+      <div className="h-full overflow-y-auto px-4 pt-14 pb-28 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <p className="text-[26px] font-bold tracking-tight">Listen now</p>
         <div className="mt-4 grid grid-cols-2 gap-3">
           {feed.map((item) => (
             <div key={item.title} className="flex flex-col gap-1.5">
+              {/* concentric-ignore: album art in the middle of the screen, not in the phone's corner */}
               <div
                 className={`relative aspect-square overflow-hidden rounded-2xl bg-linear-to-br ${item.tone}`}
               >
