@@ -164,11 +164,12 @@
       "title": "Copy Button",
       "description": "A copy button whose icon morphs into a check, with an optional Copied bubble.",
       "dependencies": [
-        "lucide-react",
         "motion"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-check",
+        "@animate-ui/icons-copy"
       ],
       "files": [
         {
@@ -442,151 +443,9 @@
       }
     },
     {
-      "name": "flame-footer",
-      "type": "registry:ui",
-      "title": "Flame Footer",
-      "description": "A page footer on a field of flame: brand and links on top, a big headline, and small print resting on the fire.",
-      "dependencies": [],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "components/ui/flame-footer.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "components/ui/flame-field.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "lib/afterglow.ts",
-          "type": "registry:lib"
-        }
-      ],
-      "cssVars": {
-        "theme": {
-          "color-glow": "var(--glow)",
-          "color-glow-foreground": "var(--glow-foreground)",
-          "color-glow-2": "var(--glow-2)",
-          "color-glow-3": "var(--glow-3)",
-          "color-glass": "var(--glass)",
-          "color-gloss-highlight": "var(--gloss-highlight)",
-          "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
-          "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
-          "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
-        },
-        "light": {
-          "glow": "oklch(0.7 0.19 45)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.64 0.22 12)",
-          "glow-3": "oklch(0.56 0.21 300)",
-          "glass": "oklch(1 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 95%)",
-          "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
-          "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
-          "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
-          "liquid-tint": "oklch(1 0 0 / 18%)",
-          "liquid-fallback": "oklch(1 0 0 / 55%)",
-          "liquid-rim": "oklch(1 0 0 / 95%)",
-          "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
-          "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
-          "liquid-glow": "oklch(1 0 0 / 55%)",
-          "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
-        },
-        "dark": {
-          "glow": "oklch(0.8 0.16 55)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.7 0.2 15)",
-          "glow-3": "oklch(0.65 0.2 300)",
-          "glass": "oklch(0.19 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 16%)",
-          "gloss-shade": "oklch(0 0 0 / 30%)",
-          "gloss-depth": "oklch(0.04 0 0 / 55%)",
-          "gloss-edge": "oklch(1 0 0 / 8%)",
-          "liquid-tint": "oklch(0.2 0 0 / 22%)",
-          "liquid-fallback": "oklch(0.2 0 0 / 45%)",
-          "liquid-rim": "oklch(1 0 0 / 60%)",
-          "liquid-edge": "oklch(1 0 0 / 10%)",
-          "liquid-shadow": "oklch(0 0 0 / 45%)",
-          "liquid-glow": "oklch(1 0 0 / 24%)",
-          "liquid-shade": "oklch(0 0 0 / 28%)"
-        }
-      }
-    },
-    {
-      "name": "rail-path",
-      "type": "registry:ui",
-      "title": "Rail Path",
-      "description": "The geometry the rail components share: a path through every row, with rounded jogs and hooks.",
-      "dependencies": [],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "components/ui/rail-path.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "lib/afterglow.ts",
-          "type": "registry:lib"
-        }
-      ],
-      "cssVars": {
-        "theme": {
-          "color-glow": "var(--glow)",
-          "color-glow-foreground": "var(--glow-foreground)",
-          "color-glow-2": "var(--glow-2)",
-          "color-glow-3": "var(--glow-3)",
-          "color-glass": "var(--glass)",
-          "color-gloss-highlight": "var(--gloss-highlight)",
-          "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
-          "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
-          "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
-        },
-        "light": {
-          "glow": "oklch(0.7 0.19 45)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.64 0.22 12)",
-          "glow-3": "oklch(0.56 0.21 300)",
-          "glass": "oklch(1 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 95%)",
-          "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
-          "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
-          "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
-          "liquid-tint": "oklch(1 0 0 / 18%)",
-          "liquid-fallback": "oklch(1 0 0 / 55%)",
-          "liquid-rim": "oklch(1 0 0 / 95%)",
-          "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
-          "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
-          "liquid-glow": "oklch(1 0 0 / 55%)",
-          "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
-        },
-        "dark": {
-          "glow": "oklch(0.8 0.16 55)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.7 0.2 15)",
-          "glow-3": "oklch(0.65 0.2 300)",
-          "glass": "oklch(0.19 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 16%)",
-          "gloss-shade": "oklch(0 0 0 / 30%)",
-          "gloss-depth": "oklch(0.04 0 0 / 55%)",
-          "gloss-edge": "oklch(1 0 0 / 8%)",
-          "liquid-tint": "oklch(0.2 0 0 / 22%)",
-          "liquid-fallback": "oklch(0.2 0 0 / 45%)",
-          "liquid-rim": "oklch(1 0 0 / 60%)",
-          "liquid-edge": "oklch(1 0 0 / 10%)",
-          "liquid-shadow": "oklch(0 0 0 / 45%)",
-          "liquid-glow": "oklch(1 0 0 / 24%)",
-          "liquid-shade": "oklch(0 0 0 / 28%)"
-        }
-      }
-    },
-    {
       "name": "rail-nav",
       "type": "registry:ui",
-      "title": "Rail Nav",
+      "title": "Side Navigation",
       "description": "A sidebar on a dashed rail: a solid line hooks into the current page and a quieter one reaches out to the row under your pointer.",
       "dependencies": [
         "motion"
@@ -661,7 +520,7 @@
     {
       "name": "reading-rail",
       "type": "registry:ui",
-      "title": "Reading Rail",
+      "title": "Table of Contents",
       "description": "A table of contents on a dashed rail that bends where headings are indented and fills as you read, with an ember at its tip.",
       "dependencies": [
         "motion"
@@ -811,10 +670,13 @@
       "description": "A workspace sidebar with a continuous contour that opens around hovered links and flows back to your selection.",
       "dependencies": [
         "motion",
-        "lucide-react"
+        "tailwindcss-concentric"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-chevron-right",
+        "@animate-ui/icons-search",
+        "@animate-ui/icons-x"
       ],
       "files": [
         {
@@ -882,6 +744,9 @@
           "liquid-glow": "oklch(1 0 0 / 24%)",
           "liquid-shade": "oklch(0 0 0 / 28%)"
         }
+      },
+      "css": {
+        "@import \"tailwindcss-concentric\"": {}
       }
     },
     {
@@ -890,10 +755,13 @@
       "title": "Liquid Search",
       "description": "A frosted search capsule with a glass icon lens, accent focus, and one-click clearing.",
       "dependencies": [
-        "motion"
+        "motion",
+        "tailwindcss-concentric"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-search",
+        "@animate-ui/icons-x"
       ],
       "files": [
         {
@@ -957,6 +825,9 @@
           "liquid-glow": "oklch(1 0 0 / 24%)",
           "liquid-shade": "oklch(0 0 0 / 28%)"
         }
+      },
+      "css": {
+        "@import \"tailwindcss-concentric\"": {}
       }
     },
     {
@@ -1044,77 +915,6 @@
       "files": [
         {
           "path": "components/ui/gloss-button.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "lib/afterglow.ts",
-          "type": "registry:lib"
-        }
-      ],
-      "cssVars": {
-        "theme": {
-          "color-glow": "var(--glow)",
-          "color-glow-foreground": "var(--glow-foreground)",
-          "color-glow-2": "var(--glow-2)",
-          "color-glow-3": "var(--glow-3)",
-          "color-glass": "var(--glass)",
-          "color-gloss-highlight": "var(--gloss-highlight)",
-          "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
-          "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
-          "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
-        },
-        "light": {
-          "glow": "oklch(0.7 0.19 45)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.64 0.22 12)",
-          "glow-3": "oklch(0.56 0.21 300)",
-          "glass": "oklch(1 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 95%)",
-          "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
-          "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
-          "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
-          "liquid-tint": "oklch(1 0 0 / 18%)",
-          "liquid-fallback": "oklch(1 0 0 / 55%)",
-          "liquid-rim": "oklch(1 0 0 / 95%)",
-          "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
-          "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
-          "liquid-glow": "oklch(1 0 0 / 55%)",
-          "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
-        },
-        "dark": {
-          "glow": "oklch(0.8 0.16 55)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.7 0.2 15)",
-          "glow-3": "oklch(0.65 0.2 300)",
-          "glass": "oklch(0.19 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 16%)",
-          "gloss-shade": "oklch(0 0 0 / 30%)",
-          "gloss-depth": "oklch(0.04 0 0 / 55%)",
-          "gloss-edge": "oklch(1 0 0 / 8%)",
-          "liquid-tint": "oklch(0.2 0 0 / 22%)",
-          "liquid-fallback": "oklch(0.2 0 0 / 45%)",
-          "liquid-rim": "oklch(1 0 0 / 60%)",
-          "liquid-edge": "oklch(1 0 0 / 10%)",
-          "liquid-shadow": "oklch(0 0 0 / 45%)",
-          "liquid-glow": "oklch(1 0 0 / 24%)",
-          "liquid-shade": "oklch(0 0 0 / 28%)"
-        }
-      }
-    },
-    {
-      "name": "sheen-card",
-      "type": "registry:ui",
-      "title": "Sheen Card",
-      "description": "A card that tilts toward your pointer while reflected light slides across it.",
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "components/ui/sheen-card.tsx",
           "type": "registry:ui"
         },
         {
@@ -1395,11 +1195,11 @@
       "title": "Glass Toaster",
       "description": "Frosted toasts that stack, fan out, swipe away, and burn down like an ember.",
       "dependencies": [
-        "lucide-react",
         "motion"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-x"
       ],
       "files": [
         {
@@ -2425,78 +2225,6 @@
       }
     },
     {
-      "name": "auth-parts",
-      "type": "registry:ui",
-      "title": "Auth Parts",
-      "description": "Shared pieces for auth forms: provider buttons with brand marks, fields, a divider and a submit hook.",
-      "dependencies": [
-        "lucide-react",
-        "motion"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "components/ui/auth-parts.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "lib/afterglow.ts",
-          "type": "registry:lib"
-        }
-      ],
-      "cssVars": {
-        "theme": {
-          "color-glow": "var(--glow)",
-          "color-glow-foreground": "var(--glow-foreground)",
-          "color-glow-2": "var(--glow-2)",
-          "color-glow-3": "var(--glow-3)",
-          "color-glass": "var(--glass)",
-          "color-gloss-highlight": "var(--gloss-highlight)",
-          "shadow-gloss": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -1px 0 0 var(--gloss-shade), 0 0 0 1px var(--gloss-edge), 0 1px 2px 0 var(--gloss-depth), 0 4px 12px -4px var(--gloss-depth)",
-          "shadow-glass": "inset 0 1px 0 0 var(--gloss-highlight), inset 0 -10px 24px -18px var(--gloss-shade), inset 0 0 0 1px var(--gloss-edge), 0 2px 6px -1px var(--gloss-depth), 0 18px 40px -12px var(--gloss-depth)",
-          "shadow-well": "inset 0 1px 3px 0 var(--gloss-depth), inset 0 0 0 1px var(--gloss-edge), 0 1px 0 0 var(--gloss-highlight)"
-        },
-        "light": {
-          "glow": "oklch(0.7 0.19 45)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.64 0.22 12)",
-          "glow-3": "oklch(0.56 0.21 300)",
-          "glass": "oklch(1 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 95%)",
-          "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
-          "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
-          "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
-          "liquid-tint": "oklch(1 0 0 / 18%)",
-          "liquid-fallback": "oklch(1 0 0 / 55%)",
-          "liquid-rim": "oklch(1 0 0 / 95%)",
-          "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
-          "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
-          "liquid-glow": "oklch(1 0 0 / 55%)",
-          "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
-        },
-        "dark": {
-          "glow": "oklch(0.8 0.16 55)",
-          "glow-foreground": "oklch(0.22 0.05 40)",
-          "glow-2": "oklch(0.7 0.2 15)",
-          "glow-3": "oklch(0.65 0.2 300)",
-          "glass": "oklch(0.19 0 0 / 55%)",
-          "gloss-highlight": "oklch(1 0 0 / 16%)",
-          "gloss-shade": "oklch(0 0 0 / 30%)",
-          "gloss-depth": "oklch(0.04 0 0 / 55%)",
-          "gloss-edge": "oklch(1 0 0 / 8%)",
-          "liquid-tint": "oklch(0.2 0 0 / 22%)",
-          "liquid-fallback": "oklch(0.2 0 0 / 45%)",
-          "liquid-rim": "oklch(1 0 0 / 60%)",
-          "liquid-edge": "oklch(1 0 0 / 10%)",
-          "liquid-shadow": "oklch(0 0 0 / 45%)",
-          "liquid-glow": "oklch(1 0 0 / 24%)",
-          "liquid-shade": "oklch(0 0 0 / 28%)"
-        }
-      }
-    },
-    {
       "name": "auth-silk",
       "type": "registry:block",
       "title": "Auth: Silk",
@@ -2506,7 +2234,10 @@
         "motion"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-arrow-left",
+        "@animate-ui/icons-fingerprint",
+        "@animate-ui/icons-loader-circle"
       ],
       "files": [
         {
@@ -2591,7 +2322,10 @@
         "motion"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-check",
+        "@animate-ui/icons-fingerprint",
+        "@animate-ui/icons-loader-circle"
       ],
       "files": [
         {
@@ -2672,7 +2406,10 @@
         "motion"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-arrow-left",
+        "@animate-ui/icons-fingerprint",
+        "@animate-ui/icons-loader-circle"
       ],
       "files": [
         {
@@ -2757,7 +2494,10 @@
         "motion"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "@animate-ui/icons-arrow-left",
+        "@animate-ui/icons-fingerprint",
+        "@animate-ui/icons-loader-circle"
       ],
       "files": [
         {
