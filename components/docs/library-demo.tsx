@@ -27,13 +27,6 @@ const scenes = {
       </p>
     ),
   }),
-  lens: dynamic(() => import("./showcases/lens"), {
-    loading: () => (
-      <p role="status" className="ag-demo-loading">
-        Loading preview…
-      </p>
-    ),
-  }),
   "metal-hero": dynamic(() => import("./showcases/metal-hero"), {
     loading: () => (
       <p role="status" className="ag-demo-loading">
@@ -56,13 +49,6 @@ const scenes = {
     ),
   }),
   gloss: dynamic(() => import("./showcases/gloss"), {
-    loading: () => (
-      <p role="status" className="ag-demo-loading">
-        Loading preview…
-      </p>
-    ),
-  }),
-  sheen: dynamic(() => import("./showcases/sheen"), {
     loading: () => (
       <p role="status" className="ag-demo-loading">
         Loading preview…
@@ -139,7 +125,14 @@ const scenes = {
       </p>
     ),
   }),
-  navigation: dynamic(() => import("./showcases/navigation"), {
+  "rail-nav": dynamic(() => import("./showcases/rail-nav"), {
+    loading: () => (
+      <p role="status" className="ag-demo-loading">
+        Loading preview…
+      </p>
+    ),
+  }),
+  "reading-rail": dynamic(() => import("./showcases/reading-rail"), {
     loading: () => (
       <p role="status" className="ag-demo-loading">
         Loading preview…
@@ -147,13 +140,6 @@ const scenes = {
     ),
   }),
   chat: dynamic(() => import("./showcases/chat"), {
-    loading: () => (
-      <p role="status" className="ag-demo-loading">
-        Loading preview…
-      </p>
-    ),
-  }),
-  footer: dynamic(() => import("./showcases/footer"), {
     loading: () => (
       <p role="status" className="ag-demo-loading">
         Loading preview…
@@ -191,8 +177,6 @@ const scenes = {
 }
 const foundations = {
   "afterglow-theme": dynamic(() => import("./examples/afterglow-theme")),
-  "rail-path": dynamic(() => import("./examples/rail-path")),
-  "auth-parts": dynamic(() => import("./examples/auth-parts")),
 }
 
 export function LibraryDemo({ name }: { name: ComponentName }) {
