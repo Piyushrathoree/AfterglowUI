@@ -1,4 +1,5 @@
-import { Flame, Sparkles } from "lucide-react"
+import { Flame } from "@/components/animate-ui/icons/flame"
+import { Sparkles } from "@/components/animate-ui/icons/sparkles"
 import { GlossButton } from "@/components/ui/gloss-button"
 
 export function GlossButtonsShowcase() {

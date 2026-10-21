@@ -1,4 +1,6 @@
-import { ChevronLeft, ChevronRight, Share } from "lucide-react"
+import { ChevronLeft } from "@/components/animate-ui/icons/chevron-left"
+import { ChevronRight } from "@/components/animate-ui/icons/chevron-right"
+import { Share } from "@/components/animate-ui/icons/share"
 import { LiquidButton } from "@/components/ui/liquid-button"
 import { ControlCenterDemo } from "./liquid-demos"
 

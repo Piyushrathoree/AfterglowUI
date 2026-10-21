@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { BellRing, Check, Inbox, Undo2 } from "lucide-react"
+import { Inbox } from "lucide-react"
+import { BellRing } from "@/components/animate-ui/icons/bell-ring"
+import { Check } from "@/components/animate-ui/icons/check"
+import { Undo2 } from "@/components/animate-ui/icons/undo-2"
 
 import { GlassSlider } from "@/components/ui/glass-slider"
 import { GlassSwitch } from "@/components/ui/glass-switch"

@@ -1,4 +1,5 @@
-import { ArrowRight, Check } from "lucide-react"
+import { ArrowRight } from "@/components/animate-ui/icons/arrow-right"
+import { Check } from "@/components/animate-ui/icons/check"
 
 import { LiquidMetal } from "@/components/ui/liquid-metal"
 import { MetalButton } from "@/components/ui/metal-button"
