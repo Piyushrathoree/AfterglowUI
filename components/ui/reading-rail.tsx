@@ -25,31 +25,36 @@ type ReadingRailProps = Omit<React.ComponentProps<"nav">, "children"> & {
   title?: string
   /** Controls the active item for route-based navigation instead of scroll tracking. */
   activeId?: string
+  /** Called when a controlled item is selected. */
+  onActiveIdChange?: (id: string) => void
+  /** Enlarges the rail for a standalone contents view. */
+  size?: "default" | "large"
 }
 
 const RAIL_X = 7
 const STEP = 14
 
 // a table of contents on a dashed rail that bends in where a heading is indented. a solid line fills
-// the rail as you read, and a small ember at its tip turns with every bend
-function ReadingRail({ items, container = null, offset = 24, title = "On this page", activeId, className, ...props }: ReadingRailProps) {
+// the rail as you read, and a small endpoint bead follows the path
+function ReadingRail({ items, container = null, offset = 24, title = "On this page", activeId, onActiveIdChange, size = "default", className, ...props }: ReadingRailProps) {
   const reduceMotion = useReducedMotion()
+  const large = size === "large"
+  const railX = large ? 12 : RAIL_X
+  const step = large ? 20 : STEP
   const list = React.useRef<HTMLUListElement>(null)
   const base = React.useRef<SVGPathElement>(null)
   const trackRef = React.useRef<RailTrack | null>(null)
   const [current, setCurrent] = React.useState(0)
-  const [percent, setPercent] = React.useState(0)
   const position = useMotionValue(0)
 
-  const rows = useRailRows(list, RAIL_X, STEP, items)
+  const rows = useRailRows(list, railX, step, items)
   const track = React.useMemo(() => buildTrack(rows ?? []), [rows])
 
-  // the fill, in px along the path. one spring drives the line and the ember together
+  // the fill, in px along the path. one spring drives the line and endpoint bead together
   const reached = useSpring(0, reduceMotion ? { duration: 0 } : { stiffness: 200, damping: 30, mass: 0.7 })
   const fill = useMotionValue(0)
-  const x = useMotionValue(RAIL_X)
+  const x = useMotionValue(railX)
   const y = useMotionValue(0)
-  const angle = useMotionValue(0)
 
   React.useEffect(() => {
     trackRef.current = track
@@ -66,13 +71,10 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
       if (!path || !total) return
       fill.set(Math.min(length / total, 1))
       const here = path.getPointAtLength(Math.min(length, total))
-      const ahead = path.getPointAtLength(Math.min(length + 1, total))
-      const behind = path.getPointAtLength(Math.max(length - 1, 0))
       x.set(here.x)
       y.set(here.y)
-      angle.set((Math.atan2(-(ahead.x - behind.x), ahead.y - behind.y) * 180) / Math.PI)
     },
-    [angle, fill, x, y]
+    [fill, x, y]
   )
 
   React.useEffect(() => reached.on("change", place), [place, reached])
@@ -80,19 +82,46 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
   // when the rows are measured or move, put the ember back where the rail now is
   React.useEffect(() => place(reached.get()), [place, reached, track])
 
+  // keep the active row visible when the rail itself sits inside a scrollable sidebar
+  React.useEffect(() => {
+    if (current < 0) return
+    const row = list.current?.children.item(current)?.querySelector<HTMLElement>("button, a")
+    if (!row) return
+
+    let viewport = list.current?.parentElement ?? null
+    while (viewport && viewport !== document.body && viewport !== document.documentElement) {
+      const style = window.getComputedStyle(viewport)
+      const canScroll = /auto|scroll/.test(style.overflowY) && viewport.scrollHeight > viewport.clientHeight + 1
+      if (canScroll) {
+        const rowBounds = row.getBoundingClientRect()
+        const viewportBounds = viewport.getBoundingClientRect()
+        const top = viewportBounds.top + viewport.clientTop
+        const bottom = top + viewport.clientHeight
+        const margin = 12
+
+        if (rowBounds.top < top + margin) {
+          viewport.scrollTo({ top: viewport.scrollTop + rowBounds.top - top - margin, behavior: reduceMotion ? "auto" : "smooth" })
+        } else if (rowBounds.bottom > bottom - margin) {
+          viewport.scrollTo({ top: viewport.scrollTop + rowBounds.bottom - bottom + margin, behavior: reduceMotion ? "auto" : "smooth" })
+        }
+        return
+      }
+      viewport = viewport.parentElement
+    }
+  }, [current, reduceMotion])
+
   React.useEffect(() => {
     let frame = 0
     const measure = () => {
       frame = 0
       if (activeId !== undefined) {
         const index = items.findIndex((item) => item.id === activeId)
-        if (index < 0) { position.set(0); reached.jump(0); setCurrent(-1); setPercent(0); return }
+        if (index < 0) { position.set(0); reached.jump(0); setCurrent(-1); return }
         position.set(index)
         const length = lengthAt(trackRef.current ?? track, index)
         if (reduceMotion) reached.jump(length)
         else reached.set(length)
         setCurrent(index)
-        setPercent(items.length > 1 ? Math.round(index / (items.length - 1) * 100) : 0)
         return
       }
       const top = container ? container.getBoundingClientRect().top : 0
@@ -106,7 +135,8 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
         ? container.scrollHeight - container.clientHeight
         : document.documentElement.scrollHeight - window.innerHeight
       const scrolled = container ? container.scrollTop : window.scrollY
-      const atEnd = scrollable > 0 && scrolled >= scrollable - 2
+      // scroll snapping can settle a few pixels before the exact scroll limit
+      const atEnd = scrollable > 0 && scrolled >= scrollable - Math.max(24, offset)
       let next: number
       if (atEnd) next = items.length - 1
       else if (index < 0) next = 0
@@ -120,7 +150,6 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
       if (reduceMotion) reached.jump(length)
       else reached.set(length)
       setCurrent(atEnd ? items.length - 1 : Math.max(index, 0))
-      setPercent(scrollable > 0 ? Math.round(Math.min(Math.max(scrolled / scrollable, 0), 1) * 100) : 0)
     }
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(measure)
@@ -137,6 +166,10 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
   }, [activeId, container, items, offset, position, reached, reduceMotion, track])
 
   function go(id: string) {
+    if (activeId !== undefined) {
+      onActiveIdChange?.(id)
+      return
+    }
     const target = document.getElementById(id)
     if (!target) return
     const behavior = reduceMotion ? "auto" : "smooth"
@@ -149,28 +182,39 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
   }
 
   return (
-    <nav data-slot="reading-rail" aria-label={title} className={cn("relative", className)} {...props}>
-      <div className="mb-3 flex items-baseline justify-between pl-7">
-        <p className="text-[11px] font-medium tracking-[0.08em] text-foreground/45 uppercase">{title}</p>
-        <p className="text-[11px] text-foreground/45 tabular-nums">{percent}%</p>
+    <nav data-slot="reading-rail" data-size={size} aria-label={title} className={cn("relative", className)} {...props}>
+      <div className={cn("mb-4 flex items-center pl-7", large && "mb-5 gap-4 pl-0 sm:mb-6")}>
+        {large && (
+          <span aria-hidden className="flex w-6 shrink-0 flex-col gap-[4px] text-foreground/55">
+            <span className="h-[2px] w-full rounded-full bg-current" />
+            <span className="h-[2px] w-[17px] rounded-full bg-current" />
+            <span className="h-[2px] w-[21px] rounded-full bg-current" />
+          </span>
+        )}
+        <p className={cn("text-[13px] font-medium tracking-tight text-foreground/70", large && "text-[24px] leading-tight font-normal text-foreground/65 sm:text-[30px]")}>{title}</p>
       </div>
       <ul ref={list} className="relative flex flex-col">
         {rows && track.d && (
-          <svg aria-hidden className="pointer-events-none absolute top-0 left-0 h-full w-8 overflow-visible">
+          <svg aria-hidden className={cn("pointer-events-none absolute top-0 left-0 h-full overflow-visible", large ? "w-16" : "w-8")}>
             <path ref={base} d={track.d} fill="none" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="0.1 5" className="stroke-foreground/35" />
-            <motion.path d={track.d} fill="none" strokeWidth="1.75" strokeLinecap="round" className="stroke-glow" style={{ pathLength: fill }} />
+            <motion.path d={track.d} fill="none" strokeWidth={large ? 2 : 1.75} strokeLinecap="round" className={large ? "stroke-foreground/55" : "stroke-glow"} style={{ pathLength: fill }} />
             {rows.map((row, index) => (
               <circle
                 key={index}
                 cx={row.x}
                 cy={row.y}
-                r={index === current ? 3.25 : 2.25}
-                className={cn(index <= current ? "fill-glow" : "fill-background stroke-foreground/35", "transition-[r] duration-200")}
-                strokeWidth="1.25"
+                r={large ? (index === current ? 4 : 3.5) : (index === current ? 3.25 : 2.25)}
+                className={cn(index <= current ? (large ? "fill-foreground/35" : "fill-glow") : "fill-background stroke-foreground/35", "transition-[r] duration-200")}
+                strokeWidth={large ? 1.5 : 1.25}
               />
             ))}
-            <motion.g style={{ x, y, rotate: angle, opacity: current < 0 ? 0 : 1 }}>
-              <rect x="-2.5" y="-6.5" width="5" height="13" rx="2.5" className="fill-glow stroke-background" strokeWidth="2" paintOrder="stroke" />
+            <motion.g style={{ x, y, opacity: current < 0 ? 0 : 1 }}>
+              <circle
+                r={large ? 5.5 : 4.25}
+                className={large ? "fill-background stroke-foreground/75" : "fill-background stroke-glow"}
+                strokeWidth={large ? 1.75 : 1.5}
+              />
+              <circle r={large ? 1.8 : 1.5} className={large ? "fill-foreground" : "fill-glow"} />
             </motion.g>
           </svg>
         )}
@@ -184,10 +228,10 @@ function ReadingRail({ items, container = null, offset = 24, title = "On this pa
               onClick={item.href ? undefined : () => go(item.id)}
               aria-current={index === current ? "location" : undefined}
               className={cn(
-                "flex min-h-8 w-full cursor-pointer items-center rounded-lg py-1.5 pr-2 text-left text-[13px] leading-snug outline-none transition-colors duration-150 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+                cn("flex min-h-8 w-full cursor-pointer items-center rounded-lg py-1.5 pr-2 text-left text-[13px] leading-snug outline-none transition-colors duration-150 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring", large && "min-h-[48px] rounded-none py-1.5 text-[20px] sm:min-h-[52px] sm:text-[24px]"),
                 index === current ? "font-medium text-foreground" : index < current ? "text-foreground/70 hover:text-foreground" : "text-foreground/45 hover:text-foreground"
               )}
-              style={{ paddingLeft: 28 + (item.depth ?? 0) * STEP }}
+              style={{ paddingLeft: (large ? 40 : 28) + (item.depth ?? 0) * step }}
             >
               {item.label}
             </Element>
