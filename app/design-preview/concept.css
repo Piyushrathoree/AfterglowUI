@@ -1,12 +1,13 @@
 .ag-concept { --ag-line: color-mix(in oklch,var(--foreground) 8%,transparent); --ag-text: color-mix(in oklch,var(--foreground) 66%,transparent); display:grid; grid-template-columns:224px minmax(0,1fr); gap:10px; height:100dvh; padding:8px; background:var(--background); color:var(--foreground); }
 body:has(.ag-concept) { overflow:hidden; }
-.ag-concept :where(button,a,input):focus-visible { outline:2px solid var(--ring); outline-offset:3px; }
+.ag-concept :where(button,a):focus-visible { outline:2px solid var(--ring); outline-offset:3px; }
 .ag-concept button { cursor:pointer; }
 .ag-sidebar { position:relative; min-height:0; border-radius:20px; background:transparent; }
 .ag-sidebar-content { position:relative; display:flex; flex-direction:column; height:100%; min-height:0; padding:20px 16px 16px; }
 .ag-brand { display:flex; align-items:center; gap:10px; margin-bottom:30px; font-size:calc(20px * var(--app-font-scale)); line-height:28px; font-weight:550; letter-spacing:-.7px; }
 .ag-brand > svg { color:var(--glow); }
-.ag-search { display:flex; align-items:center; gap:8px; min-height:38px; margin-bottom:32px; padding:0 10px; border:1px solid var(--ag-line); border-radius:9px; color:var(--ag-text); }
+.ag-search { display:flex; align-items:center; gap:8px; min-height:38px; margin-bottom:32px; padding:0 10px; border:1px solid var(--ag-line); border-radius:9px; color:var(--ag-text); transition:border-color 160ms,box-shadow 160ms; }
+.ag-search:focus-within { border-color:color-mix(in oklch,var(--ring) 52%,var(--ag-line)); box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 14%,transparent); }
 .ag-search input { min-width:0; flex:1; background:transparent; outline:none; font-size:calc(12px * var(--app-font-scale)); }
 .ag-nav { flex:1; min-height:0; overflow-y:auto; scrollbar-width:thin; }
 .ag-nav [data-slot="reading-rail"] > div { padding-left:28px; }
@@ -61,15 +62,15 @@ body:has(.ag-concept) { overflow:hidden; }
 .ag-doc-article th { font-weight:500; padding:0 20px 12px 0; color:var(--ag-text); border-bottom:1px solid var(--ag-line); }
 .ag-doc-article td { border-bottom:1px solid var(--ag-line); padding:16px 14px 16px 0; vertical-align:top; }
 .ag-doc-article td:nth-child(2) { color:var(--ag-text); }
-.ag-doc-article td code { font-family:var(--font-geist-mono),monospace; font-size:calc(12px * var(--app-font-scale)); }
+.ag-doc-article td code { font-family:var(--font-afterglow-mono),monospace; font-size:calc(12px * var(--app-font-scale)); }
 .ag-source { min-width:0; max-width:1200px; margin:0 auto; }
-.ag-source summary { cursor:pointer; overflow-wrap:anywhere; font-size:calc(13px * var(--app-font-scale)); padding:18px 0; font-family:var(--font-geist-mono),monospace; }
+.ag-source summary { cursor:pointer; overflow-wrap:anywhere; font-size:calc(13px * var(--app-font-scale)); padding:18px 0; font-family:var(--font-afterglow-mono),monospace; }
 .ag-source details + details { margin-top:24px; }
 .ag-source .docs-code { position:relative; border:1px solid var(--ag-line); border-radius:12px; overflow:hidden; background:color-mix(in oklch,var(--background) 40%,var(--card)); }
 .ag-concept .docs-copy { display:grid; place-items:center; width:30px; height:30px; border:1px solid var(--ag-line); border-radius:7px; color:var(--ag-text); background:var(--card); }
 .ag-concept .docs-copy svg { width:14px; height:14px; }
 .ag-source .docs-code .docs-copy { position:absolute; z-index:1; right:12px; top:12px; }
-.ag-source .docs-code pre { padding:22px 54px 22px 20px; overflow:auto; background:transparent!important; font-family:var(--font-geist-mono),monospace; font-size:calc(13px * var(--app-font-scale)); line-height:1.85; tab-size:2; }
+.ag-source .docs-code pre { padding:22px 54px 22px 20px; overflow:auto; background:transparent!important; font-family:var(--font-afterglow-mono),monospace; font-size:calc(13px * var(--app-font-scale)); line-height:1.85; tab-size:2; }
 .ag-source .docs-code pre,.ag-source .docs-code pre span { color:var(--shiki-light,var(--foreground)); }
 .dark .ag-source .docs-code pre,.dark .ag-source .docs-code pre span { color:var(--shiki-dark,var(--foreground)); }
 .ag-source .docs-code-title { padding:12px 24px; border-bottom:1px solid var(--ag-line); font-size:calc(12px * var(--app-font-scale)); }
