@@ -58,28 +58,20 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
   const lineY = useSpring(0, { stiffness: 400, damping: 40, mass: 0.8 })
   const ready = React.useRef(false)
   const target = track?.rows[highlighted ?? ""]
-  // One continuous seam opens out around the current row, then rejoins below it.
-  // Keeping the same path commands lets direction changes stay interruptible.
-  const box = (y: number, width: number, height: number) => {
+  // Keep the active outline square and open on the rail side, so the rail joins
+  // the row cleanly with a compact, squarish corner radius.
+  const contour = useTransform([lineY, lineWidth, rowHeight], ([y, width, height]: number[]) => {
     const top = y - height / 2
     const bottom = y + height / 2
-    // every corner shares one radius, and the row stops short of the scrollbar
-    const r = Math.min(12, height / 2)
+    const radius = Math.min(8, height / 3)
     const right = Math.max(32, width - 6)
-    return { top, bottom, r, right, edge: `H ${right - r} Q ${right} ${top} ${right} ${top + r} V ${bottom - r} Q ${right} ${bottom} ${right - r} ${bottom} H ${9 + r}` }
-  }
-  const contour = useTransform([lineY, lineWidth, rowHeight], ([y, width, height]: number[]) => {
-    const { top, bottom, r, edge } = box(y, width, height)
-    return `M 9 ${top - r} Q 9 ${top} ${9 + r} ${top} ${edge} Q 9 ${bottom} 9 ${bottom + r}`
+    return `M 9 ${top - radius} Q 9 ${top} ${9 + radius} ${top} H ${right - radius} Q ${right} ${top} ${right} ${top + radius} V ${bottom - radius} Q ${right} ${bottom} ${right - radius} ${bottom} H ${9 + radius} Q 9 ${bottom} 9 ${bottom + radius}`
   })
-  const seam = useTransform([lineStart, lineEnd, lineY, lineWidth, rowHeight], ([start, end, y, width, height]: number[]) => {
-    const { top, bottom, r, edge } = box(y, width, height)
-    return `M 9 ${start} V ${top - r} Q 9 ${top} ${9 + r} ${top} ${edge} Q 9 ${bottom} 9 ${bottom + r} V ${end}`
-  })
-  // the fill follows the outline's rounded left corners instead of poking past them
-  const rowFill = useTransform([lineY, lineWidth, rowHeight], ([y, width, height]: number[]) => {
-    const { top, bottom, r, edge } = box(y, width, height)
-    return `M 9 ${top + r} Q 9 ${top} ${9 + r} ${top} ${edge} Q 9 ${bottom} 9 ${bottom - r} Z`
+  const seam = useTransform([lineStart, lineEnd, lineY, rowHeight], ([start, end, y, height]: number[]) => {
+    const top = y - height / 2
+    const bottom = y + height / 2
+    const radius = Math.min(8, height / 3)
+    return `M 9 ${start} V ${top - radius} M 9 ${bottom + radius} V ${end}`
   })
 
   function choose(id: string) {
@@ -163,7 +155,6 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
       {visible.length ? <nav ref={nav} className="relative py-3" aria-label={`${label} links`} onKeyDown={onKeyDown} onPointerLeave={() => setHovered(null)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(null) }}>
         {track && target !== undefined && <svg aria-hidden data-sidebar-line className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
           <defs><linearGradient id={`${uid}-line`} x1="0" y1="0" x2="1" y2="0"><stop stopColor="var(--glow)" stopOpacity="0.2" /><stop offset="0.5" stopColor="var(--glow)" stopOpacity="0.5" /><stop offset="1" stopColor="var(--glow)" stopOpacity="0.3" /></linearGradient></defs>
-          <motion.path data-sidebar-fill d={rowFill} fill="currentColor" fillOpacity="0.055" />
           <motion.path data-sidebar-seam d={seam} fill="none" stroke="currentColor" strokeOpacity="0.13" strokeWidth="1" strokeLinecap="round" />
           <motion.path data-sidebar-contour d={contour} fill="none" stroke={`url(#${uid}-line)`} strokeWidth="1" strokeLinecap="round" />
         </svg>}
