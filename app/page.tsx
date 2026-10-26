@@ -30,8 +30,65 @@ import { AccentPicker } from "@/components/ui/accent-picker"
 import { DocsDemo, GlassSidebarDemo } from "@/components/site/nav-demos"
 import { PageRail } from "@/components/site/page-rail"
 import { RailDemo } from "@/components/site/rail-demos"
+import {
+  FontPairingLab,
+  type FontPairOption,
+} from "@/components/site/font-pairing-lab"
 import { ThemeToggle } from "@/components/site/theme-toggle"
 import { cn } from "@/lib/utils"
+import { IBM_Plex_Mono, Inter, Manrope } from "next/font/google"
+
+const fontManrope = Manrope({
+  variable: "--font-lab-manrope",
+  subsets: ["latin"],
+  preload: false,
+})
+const fontInter = Inter({
+  variable: "--font-lab-inter",
+  subsets: ["latin"],
+  preload: false,
+})
+const fontIbmPlexMono = IBM_Plex_Mono({
+  weight: "400",
+  variable: "--font-lab-ibm-plex-mono",
+  subsets: ["latin"],
+  preload: false,
+})
+const fontPairs: FontPairOption[] = [
+  {
+    id: "dm-jetbrains",
+    name: "DM Sans + JetBrains Mono",
+    kind: "Sans + Mono",
+    display: "var(--font-afterglow-sans)",
+    body: "var(--font-afterglow-sans)",
+    mono: "var(--font-afterglow-mono)",
+    displayName: "DM Sans",
+    bodyName: "DM Sans",
+    monoName: "JetBrains Mono",
+  },
+  {
+    id: "manrope-inter",
+    name: "Manrope + Inter",
+    kind: "Sans + Sans",
+    display: "var(--font-lab-manrope)",
+    body: "var(--font-lab-inter)",
+    mono: "var(--font-afterglow-mono)",
+    displayName: "Manrope",
+    bodyName: "Inter",
+    monoName: "JetBrains Mono",
+  },
+  {
+    id: "inter-plex",
+    name: "Inter + IBM Plex Mono",
+    kind: "Sans + Mono",
+    display: "var(--font-lab-inter)",
+    body: "var(--font-lab-inter)",
+    mono: "var(--font-lab-ibm-plex-mono)",
+    displayName: "Inter",
+    bodyName: "Inter",
+    monoName: "IBM Plex Mono",
+  },
+]
 
 function Preview({
   name,
@@ -99,7 +156,14 @@ function Group({
 
 export default function Home() {
   return (
-    <div className="relative isolate min-h-screen">
+    <div
+      className={cn(
+        "relative isolate min-h-screen",
+        fontManrope.variable,
+        fontInter.variable,
+        fontIbmPlexMono.variable
+      )}
+    >
       <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6">
         <div className="flex items-center gap-2.5">
           <AfterglowMark className="size-5" />
@@ -136,6 +200,20 @@ export default function Home() {
             springs, and one material. Copy, paste, restyle.
           </p>
         </div>
+
+        <Group
+          id="typography"
+          title="Type pairings"
+          description="Compare Sans/Sans and Sans/Mono combinations against the same interface copy."
+        >
+          <Preview
+            name="font-pairing-lab"
+            description="Switch pairings to compare headline shape, reading texture, numerals, and code in the Afterglow palette."
+            className="lg:col-span-2"
+          >
+            <FontPairingLab pairs={fontPairs} />
+          </Preview>
+        </Group>
 
         <section
           id="auth"
@@ -353,7 +431,7 @@ export default function Home() {
         >
           <Preview
             name="rail-nav · reading-rail"
-            description="A sidebar and a table of contents drawn on one dashed rail. In the sidebar a solid line hooks into the page you are on, and a quieter one reaches out to the row under your pointer. In the contents, the rail bends in where a heading is indented, fills as you read, and an ember at its tip turns with each bend."
+            description="A sidebar and table of contents linked by one clear rail. In the contents, nested headings bend the path and the active section stays in view as you read."
             className="lg:col-span-2"
             flush
           >
@@ -362,7 +440,7 @@ export default function Home() {
 
           <Preview
             name="scroll-rail"
-            description="A column of ticks for a long scroll, here beside a live chat. Send a message and it adds a tick. The tick you are on is longer, ticks swell toward your pointer, and hovering one opens a preview that glides from tick to tick. Click to jump, or use the arrow keys."
+            description="A quiet document minimap with equal short dashes. Nearby marks expand toward the pointer, and the active block brightens as you read."
             className="lg:col-span-2"
             flush
           >
