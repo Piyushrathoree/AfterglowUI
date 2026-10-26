@@ -3,7 +3,6 @@
 import * as React from "react"
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, type MotionValue } from "motion/react"
 
-import { springs } from "@/lib/afterglow"
 import { cn } from "@/lib/utils"
 
 type ScrollRailItem = {
@@ -11,7 +10,7 @@ type ScrollRailItem = {
   id: string
   title: string
   excerpt?: string
-  /** items in the same group sit together; a new group starts with a little gap and a label */
+  /** optional group label shown in the hover preview */
   group?: string
 }
 
@@ -23,14 +22,14 @@ type ScrollRailProps = Omit<React.ComponentProps<"nav">, "children"> & {
   side?: "left" | "right"
 }
 
-const TICK = 14
-const REACH = 76
-const REST = 12
-const ACTIVE = 22
-const SWELL = 14
+const TICK = 9
+const REST = 8
+const REACH = 56
+const SWELL = 18
+const RAIL_SPRING = { type: "spring" as const, stiffness: 300, damping: 34, mass: 0.8 }
 
-// a column of ticks, one for each part of a long scroll. the tick you are on is longer, ticks
-// swell toward your pointer, and hovering one opens a preview that glides from tick to tick
+// a quiet document minimap: every mark rests at the same short length, nearby marks swell toward
+// the pointer, and the active mark brightens without changing size
 function ScrollRail({ items, container = null, side = "right", className, onPointerMove, onPointerLeave, ...props }: ScrollRailProps) {
   const reduceMotion = useReducedMotion()
   const [active, setActive] = React.useState(0)
@@ -67,8 +66,8 @@ function ScrollRail({ items, container = null, side = "right", className, onPoin
         if (node && node.getBoundingClientRect().top <= line) next = index
       })
       const atEnd = container
-        ? container.scrollTop + container.clientHeight >= container.scrollHeight - 2
-        : window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2
+        ? container.scrollTop + container.clientHeight >= container.scrollHeight - Math.max(24, height * 0.02)
+        : window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - Math.max(24, height * 0.02)
       const atStart = container ? container.scrollTop <= 2 : window.scrollY <= 2
       setActive(atStart ? 0 : atEnd ? items.length - 1 : next)
     }
@@ -114,7 +113,15 @@ function ScrollRail({ items, container = null, side = "right", className, onPoin
   function go(index: number) {
     pinned.current = index
     setActive(index)
-    find(items[index].id)?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" })
+    const target = find(items[index].id)
+    if (!target) return
+    const behavior = reduceMotion ? "auto" : "smooth"
+    if (container) {
+      const delta = target.getBoundingClientRect().top - (container.getBoundingClientRect().top + 20)
+      container.scrollTo({ top: container.scrollTop + delta, behavior })
+    } else {
+      target.scrollIntoView({ behavior, block: "start" })
+    }
   }
 
   function onKeyDown(event: React.KeyboardEvent, index: number) {
@@ -139,7 +146,7 @@ function ScrollRail({ items, container = null, side = "right", className, onPoin
     <nav
       data-slot="scroll-rail"
       aria-label="Jump to"
-      className={cn("relative w-8", className)}
+      className={cn("relative w-10", className)}
       onPointerMove={(event) => {
         onPointerMove?.(event)
         pointerY.set(event.clientY)
@@ -159,7 +166,6 @@ function ScrollRail({ items, container = null, side = "right", className, onPoin
               buttons.current[index] = node
             }}
             label={entry.title}
-            className={index > 0 && entry.group !== items[index - 1].group ? "mt-3" : undefined}
             side={side}
             active={index === active}
             pointerY={pointerY}
@@ -185,7 +191,7 @@ function ScrollRail({ items, container = null, side = "right", className, onPoin
               transition={{
                 opacity: { duration: 0.15 },
                 scale: { type: "spring", duration: 0.25, bounce: 0 },
-                y: reduceMotion ? { duration: 0 } : springs.snappy,
+                y: reduceMotion ? { duration: 0 } : RAIL_SPRING,
               }}
             >
               <div className="-translate-y-1/2 rounded-[20px] bg-glass p-3.5 shadow-glass backdrop-blur-2xl backdrop-saturate-150">
@@ -228,8 +234,8 @@ type TickProps = Omit<React.ComponentProps<"button">, "children"> & {
 function Tick({ ref, label, side, active, pointerY, className, ...props }: TickProps) {
   const reduceMotion = useReducedMotion()
   const node = React.useRef<HTMLButtonElement | null>(null)
-  const width = useSpring(REST, { stiffness: 420, damping: 32 })
-  const opacity = useSpring(0.3, { stiffness: 420, damping: 32 })
+  const width = useSpring(REST, RAIL_SPRING)
+  const opacity = useSpring(0.3, RAIL_SPRING)
 
   // swell with how near the pointer is, on top of the resting length
   React.useEffect(() => {
@@ -238,10 +244,11 @@ function Tick({ ref, label, side, active, pointerY, className, ...props }: TickP
       let near = 0
       if (Number.isFinite(y) && node.current) {
         const rect = node.current.getBoundingClientRect()
-        near = Math.max(0, 1 - Math.abs(y - (rect.top + rect.height / 2)) / REACH)
+        const proximity = Math.max(0, 1 - Math.abs(y - (rect.top + rect.height / 2)) / REACH)
+        near = proximity * proximity * (3 - 2 * proximity)
       }
-      const nextWidth = (active ? ACTIVE : REST) + SWELL * near
-      const nextOpacity = active ? 1 : 0.3 + 0.4 * near
+      const nextWidth = REST + SWELL * near
+      const nextOpacity = active ? 0.78 : 0.22 + 0.48 * near
       if (reduceMotion) {
         width.jump(nextWidth)
         opacity.jump(nextOpacity)
@@ -265,7 +272,7 @@ function Tick({ ref, label, side, active, pointerY, className, ...props }: TickP
       aria-label={label}
       aria-current={active ? "true" : undefined}
       className={cn(
-        "group flex w-8 cursor-pointer items-center rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+        "group flex w-10 cursor-pointer items-center rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
         side === "right" ? "justify-end" : "justify-start",
         className
       )}
