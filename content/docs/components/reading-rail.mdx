@@ -1,9 +1,9 @@
 ---
 title: "Table of Contents"
-description: "A table of contents on a dashed rail that bends where headings are indented and fills as you read, with an ember at its tip."
+description: "A spacious table of contents with a rail that bends around nested sections and follows the active heading."
 ---
 
-Match IDs to headings in the scrolling container. Omit container to track the page. The rail follows nested depths and respects reduced motion.
+Match item IDs to headings in the same scrolling area. Pass `container` for a scrollable article, or omit it to track the page. The rail keeps the active item in view and respects reduced motion.
 
 ## Installation
 
@@ -55,11 +55,13 @@ export default function Demo() {
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `items` | `ReadingRailItem[]` | The items option. |
-| `container?` | `HTMLElement \| null` | the element that scrolls; leave it out to follow the page |
-| `offset?` | `number` | how far below the top of the view a heading counts as reached, in px |
-| `title?` | `string` | The title option. |
-| `activeId?` | `string` | Controls the active item for route-based navigation instead of scroll tracking. |
+| `items` | `ReadingRailItem[]` | Ordered headings. Each `id` must match a heading in the content. |
+| `container?` | `HTMLElement \| null` | Scrollable element to track. Omit it to follow page scrolling. |
+| `offset?` | `number` | Distance from the top where a heading becomes active, in pixels. |
+| `title?` | `string` | Visible title and accessible navigation label. |
+| `activeId?` | `string` | Selected item when active state is controlled. |
+| `onActiveIdChange?` | `(id: string) => void` | Receives selection changes in controlled mode. |
+| `size?` | `"default" \| "large"` | Use `large` for a standalone contents view. |
 
 Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
 

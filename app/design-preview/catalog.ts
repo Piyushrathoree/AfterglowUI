@@ -36,12 +36,12 @@ export const concepts = [
     props: [["variant", "ember | glass", "Choose the material"], ["size", "sm | md | lg", "Button dimensions"], ["disabled", "boolean", "Prevent activation"]],
   },
   {
-    guidance: "Match each item ID to a heading in your content. For a scrollable panel, pass the panel element as container. Omit it to track the page.",
-    interaction: "Select a heading to scroll to it. The marker and reading percentage follow the scroll position. Nested items bend the rail to match their depth.",
+    guidance: "Match each item ID to a heading in your content. For a scrollable panel, pass the panel element as container. Use activeId with onActiveIdChange when another control owns selection.",
+    interaction: "Select a heading to scroll to it. The marker follows the reading position and keeps the active row visible. Nested items bend the rail to match their depth.",
     usage: "import { ReadingRail } from \"@/components/ui/reading-rail\"\n\nexport function Contents() {\n  return <ReadingRail\n    title=\"On this page\"\n    items={[\n      { id: \"overview\", label: \"Overview\" },\n      { id: \"usage\", label: \"Usage\", depth: 1 },\n      { id: \"properties\", label: \"Properties\" },\n    ]}\n  />\n}\n// Add matching IDs to headings in your page:\n// <h2 id=\"overview\">Overview</h2>",
     name: "reading-rail", label: "Table of contents", depth: 0,
     description: "A reading path that follows the shape of the content.",
-    detail: "The rail bends with nested headings. Its progress marker travels along the path as you scroll. This is also the component used in this concept’s sidebar.",
-    props: [["items", "ReadingRailItem[]", "Heading IDs and labels"], ["container", "HTMLElement", "The scrolling surface"], ["offset", "number", "Reading position offset"]],
+    detail: "The rail bends with nested headings. Its progress marker travels along the path as you scroll, and a large size works as a standalone contents view.",
+    props: [["items", "ReadingRailItem[]", "Heading IDs and labels"], ["container", "HTMLElement", "The scrolling surface"], ["offset", "number", "Reading position offset"], ["activeId", "string", "Controlled active item"], ["onActiveIdChange", "(id) => void", "Controlled selection callback"], ["size", "default | large", "Display scale"]],
   },
 ] as const

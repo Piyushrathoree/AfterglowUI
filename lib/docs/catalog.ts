@@ -61,7 +61,7 @@ export const componentCatalog = [
   {
     "name": "reading-rail",
     "title": "Table of Contents",
-    "description": "A table of contents on a dashed rail that bends where headings are indented and fills as you read, with an ember at its tip.",
+    "description": "A spacious table of contents with an animated rail that bends around nested sections.",
     "group": "Navigation",
     "dependencies": [
       "motion"
@@ -70,7 +70,7 @@ export const componentCatalog = [
   {
     "name": "scroll-rail",
     "title": "Scroll Rail",
-    "description": "A column of ticks that tracks a long scroll, swells toward your pointer, previews each part on hover, and jumps there on click.",
+    "description": "A quiet document minimap with equal short dashes that expand near the pointer and follow the active content block.",
     "group": "Navigation",
     "dependencies": [
       "motion"

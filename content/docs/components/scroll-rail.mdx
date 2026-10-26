@@ -1,9 +1,9 @@
 ---
 title: "Scroll Rail"
-description: "A column of ticks that tracks a long scroll, swells toward your pointer, previews each part on hover, and jumps there on click."
+description: "A quiet document minimap with equal resting dashes that expand near the pointer and follow the active content block."
 ---
 
-Targets use data-rail-id, not a heading ID. Pass the actual scrollable element as container. Hover a tick to inspect its preview, then select it to jump.
+Each dash maps to an element with a matching `data-rail-id`. Every dash rests at the same short length; nearby marks expand toward the pointer, and the active mark brightens without growing. Select a mark to jump to its content.
 
 ## Installation
 
@@ -21,35 +21,34 @@ export default function Demo() {
   const [container, setContainer] = useState<HTMLDivElement | null>(
     null,
   )
-  const items = ["Material", "Motion", "Color", "Details"].map(
-    (title, i) => ({
-      id: `scroll-demo-${i}`,
-      title,
-      excerpt: `Explore the ${title.toLowerCase()} of Afterglow.`,
-    }),
-  )
+  const items = [
+    { id: "intro", title: "Introduction", group: "Introduction", excerpt: "A quick map of the document." },
+    { id: "setup", title: "Setup", group: "Introduction", excerpt: "Connect each mark to a content block." },
+    { id: "content-model", title: "Content Model", group: "Structure", excerpt: "Reflect the hierarchy of the page." },
+    { id: "title-marks", title: "Title marks", group: "Structure", excerpt: "Every dash has the same resting length." },
+    { id: "body-marks", title: "Body marks", group: "Structure", excerpt: "Nearby dashes expand toward the pointer." },
+  ]
   return (
-    <div className="relative w-full max-w-lg pr-16">
-      <div
-        ref={setContainer}
-        className="h-96 overflow-auto rounded-2xl border p-6"
-      >
-        {items.map((item) => (
-          <section
-            key={item.id}
-            data-rail-id={item.id}
-            className="min-h-64 py-8"
-          >
-            <h2 className="text-xl">{item.title}</h2>
-            <p className="mt-4 text-muted-foreground">{item.excerpt}</p>
-          </section>
-        ))}
-      </div>
+    <div className="relative w-full max-w-4xl">
       <ScrollRail
-        className="absolute right-3 top-8"
+        className="absolute top-1/2 left-3 -translate-y-1/2"
         items={items}
         container={container}
+        side="left"
       />
+      <div
+        ref={setContainer}
+        className="h-[32rem] overflow-auto pl-28 pr-6 py-10"
+      >
+        <article className="max-w-xl space-y-12">
+          {items.map((item) => (
+            <section key={item.id} data-rail-id={item.id} className="scroll-mt-5">
+              <h2 className="text-xl font-semibold">{item.title}</h2>
+              <p className="mt-3 leading-relaxed text-muted-foreground">{item.excerpt}</p>
+            </section>
+          ))}
+        </article>
+      </div>
     </div>
   )
 }
@@ -59,9 +58,11 @@ export default function Demo() {
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `items` | `ScrollRailItem[]` | The items option. |
-| `container?` | `HTMLElement \| null` | the element that scrolls; leave it out to follow the page |
-| `side?` | `"left" \| "right"` | which edge of its content the rail sits on; the preview opens toward the content |
+| `items` | `ScrollRailItem[]` | Ordered marks. Each `id` matches a `data-rail-id` element. |
+| `container?` | `HTMLElement \| null` | Scrollable element to track. Omit it to follow page scrolling. |
+| `side?` | `"left" \| "right"` | Which side the rail uses. The hover preview opens toward the content. |
+
+`ScrollRailItem` supports `title`, `excerpt?`, and `group?`. A group label appears in the hover preview; it does not change dash length or spacing.
 
 Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
 
