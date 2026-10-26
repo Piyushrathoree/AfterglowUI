@@ -1,14 +1,14 @@
 import type { Metadata } from "next"
-import { DM_Sans, JetBrains_Mono } from "next/font/google"
+import { Geist_Mono, Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/site/theme-provider"
 import "./globals.css"
 
-const appSans = DM_Sans({
+const appSans = Inter({
   variable: "--font-afterglow-sans",
   subsets: ["latin"],
 })
 
-const appMono = JetBrains_Mono({
+const appMono = Geist_Mono({
   variable: "--font-afterglow-mono",
   subsets: ["latin"],
 })

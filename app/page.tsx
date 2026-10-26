@@ -36,15 +36,10 @@ import {
 } from "@/components/site/font-pairing-lab"
 import { ThemeToggle } from "@/components/site/theme-toggle"
 import { cn } from "@/lib/utils"
-import { IBM_Plex_Mono, Inter, Manrope } from "next/font/google"
+import { IBM_Plex_Mono, Manrope } from "next/font/google"
 
 const fontManrope = Manrope({
   variable: "--font-lab-manrope",
-  subsets: ["latin"],
-  preload: false,
-})
-const fontInter = Inter({
-  variable: "--font-lab-inter",
   subsets: ["latin"],
   preload: false,
 })
@@ -56,33 +51,33 @@ const fontIbmPlexMono = IBM_Plex_Mono({
 })
 const fontPairs: FontPairOption[] = [
   {
-    id: "dm-jetbrains",
-    name: "DM Sans + JetBrains Mono",
+    id: "inter-geist",
+    name: "Inter + Geist Mono",
     kind: "Sans + Mono",
     display: "var(--font-afterglow-sans)",
     body: "var(--font-afterglow-sans)",
     mono: "var(--font-afterglow-mono)",
-    displayName: "DM Sans",
-    bodyName: "DM Sans",
-    monoName: "JetBrains Mono",
+    displayName: "Inter",
+    bodyName: "Inter",
+    monoName: "Geist Mono",
   },
   {
     id: "manrope-inter",
     name: "Manrope + Inter",
     kind: "Sans + Sans",
     display: "var(--font-lab-manrope)",
-    body: "var(--font-lab-inter)",
+    body: "var(--font-afterglow-sans)",
     mono: "var(--font-afterglow-mono)",
     displayName: "Manrope",
     bodyName: "Inter",
-    monoName: "JetBrains Mono",
+    monoName: "Geist Mono",
   },
   {
     id: "inter-plex",
     name: "Inter + IBM Plex Mono",
     kind: "Sans + Mono",
-    display: "var(--font-lab-inter)",
-    body: "var(--font-lab-inter)",
+    display: "var(--font-afterglow-sans)",
+    body: "var(--font-afterglow-sans)",
     mono: "var(--font-lab-ibm-plex-mono)",
     displayName: "Inter",
     bodyName: "Inter",
@@ -160,7 +155,6 @@ export default function Home() {
       className={cn(
         "relative isolate min-h-screen",
         fontManrope.variable,
-        fontInter.variable,
         fontIbmPlexMono.variable
       )}
     >
