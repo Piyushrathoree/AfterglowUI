@@ -139,6 +139,13 @@ const scenes = {
       </p>
     ),
   }),
+  "scroll-rail": dynamic(() => import("./showcases/scroll-rail"), {
+    loading: () => (
+      <p role="status" className="ag-demo-loading">
+        Loading preview…
+      </p>
+    ),
+  }),
   chat: dynamic(() => import("./showcases/chat"), {
     loading: () => (
       <p role="status" className="ag-demo-loading">
