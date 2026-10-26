@@ -8,6 +8,9 @@ import { FolderOpen } from "@/components/animate-ui/icons/folder-open"
 import { LayoutDashboard } from "@/components/animate-ui/icons/layout-dashboard"
 import { Settings } from "@/components/animate-ui/icons/settings"
 import { Users } from "@/components/animate-ui/icons/users"
+import { MessageCircle } from "@/components/animate-ui/icons/message-circle"
+import { FilePlus } from "@/components/animate-ui/icons/file-plus"
+import { CreditCard } from "@/components/animate-ui/icons/credit-card"
 import { BookOpen } from "@/components/animate-ui/icons/book-open"
 import { Download } from "@/components/animate-ui/icons/download"
 import { Palette } from "@/components/animate-ui/icons/palette"
@@ -19,6 +22,7 @@ import { AfterglowMark } from "@/components/ui/auth-parts"
 import { GlassSidebar, type GlassSidebarHeading, type GlassSidebarItem } from "@/components/ui/glass-sidebar"
 import { RailNav, type RailNavHeading, type RailNavItem } from "@/components/ui/rail-nav"
 import { ReadingRail } from "@/components/ui/reading-rail"
+import { LiquidSearch } from "@/components/ui/liquid-search"
 
 type Block = { kind: "p"; text: string } | { kind: "code"; text: string } | { kind: "tip"; text: string }
 type Section = { id: string; title: string; depth: 0 | 1; blocks: Block[] }
@@ -32,14 +36,24 @@ const pages: Record<string, Page> = {
   intro: {
     title: "Introduction",
     group: "Getting started",
-    lead: "Afterglow is a set of animated React components that leave a little light behind. Copy one file, own the code.",
+    lead: "Afterglow is a source-available collection of React components for interfaces that need thoughtful motion and tactile surfaces. Add a component to your project, then adapt its source to fit your product.",
     sections: [
-      { id: "what", title: "What it is", depth: 0, blocks: [p("Every component is a single file with its own dependencies listed. They share one glow, one set of springs and one glass material, so a page built from them feels like one thing."), tip("Nothing is hidden behind a package. What you copy is what runs.")] },
-      { id: "why", title: "Why light", depth: 0, blocks: [p("Most motion in an interface is over the moment it starts. Here, the light lingers: a switch that has just turned off still glows for a beat, a toast burns down like an ember.")] },
-      { id: "principles", title: "Principles", depth: 0, blocks: [p("Three rules keep the set consistent.")] },
-      { id: "calm", title: "Calm by default", depth: 1, blocks: [p("Springs never bounce on utility controls, and nothing animates that the visitor did not cause.")] },
-      { id: "real", title: "Real material", depth: 1, blocks: [p("Glass, gloss and metal are drawn with light and shade, not flat color, so they hold up in both themes.")] },
-      { id: "yours", title: "Yours to change", depth: 0, blocks: [p("Because it is your copy, restyle it freely. Change the tokens once and every component follows.")] },
+      { id: "what", title: "What the library includes", depth: 0, blocks: [p("Afterglow includes interactive controls, navigation patterns, feedback states, and larger interface blocks. Each registry entry lists the files and packages it needs."), p("Install only the pieces you want. They land in your project so you can inspect and adapt the implementation.") , tip("The components are source-available and intended to be customized in your app.")] },
+      { id: "why", title: "Designed around interaction", depth: 0, blocks: [p("Motion and surface detail should help explain what just happened. A selected tab moves into place, a switch settles after a change, and a notification fades as its time runs out."), p("Each effect follows a user action or communicates a state. This keeps the interface responsive without asking for attention all the time.")] },
+      { id: "principles", title: "Design principles", depth: 0, blocks: [p("A shared set of rules helps components from different categories feel consistent when they appear together.")] },
+      { id: "calm", title: "Calm by default", depth: 1, blocks: [p("Controls respond promptly and settle without a pronounced bounce. Ambient motion stays slow, and motion preferences are respected.")] },
+      { id: "real", title: "Material with purpose", depth: 1, blocks: [p("Glass, gloss, and metal use different light and edge treatments. Each material supports the component’s role instead of acting as decoration alone.")] },
+      { id: "yours", title: "Your implementation", depth: 0, blocks: [p("The installed files are yours to edit. Change the markup, remove an effect, or connect a component to your own state and data model.")] },
+      { id: "motion", title: "Motion with a purpose", depth: 0, blocks: [p("Motion makes state changes easier to follow. Shared spring settings keep controls, panels, and navigation related without forcing them to move at the same speed.")] },
+      { id: "timing", title: "Timing and response", depth: 1, blocks: [p("Small controls respond quickly so a click feels immediate. Larger surfaces take a little longer to settle, which makes their movement feel measured rather than abrupt."), p("The examples use springs for changes in position and short fades for secondary details. Set the reduced-motion preference to see transitions become immediate.")] },
+      { id: "interaction", title: "Interaction states", depth: 0, blocks: [p("A component should make its current state visible. Hover, focus, pressed, disabled, loading, and selected states use clear visual changes with enough contrast to read."), p("Keyboard users receive the same state feedback as pointer users. Focus indicators remain visible and controls use native button, link, and input behavior.")] },
+      { id: "materials", title: "Materials", depth: 0, blocks: [p("Glass uses translucency and a restrained edge to suggest depth. Gloss defines a lit surface, while metal uses contrast and directional shading to suggest a harder finish."), p("These treatments are kept inside the component, so you can use them without changing the page background or adding a large decorative glow.")] },
+      { id: "themes", title: "Light and dark themes", depth: 0, blocks: [p("Components read shared theme tokens for backgrounds, text, borders, and accents. Both themes keep the same visual hierarchy while adjusting contrast for the surface behind them.")] },
+      { id: "customize", title: "Changing the accent", depth: 1, blocks: [p("Update the accent tokens in your global stylesheet to recolor the shared highlights. Component-specific colors remain available when a particular design needs them.")] },
+      { id: "responsive", title: "Responsive layouts", depth: 0, blocks: [p("Previews adapt to the width available in their parent. On smaller screens, complex layouts stack or become scrollable rather than shrinking their controls until they are hard to use.")] },
+      { id: "accessibility", title: "Accessibility", depth: 0, blocks: [p("The components use semantic controls, visible keyboard focus, and reduced-motion support. Check text and accent contrast against the colors in your own theme before shipping.")] },
+      { id: "performance", title: "Performance", depth: 0, blocks: [p("Motion is driven by small animated values where possible, so pointer movement does not require a full React render for every frame. Components avoid running decorative animation when it does not communicate useful feedback.")] },
+      { id: "ownership", title: "Source and license", depth: 0, blocks: [p("Afterglow is source-available under its published license. Review the license before redistributing components or using them in a product with a different distribution model.")] },
     ],
   },
   install: {
@@ -90,6 +104,61 @@ const pages: Record<string, Page> = {
       { id: "keys", title: "Keyboard", depth: 0, blocks: [p("Arrow keys move between tabs, Home and End jump to the ends, and the selection follows focus.")] },
     ],
   },
+  switches: {
+    title: "Glass switches",
+    group: "Components",
+    lead: "A compact switch with a clear state change, soft glass surface, and motion that respects reduced-motion settings.",
+    sections: [
+      { id: "states", title: "On and off", depth: 0, blocks: [p("Color, position, and label work together to make the current state easy to read.")] },
+      { id: "input", title: "Keyboard input", depth: 0, blocks: [p("The switch uses a native button pattern, so Space and Enter work as expected.")] },
+      { id: "motion", title: "Motion", depth: 0, blocks: [p("The thumb settles quickly and the glow fades without a bounce.")] },
+    ],
+  },
+  search: {
+    title: "Liquid search",
+    group: "Components",
+    lead: "A focused search field with a calm glass surface, a clear action, and a keyboard-friendly flow.",
+    sections: [
+      { id: "focus", title: "Focus", depth: 0, blocks: [p("The field keeps a quiet glass surface while focus brings the accent ring into view. The search icon stays in its own small well, so the typing area remains clear.")] },
+      { id: "filter", title: "Filter pages as you type", depth: 0, blocks: [p("Search matches page names across the navigation. Results update immediately, and the current page stays open until you choose another destination.")] },
+      { id: "groups", title: "Keep useful context", depth: 1, blocks: [p("A group label remains above matching pages. Groups with no matches disappear, which keeps the list focused without losing its structure.")] },
+      { id: "clear", title: "Clear the query", depth: 0, blocks: [p("The clear action appears when the field has text. It empties the query and puts focus back in the input, ready for another search.")] },
+      { id: "escape", title: "Keyboard", depth: 0, blocks: [p("Press Escape to clear the current query without moving focus away. The search remains a native input, so standard text editing works as expected.")] },
+      { id: "empty", title: "No matching pages", depth: 0, blocks: [p("When nothing matches, the sidebar shows a short empty state in place of a blank list. Clear or change the query to bring the groups back.")] },
+      { id: "accessible", title: "Accessible by default", depth: 0, blocks: [p("The input has a visible label for assistive technology, and its clear control receives a name only when it can be used. Focus remains visible against the dark surface.")] },
+      { id: "motion", title: "Motion with restraint", depth: 0, blocks: [p("The field responds to focus with a small change in color and light. It avoids shifting the sidebar, so the navigation stays steady while you type.")] },
+    ],
+  },
+  sidebar: {
+    title: "Contour sidebar",
+    group: "Components",
+    lead: "A continuous contour follows the active page and opens around the row under your pointer or keyboard focus.",
+    sections: [
+      { id: "groups", title: "Grouped navigation", depth: 0, blocks: [p("Headings divide longer lists into sections while search keeps matching rows in context.")] },
+      { id: "selection", title: "Selection", depth: 0, blocks: [p("The active page stays selected as the contour moves between hovered and focused rows.")] },
+      { id: "control", title: "Controlled state", depth: 0, blocks: [p("Use value and onValueChange when the parent owns navigation state.")] },
+    ],
+  },
+  scroll: {
+    title: "Scroll rail",
+    group: "Components",
+    lead: "A compact rail tracks long content and gives each section a direct jump point.",
+    sections: [
+      { id: "tracking", title: "Scroll tracking", depth: 0, blocks: [p("The current section follows the scroll position and reaches the final item at the end of the page.")] },
+      { id: "jump", title: "Jump to a section", depth: 0, blocks: [p("Select a marker to scroll directly to its matching section.")] },
+      { id: "preview", title: "Preview", depth: 0, blocks: [p("Hover or focus a marker to see its title and a short description.")] },
+    ],
+  },
+  motion: {
+    title: "Motion",
+    group: "Guides",
+    lead: "Motion is tied to interaction, with shared springs and a reduced-motion path throughout the component set.",
+    sections: [
+      { id: "springs", title: "Shared springs", depth: 0, blocks: [p("Small controls settle quickly; larger surfaces glide with a little more weight.")] },
+      { id: "reduce", title: "Reduced motion", depth: 0, blocks: [p("Spring transitions become immediate when the system asks for less motion.")] },
+      { id: "feedback", title: "Interaction feedback", depth: 0, blocks: [p("Animation clarifies a state change or follows the pointer; it does not run just to decorate the page.")] },
+    ],
+  },
   a11y: {
     title: "Accessibility",
     group: "Guides",
@@ -107,11 +176,16 @@ const nav: (RailNavItem | RailNavHeading)[] = [
   { heading: "Getting started" },
   { id: "intro", label: "Introduction", icon: <BookOpen /> },
   { id: "install", label: "Installation", icon: <Download /> },
-  { id: "theming", label: "Theming", icon: <Palette />, badge: "New" },
+  { id: "theming", label: "Theming", icon: <Palette /> },
   { heading: "Components" },
   { id: "buttons", label: "Buttons", icon: <MousePointerClick /> },
   { id: "tabs", label: "Tabs", icon: <PanelTop /> },
+  { id: "switches", label: "Glass switches", icon: <PanelTop /> },
+  { id: "search", label: "Liquid search", icon: <Search /> },
+  { id: "sidebar", label: "Contour sidebar", icon: <FolderOpen /> },
+  { id: "scroll", label: "Scroll rail", icon: <Activity /> },
   { heading: "Guides" },
+  { id: "motion", label: "Motion", icon: <Activity /> },
   { id: "a11y", label: "Accessibility", icon: <Accessibility /> },
 ]
 
@@ -157,7 +231,7 @@ export function DocsDemo() {
 
   return (
     <div className="@container w-full min-w-0">
-    <div className="ag-navigation-demo grid h-[640px] w-full min-w-0 grid-cols-1 @min-[600px]:grid-cols-[minmax(0,1fr)_140px] @min-[900px]:grid-cols-[180px_minmax(0,1fr)_140px] @min-[1040px]:grid-cols-[208px_minmax(0,1fr)_180px]">
+    <div className="ag-navigation-demo grid h-[640px] w-full min-w-0 grid-cols-1 @min-[600px]:grid-cols-[minmax(0,1fr)_200px] @min-[900px]:grid-cols-[180px_minmax(0,1fr)_220px] @min-[1040px]:grid-cols-[208px_minmax(0,1fr)_240px]">
       <aside className="hidden min-h-0 flex-col @min-[900px]:flex border-r border-foreground/[0.08]">
         <div className="flex items-center gap-2.5 px-5 pt-5">
           <span className="grid size-8 place-items-center rounded-[10px] bg-foreground/[0.09] shadow-[inset_0_1px_0_oklch(1_0_0/10%)] [&_svg]:size-[18px]">
@@ -269,60 +343,44 @@ export function RailNavDemo() {
   const visible = useFilteredNav(query)
   const current = pages[page]
   return (
-    <div className="@container w-full min-w-0">
-      <div className="grid min-w-0 grid-cols-1 items-center gap-10 @min-[600px]:grid-cols-[248px_minmax(0,1fr)]">
-        <aside data-rail-demo className={`mx-auto flex h-[620px] w-full max-w-[248px] min-h-0 flex-col overflow-hidden ${panel}`}>
-          <div className="flex items-center gap-2.5 px-5 pt-5">
-            <span className="grid size-8 place-items-center rounded-[10px] bg-foreground/[0.09] shadow-[inset_0_1px_0_oklch(1_0_0/10%)] [&_svg]:size-[18px]">
-              <AfterglowMark />
+    <div className="ag-railnav-demo @container w-full min-w-0">
+      <div className="ag-railnav-workspace grid min-w-0 grid-cols-1 items-stretch gap-0 @min-[600px]:grid-cols-[248px_minmax(0,1fr)]">
+        <aside data-rail-demo className={`mx-auto flex h-full w-full min-h-0 flex-col overflow-hidden ${panel}`}>
+          <div className="flex items-center gap-2.5 px-4 pt-4">
+            <span className="grid size-9 place-items-center rounded-concentric border border-glow/20 bg-linear-to-br from-glow/[0.16] to-glow/[0.045] text-glow shadow-[inset_0_1px_0_oklch(1_0_0/12%),0_4px_14px_-10px_var(--glow)]">
+              <AfterglowMark className="size-5" />
             </span>
-            <p className="text-sm font-semibold tracking-tight">Afterglow</p>
-            <span className="ml-auto rounded-full border border-foreground/10 px-2 py-px text-[11px] text-foreground/55">v1.0</span>
-          </div>
-          <label className="mx-4 mt-5 flex h-9 items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 text-foreground/50 transition-[border-color,box-shadow] duration-150 focus-within:border-glow/60 focus-within:ring-2 focus-within:ring-glow/20">
-            <Search className="size-3.5 shrink-0" />
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search"
-              aria-label="Search pages"
-              className="min-w-0 flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-foreground/45"
-            />
-          </label>
-          <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <RailNav items={visible} value={page} onValueChange={setPage} aria-label="Docs" />
-            {visible.length === 0 && <p className="pl-8 text-[13px] text-foreground/45">Nothing matches.</p>}
-          </div>
-          {/* 8px in from a 24px panel, so its corners are 16px */}
-          <div className="m-2 flex items-center gap-3 rounded-[16px] border border-foreground/[0.08] bg-foreground/[0.04] p-2.5">
-            <span className="grid size-9 place-items-center rounded-full bg-linear-to-br from-glow to-glow-2 text-sm font-semibold text-glow-foreground">M</span>
-            <div className="min-w-0 flex-1 leading-tight">
-              <p className="truncate text-[13px] font-medium">Mira Okafor</p>
-              <p className="truncate text-xs text-foreground/50">Pro plan</p>
+            <div className="grid gap-0.5 leading-tight">
+              <p className="text-[14px] font-semibold tracking-[-0.02em]">afterglow</p>
+              <p className="text-[11px] text-foreground/50">Component library</p>
             </div>
-            <ChevronsUpDown className="size-4 text-foreground/40" />
+          </div>
+          {/* concentric-ignore: the search sits inset from the panel corners */}
+          <LiquidSearch
+            value={query}
+            onValueChange={setQuery}
+            placeholder="Find a page"
+            aria-label="Search documentation"
+            className="ag-railnav-search mx-4 mt-4 h-10 w-auto rounded-[14px] border border-foreground/10 bg-foreground/[0.025]"
+          />
+          <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 [scrollbar-width:thin]">
+            <RailNav items={visible} value={page} onValueChange={setPage} aria-label="Docs" />
+            {visible.length === 0 && <p role="status" className="pl-8 text-[13px] text-foreground/45">Nothing matches.</p>}
           </div>
         </aside>
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={page}
-            className="hidden min-w-0 pr-2 @min-[600px]:block"
+            className="min-w-0 overflow-y-auto border-t border-foreground/[0.08] px-5 py-7 @min-[600px]:border-l @min-[600px]:border-t-0 @min-[600px]:px-7 @min-[600px]:py-8"
             initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, transition: { duration: 0.1 } }}
             transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
           >
-            <p className="text-[12px] text-foreground/45">Docs <span className="mx-1 text-foreground/25">/</span> {current.group}</p>
-            <h4 className="mt-3 text-[28px] leading-[1.15] font-semibold tracking-[-0.02em] text-balance">{current.title}</h4>
-            <p className="mt-3 text-[14px] leading-relaxed text-foreground/60 text-pretty">{current.lead}</p>
-            <ul className="mt-7 divide-y divide-foreground/[0.06] border-y border-foreground/[0.06]">
-              {current.sections.filter((section) => section.depth === 0).slice(0, 4).map((section) => (
-                <li key={section.id} className="py-3.5">
-                  <p className="text-[13px] font-medium">{section.title}</p>
-                  <p className="mt-1 line-clamp-1 text-[12px] text-foreground/50">{section.blocks[0].text}</p>
-                </li>
-              ))}
-            </ul>
+            <article className="mx-auto w-full max-w-2xl">
+              <PageArticle page={page} />
+              <div className="h-20" aria-hidden />
+            </article>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -330,26 +388,27 @@ export function RailNavDemo() {
   )
 }
 
-// the reading rail beside a scrolling article: the path fills and the current heading lights up as you read
+// a large standalone table of contents with the same bent reading path
 export function ReadingRailDemo() {
-  const [scroller, setScroller] = React.useState<HTMLDivElement | null>(null)
+  const [active, setActive] = React.useState("features")
   const contents = React.useMemo(
-    () => pages.intro.sections.map((section) => ({ id: `docs-intro-${section.id}`, label: section.title, depth: section.depth })),
+    () => [
+      { id: "installation", label: "Installation" },
+      { id: "prerequisites", label: "Prerequisites", depth: 1 },
+      { id: "installation-steps", label: "Installation Steps", depth: 1 },
+      { id: "configuration", label: "Configuration", depth: 1 },
+      { id: "usage", label: "Usage" },
+      { id: "customizing-content", label: "Customizing Content", depth: 1 },
+      { id: "submenu-content", label: "Submenu Content", depth: 1 },
+      { id: "features", label: "Features" },
+    ],
     []
   )
   return (
-    <div className="@container w-full min-w-0">
-      <div data-rail-demo className="grid h-[620px] min-w-0 grid-cols-1 @min-[440px]:grid-cols-[minmax(0,1fr)_150px] @min-[720px]:grid-cols-[minmax(0,1fr)_184px]">
-        <div ref={setScroller} className="min-h-0 min-w-0 overflow-y-auto px-5 pt-8 @min-[720px]:px-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {/* too narrow for a side column: the rail sits above the article instead */}
-          <div className="mb-8 rounded-[16px] border border-foreground/[0.08] p-4 @min-[440px]:hidden"><ReadingRail items={contents} container={scroller} offset={24} /></div>
-          <article className="mx-auto max-w-xl">
-            <PageArticle page="intro" />
-            <div className="h-80" aria-hidden />
-          </article>
-        </div>
-        <div className="hidden min-h-0 overflow-y-auto border-l border-foreground/[0.08] px-4 pt-8 @min-[440px]:block @min-[720px]:px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <ReadingRail items={contents} container={scroller} offset={32} />
+    <div className="ag-toc-demo h-full w-full min-w-0">
+      <div data-rail-demo className="flex h-full min-h-0 min-w-0 flex-col overflow-auto px-5 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="m-auto w-full max-w-[540px] shrink-0">
+          <ReadingRail items={contents} activeId={active} onActiveIdChange={setActive} size="large" />
         </div>
       </div>
     </div>
@@ -359,11 +418,21 @@ export function ReadingRailDemo() {
 const sidebarPages: (GlassSidebarItem | GlassSidebarHeading)[] = [
   { heading: "Workspace" },
   { id: "overview", label: "Overview", icon: <LayoutDashboard /> },
-  { id: "projects", label: "Projects", icon: <FolderOpen />, badge: "3" },
-  { id: "inbox", label: "Inbox", icon: <Inbox />, badge: "2" },
+  { id: "projects", label: "Projects", icon: <FolderOpen /> },
+  { id: "inbox", label: "Inbox", icon: <Inbox /> },
   { id: "activity", label: "Activity", icon: <Activity /> },
+  { heading: "Collaboration" },
+  { id: "messages", label: "Messages", icon: <MessageCircle /> },
+  { id: "files", label: "Files", icon: <FilePlus /> },
+  { heading: "Components" },
+  { id: "liquid-buttons", label: "Liquid buttons", icon: <MousePointerClick /> },
+  { id: "glass-switches", label: "Glass switches", icon: <PanelTop /> },
+  { id: "trail-tabs", label: "Trail tabs", icon: <PanelTop /> },
+  { id: "liquid-search", label: "Liquid search", icon: <Search /> },
+  { id: "scroll-rail", label: "Scroll rail", icon: <Activity /> },
   { heading: "Manage" },
   { id: "members", label: "Members", icon: <Users /> },
+  { id: "billing", label: "Billing", icon: <CreditCard /> },
   { id: "settings", label: "Settings", icon: <Settings /> },
 ]
 
@@ -372,7 +441,15 @@ const workspaceViews: Record<string, { description: string; rows: [string, strin
   projects: { description: "Good work starts with a little clarity.", rows: [["Website refresh", "Design · In progress"], ["Component library", "Development · In progress"], ["Brand exploration", "Research · Planning"]] },
   inbox: { description: "The conversations that need your attention.", rows: [["Aria left a comment", "Component library · 12 minutes ago"], ["Devon shared an update", "Website refresh · 1 hour ago"]] },
   activity: { description: "A quiet record of what is moving forward.", rows: [["Navigation updated", "Mira · Today"], ["New palette shared", "Aria · Yesterday"]] },
-  members: { description: "The people making it happen.", rows: [["Mira Okafor", "Workspace owner"], ["Aria Taylor", "Designer"], ["Devon Kim", "Engineer"]] },
+  messages: { description: "Decisions, feedback, and small updates from your team.", rows: [["Aria Taylor", "The new palette is ready to review · 9:42 AM"], ["Devon Kim", "Pushed the sidebar update · 9:18 AM"], ["Mira Okafor", "Added notes to the launch plan · Yesterday"]] },
+  files: { description: "Recent work shared across Afterglow Studio.", rows: [["Brand guidelines", "Updated by Aria · 2.4 MB"], ["Launch checklist", "Updated by Mira · 184 KB"], ["Sidebar explorations", "Updated by Devon · 3 files"]] },
+  "liquid-buttons": { description: "Quiet controls with a soft, responsive glass surface.", rows: [["Primary action", "Liquid button · Accent enabled"], ["Secondary action", "Liquid button · Neutral"], ["Icon action", "Liquid button · Compact"]] },
+  "glass-switches": { description: "Small state changes with a clear, tactile response.", rows: [["Email updates", "On · Workspace activity"], ["Quiet hours", "On · 10 PM to 8 AM"], ["Product notes", "Off · Optional updates"]] },
+  "trail-tabs": { description: "A moving accent follows the active view without crowding the content.", rows: [["Overview", "Default tab"], ["Activity", "Recent changes"], ["Settings", "Workspace preferences"]] },
+  "liquid-search": { description: "A focused search field with a restrained liquid-glass surface.", rows: [["Search components", "Name, category, or keyword"], ["Keyboard shortcut", "⌘ K · Open search"], ["Recent query", "Navigation"]] },
+  "scroll-rail": { description: "Jump between sections with a rail that follows the page.", rows: [["Introduction", "Current section"], ["Interactions", "Hover or focus a marker"], ["Accessibility", "Keyboard and reduced motion"]] },
+  members: { description: "Four people sharing one workspace and moving the work forward.", rows: [["Mira Okafor", "Workspace owner · Joined in March"], ["Aria Taylor", "Product designer · Joined in April"], ["Devon Kim", "Frontend engineer · Joined in May"], ["Sam Rivera", "Content designer · Joined in June"]] },
+  billing: { description: "Your plan and upcoming workspace charges.", rows: [["Studio plan", "Renews on November 12, 2026"], ["Payment method", "Visa ending in 2048"], ["Seats in use", "4 of 8 team members"]] },
   settings: { description: "Make room for the way you work.", rows: [["Afterglow Studio", "Workspace name"], ["Personal workspace", "Workspace type"]] },
 }
 
@@ -381,12 +458,27 @@ export function GlassSidebarDemo() {
   const selected = sidebarPages.find(entry => "id" in entry && entry.id === value)
   const title = selected && "label" in selected ? selected.label : "Projects"
   const page = workspaceViews[value] ?? workspaceViews.projects
-  return <div className="@container w-full min-w-0">
-    <div className="grid min-w-0 grid-cols-1 items-center gap-8 @min-[640px]:grid-cols-[264px_minmax(0,1fr)]">
-      <GlassSidebar searchPlaceholder="Find a page" className="mx-auto min-h-0 h-[620px]" items={sidebarPages} value={value} onValueChange={setValue} />
-      <div className="hidden min-w-0 self-center py-6 pr-2 @min-[640px]:block">
+  return <div className="ag-contour-demo @container w-full min-w-0">
+    <div className="ag-contour-workspace grid min-w-0 grid-cols-1 items-stretch gap-0 @min-[640px]:grid-cols-[240px_minmax(0,1fr)]">
+      <GlassSidebar
+        searchPlaceholder="Find a page"
+        className="mx-auto h-full min-h-0 w-full max-w-none"
+        items={sidebarPages}
+        value={value}
+        onValueChange={setValue}
+        header={
+          <div className="ag-contour-brand">
+            <AfterglowMark className="ag-contour-brand-mark" />
+            <div className="ag-contour-brand-copy">
+              <span>Afterglow</span>
+              <small>Workspace</small>
+            </div>
+          </div>
+        }
+      />
+      <div className="min-w-0 px-5 py-7 @min-[640px]:overflow-y-auto @min-[640px]:px-7 @min-[640px]:py-8">
         <p className="flex items-center gap-2 text-[11px] text-muted-foreground"><FolderOpen size={12} /> Workspace <span className="text-foreground/20">/</span> {title}</p>
-        <h4 className="mt-5 text-[28px] font-semibold tracking-tight">{title}</h4>
+        <h4 className="mt-8 text-[28px] font-semibold tracking-tight">{title}</h4>
         <p className="mt-3 text-[13px] leading-6 text-muted-foreground">{page.description}</p>
         <div className="mt-7 divide-y divide-foreground/[0.06] border-y border-foreground/[0.06]">
           {page.rows.map(([name, detail], index) => <div key={name} className="flex items-center gap-3 py-4"><span className="grid size-8 shrink-0 place-items-center rounded-[10px] border border-foreground/[0.08] bg-foreground/[0.025] text-glow"><FolderOpen size={14} /></span><div className="min-w-0"><p className="truncate text-xs font-medium">{name}</p><p className="mt-1 text-[11px] text-muted-foreground">{detail}</p></div>{value === "projects" && <span className="ml-auto size-1.5 shrink-0 rounded-full bg-glow" style={{ opacity: index === 2 ? 0.35 : 0.8 }} />}</div>)}
