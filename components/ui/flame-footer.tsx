@@ -25,7 +25,7 @@ function FlameFooter({ headline, brand, links = [], legal, legalLinks = [], clas
       className={cn("relative isolate flex min-h-[640px] flex-col overflow-hidden bg-white text-black dark:bg-black dark:text-white", className)}
       {...props}
     >
-      <FlameField className="absolute inset-0 -z-10" />
+      <FlameField speed={0.4} className="absolute inset-0 -z-10" />
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6">
         <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-5 border-t border-border py-6">
           <div className="flex items-center gap-2.5 font-medium tracking-tight [&_svg]:size-5">
