@@ -19,7 +19,7 @@ type AuthStepsProps = {
 }
 
 const pill =
-  "inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2.5 rounded-full text-[13px] font-medium outline-none transition-[background-color,border-color,scale] duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/40 enabled:active:scale-[0.98] [&_svg]:size-4"
+  "inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2.5 rounded-full text-[13px] font-medium outline-none transition-[background-color,border-color,scale] duration-150 ease-out motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/40 motion-safe:enabled:active:scale-[0.98] [&_svg]:size-4"
 
 // the quiet choices: a hairline pill that fills in on hover
 const outline = "border bg-transparent hover:border-foreground/20 hover:bg-muted/60"

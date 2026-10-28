@@ -49,7 +49,7 @@ type AuthSplitProps = {
 }
 
 const primary =
-  "inline-flex h-10 w-full cursor-pointer items-center justify-center rounded-[10px] bg-foreground text-[13px] font-medium text-background shadow-[inset_0_1px_0_oklch(1_0_0/12%),0_1px_2px_oklch(0_0_0/20%)] transition-[background-color,scale] duration-150 ease-out outline-none hover:bg-foreground/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/40 active:scale-[0.98]"
+  "inline-flex h-10 w-full cursor-pointer items-center justify-center rounded-[10px] bg-foreground text-[13px] font-medium text-background shadow-[inset_0_1px_0_oklch(1_0_0/12%),0_1px_2px_oklch(0_0_0/20%)] transition-[background-color,scale] duration-150 ease-out motion-reduce:transition-none outline-none hover:bg-foreground/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/40 motion-safe:active:scale-[0.98]"
 
 const secondary = "h-10 rounded-[10px] bg-transparent text-[13px] hover:bg-muted/60"
 

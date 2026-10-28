@@ -30,7 +30,7 @@ const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")"
 
 const quiet =
-  "inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-white/[0.08] bg-white/[0.04] text-[13px] font-medium text-white/90 shadow-[inset_0_1px_0_oklch(1_0_0/5%)] transition-[background-color,border-color,scale] duration-150 ease-out outline-none hover:border-white/[0.14] hover:bg-white/[0.07] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40 active:scale-[0.98] [&_svg]:size-4"
+  "inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-white/[0.08] bg-white/[0.04] text-[13px] font-medium text-white/90 shadow-[inset_0_1px_0_oklch(1_0_0/5%)] transition-[background-color,border-color,scale] duration-150 ease-out motion-reduce:transition-none outline-none hover:border-white/[0.14] hover:bg-white/[0.07] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40 motion-safe:active:scale-[0.98] [&_svg]:size-4"
 
 // black, with satin drapes of liquid metal in two corners and one quiet column
 export function AuthSilk({ onSubmit, onProvider, className }: AuthSilkProps) {
