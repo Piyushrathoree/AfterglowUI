@@ -40,7 +40,21 @@ async function ResolvedDocsPage({ params }: Props) {
   const { body: Content } = await page.data.load()
   const name = page.slugs.at(-1) ?? "introduction"
   const component = page.slugs[0] === "components" && isComponentName(name) && hasDemo(name)
+  const related = component ? getShowcase(name)?.components ?? [] : []
+  // Related references share one preview; load their docs together so the demo stays mounted.
+  const referenceDocs = related.length > 1 ? await Promise.all(related.map(async (referenceName) => {
+    const referencePage = source.getPage(["components", referenceName])
+    if (!referencePage) throw new Error(`Missing documentation for ${referenceName}`)
+    const ReferenceContent = referenceName === name ? Content : (await referencePage.data.load()).body
+    return {
+      name: referenceName,
+      title: referencePage.data.title,
+      description: referencePage.data.description ?? "",
+      documentation: <ReferenceContent components={getMDXComponents()} />,
+    }
+  })) : []
   return <LibraryWorkspace name={name} title={page.data.title} description={page.data.description ?? ""}
     guide={!component} preview={component ? <LibraryDemo name={name} /> : undefined}
+    referenceDocs={referenceDocs}
     documentation={<Content components={getMDXComponents()} />} />
 }
