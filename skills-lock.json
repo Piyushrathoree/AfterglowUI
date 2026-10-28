@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "skills": {
+    "animation-principles": {
+      "source": "raphaelsalaja/skill",
+      "sourceType": "github",
+      "skillPath": "skills/animation-principles/SKILL.md",
+      "computedHash": "388660277ec82d73fc5c62f8e65e98121076ce77d0de9480e887eec5c7742922"
+    },
+    "apple-design": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/apple-design/SKILL.md",
+      "computedHash": "0190417d092a0df447b000154e39733ea6d97efad6d3bec8a6ce3845aeb88914"
+    },
+    "apple-native-ui": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/apple-native-ui/SKILL.md",
+      "computedHash": "4d6383acaa56bbad214a676a0248e3c5ad371092a7f49e60f44635efa7df8fdb"
+    },
+    "gsap-core": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-core/SKILL.md",
+      "computedHash": "c4a01101d9e1aafbf4b49f75d74f9349790d8741981ba0237c990093863035a6"
+    },
+    "gsap-scrolltrigger": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-scrolltrigger/SKILL.md",
+      "computedHash": "1cdc5647693783cb7a662d84a5de434c88a051ed56b4d33597c9b5782b5973e6"
+    },
+    "micro-interaction": {
+      "source": "iart-ai/web-animation-skills",
+      "sourceType": "github",
+      "skillPath": "skills/micro-interaction/SKILL.md",
+      "computedHash": "f236bc97a9f4c0e9c9a045d0b591e3ca6b6b2aeb26e42b661c15211f652ac131"
+    },
+    "remotion-interactivity": {
+      "source": "remotion-dev/skills",
+      "sourceType": "github",
+      "skillPath": "skills/remotion-interactivity/SKILL.md",
+      "computedHash": "23d360847e77c6201ac1a9a75fe23ce71070e201b826b363c59ceffd14814330"
+    }
+  }
+}
