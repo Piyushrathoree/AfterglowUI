@@ -165,7 +165,7 @@ function LiquidTabs({
               aria-selected={selected}
               tabIndex={selected ? 0 : -1}
               data-state={selected ? "active" : "inactive"}
-              className="relative flex cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full py-1.5 text-[10px] font-medium text-foreground/75 outline-none transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring aria-selected:text-glow [&_svg]:size-[22px]"
+              className="relative flex cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full py-1.5 text-[10px] font-medium text-foreground/75 outline-none transition-[color,scale] duration-150 motion-safe:active:scale-[0.97] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring aria-selected:text-glow [&_svg]:size-[22px]"
               style={{ width: TAB_WIDTH }}
               onClick={() => select(tab.value)}
               onKeyDown={handleKeyDown}
