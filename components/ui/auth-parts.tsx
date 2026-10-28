@@ -74,7 +74,7 @@ function ProviderButton({
       <button
         type={type}
         className={cn(
-          "relative inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border bg-background/60 px-4 text-sm font-medium transition-[background-color,scale] duration-150 ease-out outline-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring enabled:active:scale-[0.98] disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
+          "relative inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border bg-background/60 px-4 text-sm font-medium transition-[background-color,scale] duration-150 ease-out motion-reduce:transition-none outline-none hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:enabled:active:scale-[0.98] disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
           className
         )}
         {...props}
