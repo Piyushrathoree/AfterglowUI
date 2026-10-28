@@ -48,7 +48,6 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
   const uid = React.useId()
   const reduceMotion = React.useSyncExternalStore(subscribeReducedMotion, readReducedMotion, serverReducedMotion)
   const active = value ?? internal
-  const highlighted = hovered ?? focused ?? active
   const nav = React.useRef<HTMLElement>(null)
   const [track, setTrack] = React.useState<{ top: number; bottom: number; width: number; rows: Record<string, number>; heights: Record<string, number> } | null>(null)
   const lineStart = useMotionValue(0)
@@ -57,7 +56,6 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
   const rowHeight = useMotionValue(36)
   const lineY = useSpring(0, { stiffness: 400, damping: 40, mass: 0.8 })
   const ready = React.useRef(false)
-  const target = track?.rows[highlighted ?? ""]
   // Keep the active outline square and open on the rail side, so the rail joins
   // the row cleanly with a compact, squarish corner radius.
   const contour = useTransform([lineY, lineWidth, rowHeight], ([y, width, height]: number[]) => {
@@ -105,6 +103,12 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
     }
     return result
   }, [items, query])
+  // A search can remove the hovered, focused, or selected row. Ignore stale
+  // targets so the seam stays visible until a matching row is highlighted.
+  const highlighted = [hovered, focused, active].find(id =>
+    id != null && visible.some(item => "id" in item && item.id === id)
+  )
+  const target = track?.rows[highlighted ?? ""]
   // Measure only on layout changes; spring values move the SVG without React renders.
   React.useLayoutEffect(() => {
     const root = nav.current
@@ -153,10 +157,11 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
     </div>
     <div data-slot="sidebar-scroll" className="min-h-0 flex-1 overflow-y-auto px-2 pb-2 pt-1 [scrollbar-width:thin]">
       {visible.length ? <nav ref={nav} className="relative py-3" aria-label={`${label} links`} onKeyDown={onKeyDown} onPointerLeave={() => setHovered(null)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(null) }}>
-        {track && target !== undefined && <svg aria-hidden data-sidebar-line className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
+        {track && <svg aria-hidden data-sidebar-line className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
           <defs><linearGradient id={`${uid}-line`} x1="0" y1="0" x2="1" y2="0"><stop stopColor="var(--glow)" stopOpacity="0.2" /><stop offset="0.5" stopColor="var(--glow)" stopOpacity="0.5" /><stop offset="1" stopColor="var(--glow)" stopOpacity="0.3" /></linearGradient></defs>
-          <motion.path data-sidebar-seam d={seam} fill="none" stroke="currentColor" strokeOpacity="0.13" strokeWidth="1" strokeLinecap="round" />
-          <motion.path data-sidebar-contour d={contour} fill="none" stroke={`url(#${uid}-line)`} strokeWidth="1" strokeLinecap="round" />
+          {target === undefined
+            ? <path data-sidebar-seam d={`M 9 ${track.top} V ${track.bottom}`} fill="none" stroke="currentColor" strokeOpacity="0.13" strokeWidth="1" strokeLinecap="round" />
+            : <><motion.path data-sidebar-seam d={seam} fill="none" stroke="currentColor" strokeOpacity="0.13" strokeWidth="1" strokeLinecap="round" /><motion.path data-sidebar-contour d={contour} fill="none" stroke={`url(#${uid}-line)`} strokeWidth="1" strokeLinecap="round" /></>}
         </svg>}
         <ul className="space-y-0.5 pl-5">
           {visible.map((item, index) => {
@@ -175,7 +180,10 @@ function GlassSidebar({ items, value, defaultValue, onValueChange, header, foote
               className: cn("group relative flex min-h-9 scroll-my-3 w-full cursor-pointer items-center gap-2.5 rounded-[12px] px-2.5 py-1 text-left text-[13px] outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-glow/60 motion-reduce:transition-none", selected ? "font-medium text-foreground" : "text-foreground/60 hover:text-foreground focus-visible:text-foreground"),
               onPointerEnter: (event: React.PointerEvent) => { if (event.pointerType !== "touch") setHovered(item.id) },
               onFocus: () => setFocused(item.id),
-              onClick: () => choose(item.id),
+              onClick: (event: React.MouseEvent<HTMLElement>) => {
+                if (event.defaultPrevented || (item.href && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey))) return
+                choose(item.id)
+              },
             }
             return <li key={item.id}><AnimateIcon animateOnHover asChild>{item.href ? <a {...common} href={item.href}>{contents}</a> : <button {...common} type="button">{contents}</button>}</AnimateIcon></li>
           })}
