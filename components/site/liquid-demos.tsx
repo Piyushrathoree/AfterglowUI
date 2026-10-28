@@ -429,7 +429,7 @@ export function DesktopDemo() {
                   type="button"
                   aria-label={playing ? "Pause" : "Play"}
                   onClick={() => setPlaying((v) => !v)}
-                  className="grid size-10 cursor-pointer place-items-center rounded-full bg-foreground text-background shadow-[0_6px_16px_-6px_oklch(0_0_0/50%)] transition-[scale] duration-150 ease-out outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 active:scale-96"
+                  className="grid size-10 cursor-pointer place-items-center rounded-full bg-foreground text-background shadow-[0_6px_16px_-6px_oklch(0_0_0/50%)] transition-[scale] duration-150 ease-out motion-reduce:transition-none outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 motion-safe:active:scale-96"
                 >
                   <SwapIcon id={playing ? "pause" : "play"}>
                     {playing ? <Pause className="size-4 fill-current" /> : <Play className="size-4 translate-x-px fill-current" />}

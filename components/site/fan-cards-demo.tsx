@@ -43,7 +43,7 @@ function FanCardsDemo({ eager = false }: { eager?: boolean }) {
                     magnify={0}
                     tint="rgb(0 0 0 / 28%)"
                   />
-                  <div className="relative px-4 py-3.5">
+                  <div className="relative px-4 py-3.5 [text-shadow:0_1px_3px_rgb(0_0_0/35%)]">
                     <p className="text-sm font-medium tracking-tight">{person.name}</p>
                     <p className="mt-1 text-xs text-white/80">{person.role}</p>
                   </div>

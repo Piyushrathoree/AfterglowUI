@@ -137,7 +137,7 @@ export function DeployDemo() {
           type="button"
           onClick={start}
           disabled={!done}
-          className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.06] pr-3 pl-2.5 text-[13px] font-medium transition-[background-color,opacity,scale] duration-150 ease-out outline-none hover:bg-foreground/[0.11] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.06] pr-3 pl-2.5 text-[13px] font-medium transition-[background-color,opacity,scale] duration-150 ease-out motion-reduce:transition-none outline-none hover:bg-foreground/[0.11] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40"
         >
           {/* the arrow makes one full turn each time a deploy starts */}
           <motion.span
@@ -166,7 +166,7 @@ const masked = "•".repeat(secret.middle.length)
 
 // the small capsule both buttons share: 32px tall, concentric in a 48px row with 8px of padding
 const capsule =
-  "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-foreground/[0.07] text-foreground outline-none transition-[background-color,scale] duration-150 ease-out hover:bg-foreground/[0.12] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] [&_svg]:size-3.5"
+  "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-foreground/[0.07] text-foreground outline-none transition-[background-color,scale] duration-150 ease-out motion-reduce:transition-none hover:bg-foreground/[0.12] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:active:scale-[0.97] [&_svg]:size-3.5"
 
 export function CopyDemo() {
   const reduceMotion = useReducedMotion()
@@ -323,7 +323,7 @@ function SaveButton() {
       type="button"
       onClick={save}
       aria-busy={state === "saving"}
-      className="inline-flex h-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-foreground/[0.08] bg-background/75 px-5 text-sm font-medium text-foreground shadow-[0_1px_2px_oklch(0_0_0/0.08)] transition-[background-color,scale] duration-150 ease-out outline-none hover:bg-background/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] dark:bg-foreground/[0.14] dark:hover:bg-foreground/[0.18]"
+      className="inline-flex h-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-foreground/[0.08] bg-background/75 px-5 text-sm font-medium text-foreground shadow-[0_1px_2px_oklch(0_0_0/0.08)] transition-[background-color,scale] duration-150 ease-out motion-reduce:transition-none outline-none hover:bg-background/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:active:scale-[0.97] dark:bg-foreground/[0.14] dark:hover:bg-foreground/[0.18]"
     >
       {content}
     </button>

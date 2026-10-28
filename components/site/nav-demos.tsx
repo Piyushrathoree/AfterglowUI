@@ -390,7 +390,7 @@ export function RailNavDemo() {
 
 // a large standalone table of contents with the same bent reading path
 export function ReadingRailDemo() {
-  const [active, setActive] = React.useState("features")
+  const [active, setActive] = React.useState("configuration")
   const contents = React.useMemo(
     () => [
       { id: "installation", label: "Installation" },
@@ -399,7 +399,7 @@ export function ReadingRailDemo() {
       { id: "configuration", label: "Configuration", depth: 1 },
       { id: "usage", label: "Usage" },
       { id: "customizing-content", label: "Customizing Content", depth: 1 },
-      { id: "submenu-content", label: "Submenu Content", depth: 1 },
+      { id: "submenu-content", label: "Submenu Content", depth: 2 },
       { id: "features", label: "Features" },
     ],
     []
@@ -407,7 +407,7 @@ export function ReadingRailDemo() {
   return (
     <div className="ag-toc-demo h-full w-full min-w-0">
       <div data-rail-demo className="flex h-full min-h-0 min-w-0 flex-col overflow-auto px-5 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="m-auto w-full max-w-[540px] shrink-0">
+        <div className="m-auto w-full max-w-[380px] shrink-0">
           <ReadingRail items={contents} activeId={active} onActiveIdChange={setActive} size="large" />
         </div>
       </div>
@@ -467,11 +467,11 @@ export function GlassSidebarDemo() {
         value={value}
         onValueChange={setValue}
         header={
-          <div className="ag-contour-brand">
-            <AfterglowMark className="ag-contour-brand-mark" />
-            <div className="ag-contour-brand-copy">
-              <span>Afterglow</span>
-              <small>Workspace</small>
+          <div className="ag-contour-brand flex min-h-[42px] items-center gap-2.5 px-1.5 pt-[3px] pb-[5px]">
+            <AfterglowMark width={22} height={22} className="size-[22px] shrink-0 text-glow" />
+            <div className="grid min-w-0 gap-0.5 text-[13px] leading-tight font-medium tracking-tight">
+              <span className="truncate">Afterglow</span>
+              <small className="block truncate text-[10px] font-normal tracking-normal text-muted-foreground">Workspace</small>
             </div>
           </div>
         }
