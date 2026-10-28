@@ -116,7 +116,7 @@ function TrailTabs({
             tabIndex={selected ? 0 : -1}
             disabled={tab.disabled}
             data-state={selected ? "active" : "inactive"}
-            className="relative inline-flex h-9 min-w-9 cursor-pointer items-center justify-center rounded-full px-2.5 text-sm font-medium text-foreground/60 outline-none transition-[color,scale] duration-150 ease-out hover:text-foreground active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-40 aria-selected:text-foreground [&_svg]:size-4 [&_svg]:shrink-0"
+            className="relative inline-flex h-9 min-w-9 cursor-pointer items-center justify-center rounded-full px-2.5 text-sm font-medium text-foreground/60 outline-none transition-[color,scale] duration-150 ease-out hover:text-foreground motion-safe:active:scale-[0.97] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-40 aria-selected:text-foreground [&_svg]:size-4 [&_svg]:shrink-0"
             onClick={() => select(tab.value)}
             onKeyDown={(event) => handleKeyDown(event, tab.value)}
           >
