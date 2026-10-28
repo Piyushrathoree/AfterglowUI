@@ -149,7 +149,7 @@ function LiquidMenu({
           aria-controls={open ? menuId : undefined}
           aria-label={triggerLabel}
           className={cn(
-            "relative inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-4 text-sm font-medium whitespace-nowrap outline-none transition-opacity duration-150 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring [&_svg]:size-4",
+            "relative inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-4 text-sm font-medium whitespace-nowrap outline-none transition-[opacity,scale] duration-150 motion-safe:active:scale-[0.97] motion-reduce:transition-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring [&_svg]:size-4",
             open && "pointer-events-none opacity-0"
           )}
           onClick={() => setOpen(true)}
@@ -167,7 +167,7 @@ function LiquidMenu({
               onKeyDown={handleMenuKey}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { delay: reduceMotion ? 0 : 0.08, duration: 0.15 } }}
-              exit={{ opacity: 0, transition: { duration: 0.08 } }}
+              exit={{ opacity: 0, transition: { duration: reduceMotion ? 0 : 0.08 } }}
             >
               {items.map((item, i) => {
                 if (item === "divider") {
@@ -190,7 +190,7 @@ function LiquidMenu({
                     role="menuitem"
                     tabIndex={-1}
                     className={cn(
-                      "flex shrink-0 cursor-pointer items-center gap-2.5 rounded-xl px-2.5 text-left text-sm outline-none transition-colors duration-100 hover:bg-foreground/10 focus-visible:bg-foreground/10 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-foreground/70",
+                      "flex shrink-0 cursor-pointer items-center gap-2.5 rounded-xl px-2.5 text-left text-sm outline-none transition-[background-color,scale] duration-150 motion-safe:active:scale-[0.98] motion-reduce:transition-none hover:bg-foreground/10 focus-visible:bg-foreground/10 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-foreground/70",
                       item.destructive && "text-glow-2 [&_svg]:text-glow-2"
                     )}
                     style={{ height: ITEM }}
