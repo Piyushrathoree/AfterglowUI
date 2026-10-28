@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { CopyButton } from "./copy-button"
 import { loadSource, loadedSource, type SourceFile } from "./source-cache"
+import { DocsPicker } from "./docs-picker"
 
 export default function LibrarySource({ name }: { name: string }) {
   const [files, setFiles] = useState<SourceFile[] | null>(() => loadedSource(name))
@@ -22,7 +23,7 @@ export default function LibrarySource({ name }: { name: string }) {
   if (!files) return <p role="status">Loading source…</p>
   const file = files[selected]
   return <div className="ag-source">
-    <label className="ag-file-label">Source file<select value={selected} aria-label="Source file" onChange={event => setSelected(Number(event.target.value))}>{files.map((file, index) => <option value={index} key={file.path}>{file.path}</option>)}</select></label>
-    <div className="docs-code"><CopyButton text={file.code} label="Copy source code" /><div dangerouslySetInnerHTML={{ __html: file.html }} /></div>
+    <DocsPicker items={files.map(file => file.path)} selected={selected} onSelect={setSelected} />
+    <div className="docs-code" key={file.path}><CopyButton text={file.code} label="Copy source code" /><div className="ag-source-file" dangerouslySetInnerHTML={{ __html: file.html }} /></div>
   </div>
 }

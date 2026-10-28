@@ -5,6 +5,13 @@ import { getShowcase } from "@/lib/docs/showcases"
 import type { ComponentName } from "@/lib/docs/catalog"
 
 const scenes = {
+  "glow-avatar": dynamic(() => import("./showcases/glow-avatar"), {
+    loading: () => (
+      <p role="status" className="ag-demo-loading">
+        Loading preview…
+      </p>
+    ),
+  }),
   "glass-sidebar": dynamic(() => import("./showcases/glass-sidebar")),
   controls: dynamic(() => import("./showcases/controls"), {
     loading: () => (
