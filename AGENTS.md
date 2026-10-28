@@ -30,3 +30,13 @@ Every icon in the app is an animated icon from [animate-ui](https://animate-ui.c
 - Registry components (`components/ui`, `components/blocks`) ship with the stock core, which has no auto trigger. Wrap the interactive element in `<AnimateIcon animateOnHover asChild>`, give each icon `aria-hidden` and an explicit size (the stock default is 28), and list each icon in the item's `registryDependencies` as `@animate-ui/icons-<name>`. Never add `components/animate-ui/**` to an item's `files`: animate-ui's license forbids redistributing its components, so users must fetch them from animate-ui.
 - Icons animate-ui doesn't have (or hasn't published, for registry components) stay on `lucide-react`.
 - Docs usage snippets (`components/docs/examples`) keep `lucide-react` so readers can paste them without extra installs.
+
+## Component motion: micro-interaction skill
+
+- Before creating or changing any component, read and apply `.agents/skills/micro-interaction/SKILL.md` as the motion and interaction checklist. This applies to every component in `components/ui`, `components/blocks`, and their demos.
+- For each component, consider hover, press, focus, state changes, and enter/exit behavior. Add motion only when it clarifies feedback or continuity; keep static components calm when motion would be decorative.
+- Keep feedback quick, favor `transform` and `opacity`, and honor `prefers-reduced-motion`. For menus, drawers, toasts, lists, and other stateful interactions, use the skill's enter/exit and stable-state guidance.
+- When updating an existing component, review its current motion against the skill and keep the interaction consistent with Afterglow's restrained liquid-glass style.
+- For web interface design and motion, consult `.agents/skills/apple-design/SKILL.md` and `.agents/skills/animation-principles/SKILL.md` when relevant; favor immediate, interruptible feedback and restrained movement.
+- Use `.agents/skills/gsap-core/SKILL.md` or `.agents/skills/gsap-scrolltrigger/SKILL.md` when working with GSAP or its scroll triggers. Keep the existing Motion/CSS approach when it already meets the need; add dependencies only when necessary.
+- Use `.agents/skills/apple-native-ui/SKILL.md` for native Apple platform work, and `.agents/skills/remotion-interactivity/SKILL.md` for Remotion Studio compositions. Do not apply platform-specific instructions to unrelated web components.
