@@ -48,19 +48,19 @@ function FanCards({ items, cardClassName, className, ...props }: FanCardsProps) 
             )}
             style={{
               "--fan-angle": `${normalized * 13}deg`,
-              "--fan-offset": `${Math.pow(Math.abs(normalized), 1.5) * 40}px`,
-              "--fan-layer": Math.round(30 - Math.abs(normalized) * 10),
+              "--fan-offset": `${(Math.pow(Math.abs(normalized), 1.5) * 40).toFixed(3)}px`,
+              "--fan-layer": `${Math.round(30 - Math.abs(normalized) * 10)}`,
             } as React.CSSProperties}
           >
             <div
               data-slot="fan-card-surface"
               className={cn(
-                "relative h-full overflow-hidden rounded-[24px] text-card-foreground shadow-[0_12px_32px_-12px_rgb(0_0_0/20%)]",
-                "transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                "relative h-full overflow-hidden rounded-[24px] text-card-foreground shadow-[0_12px_32px_-12px_rgb(0_0_0/24%)]",
+                "transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
                 "@min-[760px]:transform-[translateY(var(--fan-offset))_rotate(var(--fan-angle))]",
                 "@min-[760px]:group-hover/fan-card:transform-[translateY(-18px)_rotate(0deg)_scale(1.035)]",
                 "@min-[760px]:group-focus-visible/fan-card:transform-[translateY(-18px)_rotate(0deg)_scale(1.035)]",
-                "group-hover/fan-card:shadow-[0_24px_48px_-16px_rgb(0_0_0/22%)]",
+                "group-hover/fan-card:shadow-[0_24px_48px_-16px_rgb(0_0_0/28%)]",
                 "group-focus-visible/fan-card:outline-2 group-focus-visible/fan-card:outline-offset-4 group-focus-visible/fan-card:outline-ring",
                 "motion-reduce:transform-none! motion-reduce:transition-none",
                 cardClassName
