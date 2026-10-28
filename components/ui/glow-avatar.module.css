@@ -1,0 +1,67 @@
+.root {
+  --bot-1: color-mix(in oklch, var(--glow, oklch(0.72 0.18 45)) 82%, white);
+  --bot-2: color-mix(in oklch, var(--glow, oklch(0.72 0.18 45)) 68%, black);
+  --bot-face: var(--background, #faf9f7);
+  --bot-ground: color-mix(in oklch, var(--foreground, #171717) 7%, transparent);
+  --bot-ground-core: color-mix(in oklch, var(--foreground, #171717) 12%, transparent);
+  --bot-heart: var(--glow-2, var(--glow, oklch(0.72 0.18 45)));
+  --bot-blush: color-mix(in oklch, var(--glow-2, var(--glow, oklch(0.72 0.18 45))) 48%, transparent);
+
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: var(--bot-size, 120px);
+  height: var(--bot-size, 120px);
+  vertical-align: middle;
+}
+
+/* The drawing is half again the body's size, so jumps and squashes have room to spill. */
+.svg {
+  position: absolute;
+  inset: -25%;
+  display: block;
+  width: 150%;
+  height: 150%;
+  overflow: visible;
+}
+
+.stop1,
+.stop2 {
+  transition: stop-color 450ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stop1,
+  .stop2 {
+    transition: none;
+  }
+}
+
+.stop1 {
+  stop-color: var(--bot-1);
+}
+
+.stop2 {
+  stop-color: var(--bot-2);
+}
+
+.face {
+  fill: var(--bot-face);
+  stroke: var(--bot-face);
+}
+
+.ground {
+  fill: var(--bot-ground);
+}
+
+.core {
+  fill: var(--bot-ground-core);
+}
+
+.blush {
+  fill: var(--bot-blush);
+}
+
+.heart {
+  fill: var(--bot-heart);
+}
