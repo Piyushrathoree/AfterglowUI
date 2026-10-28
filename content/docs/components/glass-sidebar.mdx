@@ -1,9 +1,9 @@
 ---
-title: "Glass Sidebar"
+title: "Contour Sidebar"
 description: "A workspace sidebar with a continuous contour that opens around hovered links and flows back to your selection."
 ---
 
-A continuous seam opens around the hovered or focused row, then rejoins below it. One damped spring drives the contour and its fill together, so the line can reverse smoothly and return to the selected page. Search filters grouped links. Supports href, controlled selection, custom header and footer, keyboard navigation, and reduced motion.
+A continuous seam opens around the hovered or focused row, then rejoins below it. A damped spring lets the contour reverse smoothly and return to the selected page. Search filters grouped links by label or keywords. The sidebar supports links, controlled selection, custom headers and footers, keyboard navigation, and reduced motion.
 
 ## Installation
 
@@ -40,14 +40,14 @@ export default function Navigation() {
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `items` | `(GlassSidebarItem \| GlassSidebarHeading)[]` | The items option. |
-| `value?` | `string` | The value option. |
-| `defaultValue?` | `string` | The default value option. |
-| `onValueChange?` | `(id: string) => void` | The on value change option. |
+| `items` | `(GlassSidebarItem \| GlassSidebarHeading)[]` | Navigation rows and group headings. Rows can include an `href`, icon, badge, and search keywords. |
+| `value?` | `string` | Selected row ID when the parent controls selection. |
+| `defaultValue?` | `string` | Initial selected row ID for an uncontrolled sidebar. Defaults to the first row. |
+| `onValueChange?` | `(id: string) => void` | Called when a row is selected. |
 | `header?` | `React.ReactNode` | Replaces the brand row above search. |
 | `footer?` | `React.ReactNode` | Account details or other content anchored below navigation. |
-| `searchable?` | `boolean` | Shows a local filter for the navigation rows. |
-| `searchPlaceholder?` | `string` | The search placeholder option. |
+| `searchable?` | `boolean` | Shows a local filter for the navigation rows. Defaults to `true`. |
+| `searchPlaceholder?` | `string` | Placeholder and accessible label for the search field. |
 
 Standard element attributes are supported where the props extend a React element type. Required properties appear without a question mark.
 

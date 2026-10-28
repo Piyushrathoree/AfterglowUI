@@ -1,0 +1,49 @@
+---
+title: "Glow Avatar"
+description: "An expressive assistant that looks around, follows the pointer, and changes shape, mood, and motion."
+---
+
+The avatar is drawn as an SVG and animated directly, so its face and body can react without rerendering the surrounding React tree. It follows the current Afterglow accent and theme by default.
+
+## Installation
+
+<InstallCommand name="glow-avatar" />
+
+## Usage
+
+```tsx
+"use client"
+
+import { GlowAvatar } from "@/components/ui/glow-avatar"
+
+export function AssistantAvatar() {
+  return (
+    <GlowAvatar
+      size={144}
+      activity="listening"
+      emotion="thinking"
+      followCursor
+      lookAround
+    />
+  )
+}
+```
+
+Move the pointer across the page to change its gaze. Set `activity` to `"speaking"` while audio is playing, and use `motion` with a changing `motionKey` to replay an action.
+
+## Props
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `size?` | `number` | Avatar diameter in pixels. Defaults to `120`. |
+| `colors?` | `readonly [string, string]` | Optional light-to-dark gradient stops. Defaults to the current accent. |
+| `emotion?` | `AiBotEmotion` | Expression: neutral, happy, love, laugh, surprised, sad, thinking, sleepy, or wink. |
+| `activity?` | `AiBotActivity` | Voice state: idle, listening, or speaking. |
+| `shape?` | `AiBotShape` | Body shape: pebble, circle, squircle, flower, or blob. |
+| `motion?` | `AiBotMotion \| null` | One-shot jump, spin, bounce, wiggle, or float. Change `motionKey` to replay it. |
+| `followCursor?` | `boolean` | Let the eyes follow the pointer. |
+| `lookAround?` | `boolean` | Enable idle glances. Defaults to `true`. |
+| `hoverGiggle?` | `boolean` | React to a pointer entering the avatar. Defaults to `true`. |
+| `label?` | `string` | Accessible label for the avatar. |
+
+`onMotionEnd` runs after a one-shot motion, and `onTickle` runs when the pointer triggers a giggle. The avatar respects the operating system's reduced-motion preference.

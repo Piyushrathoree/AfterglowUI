@@ -2,6 +2,7 @@
   "title": "Components",
   "pages": [
     "afterglow-theme",
+    "glow-avatar",
     "border-beam",
     "copy-button",
     "trail-tabs",
