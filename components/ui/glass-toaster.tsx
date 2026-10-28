@@ -293,7 +293,7 @@ function ToastCard({
             {item.action && (
               <button
                 type="button"
-                className="mt-3 h-7 rounded-full bg-glow px-3 text-xs font-medium text-glow-foreground shadow-gloss outline-none transition-transform duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-96"
+                className="mt-3 h-7 rounded-full bg-glow px-3 text-xs font-medium text-glow-foreground shadow-gloss outline-none transition-transform duration-150 ease-out motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:active:scale-96"
                 onClick={() => {
                   item.action?.onClick()
                   toast.dismiss(item.id)

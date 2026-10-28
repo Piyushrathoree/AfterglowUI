@@ -147,7 +147,11 @@ function GlassSwitch({
       }}
       onPointerCancel={(event) => {
         onPointerCancel?.(event)
-        release()
+        drag.current = null
+        skipClick.current = false
+        press.set(0)
+        if (reduceMotion) x.jump(on ? TRAVEL : 0)
+        else x.set(on ? TRAVEL : 0)
       }}
       {...props}
     >
