@@ -90,6 +90,7 @@ function LiquidToolbar({
             )}
             onPointerEnter={() => setHovered(item.label)}
             onFocus={() => setHovered(item.label)}
+            onBlur={() => setHovered(null)}
             onClick={item.onClick}
             onKeyDown={(event) => handleKeyDown(event, index)}
           >
@@ -113,7 +114,7 @@ function LiquidToolbar({
                 className="absolute inset-1.5 rounded-full bg-glow/25 blur-md"
               />
             )}
-            <span className="relative transition-[scale] duration-150 ease-out group-active:scale-90">
+            <span className="relative transition-[scale] duration-150 ease-out motion-safe:group-active:scale-95 motion-reduce:transition-none">
               {item.icon}
             </span>
           </button>
