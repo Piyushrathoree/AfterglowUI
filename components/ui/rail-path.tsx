@@ -17,7 +17,7 @@ type RailTrack = {
 }
 
 /** a path through every row. rows that sit at a different x get a rounded jog halfway between them */
-function buildTrack(rows: RailRow[], radius = 7): RailTrack {
+function buildTrack(rows: RailRow[], radius = 7, bend: "rounded" | "diagonal" = "rounded"): RailTrack {
   if (!rows.length) return { d: "", at: [], total: 0 }
   let d = `M ${rows[0].x} ${rows[0].y}`
   let length = 0
@@ -29,6 +29,14 @@ function buildTrack(rows: RailRow[], radius = 7): RailTrack {
       d += ` V ${b.y}`
       length += b.y - a.y
     } else {
+      if (bend === "diagonal") {
+        const mid = (a.y + b.y) / 2
+        const half = Math.min(Math.abs(b.x - a.x) / 2, (b.y - a.y) / 4)
+        d += ` V ${mid - half} L ${b.x} ${mid + half} V ${b.y}`
+        length += b.y - a.y - 2 * half + Math.hypot(b.x - a.x, 2 * half)
+        at.push(length)
+        continue
+      }
       const dir = b.x > a.x ? 1 : -1
       const dx = Math.abs(b.x - a.x)
       const r = Math.min(radius, dx / 2, (b.y - a.y) / 4)

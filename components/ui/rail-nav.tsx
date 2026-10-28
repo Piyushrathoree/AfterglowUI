@@ -172,7 +172,7 @@ function RailNav({ items, value, defaultValue, onValueChange, className, "aria-l
                     className={cn("grid place-items-center transition-colors duration-200", selected && "text-glow")}
                     initial={false}
                     animate={selected ? iconGestures.pop : iconRest}
-                    transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+                    transition={reduceMotion ? { duration: 0 } : { duration: 0.24, ease: [0.2, 0.8, 0.2, 1] }}
                   >
                     {entry.icon}
                   </motion.span>
