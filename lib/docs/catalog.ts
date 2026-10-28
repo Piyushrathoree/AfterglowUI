@@ -7,6 +7,13 @@ export const componentCatalog = [
     "dependencies": []
   },
   {
+    "name": "glow-avatar",
+    "title": "Glow Avatar",
+    "description": "An expressive assistant that looks around, follows the pointer, and changes shape, mood, and motion.",
+    "group": "AI",
+    "dependencies": []
+  },
+  {
     "name": "border-beam",
     "title": "Border Beam",
     "description": "A beam of light that circles a border while work runs and fades out slowly when you turn it off, spun on the GPU.",
