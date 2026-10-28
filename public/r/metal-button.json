@@ -12,7 +12,7 @@
   "files": [
     {
       "path": "components/ui/metal-button.tsx",
-      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { motion, useReducedMotion, type HTMLMotionProps } from \"motion/react\"\n\nimport { LiquidMetal, MetalRim } from \"@/components/ui/liquid-metal\"\nimport { cn } from \"@/lib/utils\"\n\nconst sizes = {\n  sm: \"h-9 gap-1.5 px-4 text-[13px] [&_svg]:size-3.5\",\n  md: \"h-10 gap-2 px-5 text-sm [&_svg]:size-4\",\n  lg: \"h-12 gap-2.5 px-6 text-[15px] [&_svg]:size-[18px]\",\n}\n\ntype MetalButtonProps = Omit<HTMLMotionProps<\"button\">, \"children\"> & {\n  /** rim is a dark button ringed in flowing chrome; silver is solid brushed metal */\n  variant?: \"rim\" | \"silver\"\n  size?: keyof typeof sizes\n  children?: React.ReactNode\n}\n\nfunction MetalButton({\n  variant = \"rim\",\n  size = \"md\",\n  className,\n  children,\n  type = \"button\",\n  ...props\n}: MetalButtonProps) {\n  const reduceMotion = useReducedMotion()\n  const silver = variant === \"silver\"\n\n  return (\n    <motion.button\n      data-slot=\"metal-button\"\n      data-variant={variant}\n      type={type}\n      className={cn(\n        \"relative isolate inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full font-medium whitespace-nowrap outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-60\",\n        \"shadow-[0_8px_24px_-12px_oklch(0_0_0/70%),0_1px_2px_oklch(0_0_0/40%)]\",\n        silver\n          ? \"text-[oklch(0.2_0.004_285)] [text-shadow:0_1px_0_oklch(1_0_0/45%)]\"\n          : \"bg-[linear-gradient(oklch(0.21_0.004_285),oklch(0.13_0.004_285))] text-white\",\n        sizes[size],\n        className\n      )}\n      whileTap={{ scale: reduceMotion ? 1 : 0.97 }}\n      transition={{ type: \"spring\", duration: 0.3, bounce: 0 }}\n      {...props}\n    >\n      {silver ? (\n        <LiquidMetal className=\"-z-10\" softness={1} brightness={0.8} scale={0.4} tint={[1, 0.92, 0.84]} />\n      ) : (\n        <MetalRim className=\"-z-10\" width={2} />\n      )}\n      {/* a bevel: light along the top edge, shade along the bottom */}\n      <span\n        aria-hidden\n        className={cn(\n          \"pointer-events-none absolute rounded-[inherit]\",\n          silver\n            ? \"inset-0 shadow-[inset_0_1px_0_oklch(1_0_0/60%),inset_0_-1px_0_oklch(0_0_0/20%)]\"\n            : \"inset-[2px] shadow-[inset_0_1px_0_oklch(1_0_0/12%)]\"\n        )}\n      />\n      <span className=\"relative inline-flex items-center gap-[inherit]\">{children}</span>\n    </motion.button>\n  )\n}\n\nexport { MetalButton, type MetalButtonProps }\n",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { motion, useReducedMotion, type HTMLMotionProps } from \"motion/react\"\n\nimport { LiquidMetal, MetalRim } from \"@/components/ui/liquid-metal\"\nimport { cn } from \"@/lib/utils\"\n\nconst sizes = {\n  sm: \"h-9 gap-1.5 px-4 text-[13px] [&_svg]:size-3.5\",\n  md: \"h-10 gap-2 px-5 text-sm [&_svg]:size-4\",\n  lg: \"h-12 gap-2.5 px-6 text-[15px] [&_svg]:size-[18px]\",\n}\n\ntype MetalButtonProps = Omit<HTMLMotionProps<\"button\">, \"children\"> & {\n  /** rim is a dark button ringed in flowing chrome; silver is solid brushed metal */\n  variant?: \"rim\" | \"silver\"\n  size?: keyof typeof sizes\n  children?: React.ReactNode\n}\n\nfunction MetalButton({\n  variant = \"rim\",\n  size = \"md\",\n  className,\n  children,\n  type = \"button\",\n  ...props\n}: MetalButtonProps) {\n  const reduceMotion = useReducedMotion()\n  const silver = variant === \"silver\"\n\n  return (\n    <motion.button\n      data-slot=\"metal-button\"\n      data-variant={variant}\n      type={type}\n      className={cn(\n        \"relative isolate inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full font-medium whitespace-nowrap outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-60\",\n        \"shadow-[0_8px_24px_-12px_oklch(0_0_0/70%),0_1px_2px_oklch(0_0_0/40%)]\",\n        silver\n          ? \"text-[oklch(0.2_0.004_285)] [text-shadow:0_1px_0_oklch(1_0_0/45%)]\"\n          : \"bg-[linear-gradient(oklch(0.21_0.004_285),oklch(0.13_0.004_285))] text-white\",\n        sizes[size],\n        className\n      )}\n      whileTap={{ scale: reduceMotion ? 1 : 0.97 }}\n      transition={{ type: \"spring\", duration: 0.22, bounce: 0 }}\n      {...props}\n    >\n      {silver ? (\n        <LiquidMetal className=\"-z-10\" softness={1} brightness={0.8} scale={0.4} tint={[1, 0.92, 0.84]} />\n      ) : (\n        <MetalRim className=\"-z-10\" width={2} />\n      )}\n      {/* a bevel: light along the top edge, shade along the bottom */}\n      <span\n        aria-hidden\n        className={cn(\n          \"pointer-events-none absolute rounded-[inherit]\",\n          silver\n            ? \"inset-0 shadow-[inset_0_1px_0_oklch(1_0_0/60%),inset_0_-1px_0_oklch(0_0_0/20%)]\"\n            : \"inset-[2px] shadow-[inset_0_1px_0_oklch(1_0_0/12%)]\"\n        )}\n      />\n      <span className=\"relative inline-flex items-center gap-[inherit]\">{children}</span>\n    </motion.button>\n  )\n}\n\nexport { MetalButton, type MetalButtonProps }\n",
       "type": "registry:ui"
     },
     {
@@ -46,13 +46,13 @@
       "glass": "oklch(1 0 0 / 55%)",
       "gloss-highlight": "oklch(1 0 0 / 95%)",
       "gloss-shade": "oklch(0.3 0.03 285 / 10%)",
-      "gloss-depth": "oklch(0.35 0.04 285 / 16%)",
-      "gloss-edge": "oklch(0.22 0.02 285 / 9%)",
+      "gloss-depth": "oklch(0.32 0.03 285 / 20%)",
+      "gloss-edge": "oklch(0.22 0.02 285 / 10%)",
       "liquid-tint": "oklch(1 0 0 / 18%)",
       "liquid-fallback": "oklch(1 0 0 / 55%)",
       "liquid-rim": "oklch(1 0 0 / 95%)",
       "liquid-edge": "oklch(0.2 0.02 285 / 10%)",
-      "liquid-shadow": "oklch(0.25 0.03 285 / 22%)",
+      "liquid-shadow": "oklch(0.22 0.02 285 / 26%)",
       "liquid-glow": "oklch(1 0 0 / 55%)",
       "liquid-shade": "oklch(0.25 0.03 285 / 14%)"
     },
@@ -64,13 +64,13 @@
       "glass": "oklch(0.19 0 0 / 55%)",
       "gloss-highlight": "oklch(1 0 0 / 16%)",
       "gloss-shade": "oklch(0 0 0 / 30%)",
-      "gloss-depth": "oklch(0.04 0 0 / 55%)",
-      "gloss-edge": "oklch(1 0 0 / 8%)",
+      "gloss-depth": "oklch(0.04 0 0 / 60%)",
+      "gloss-edge": "oklch(1 0 0 / 9%)",
       "liquid-tint": "oklch(0.2 0 0 / 22%)",
       "liquid-fallback": "oklch(0.2 0 0 / 45%)",
       "liquid-rim": "oklch(1 0 0 / 60%)",
       "liquid-edge": "oklch(1 0 0 / 10%)",
-      "liquid-shadow": "oklch(0 0 0 / 45%)",
+      "liquid-shadow": "oklch(0 0 0 / 50%)",
       "liquid-glow": "oklch(1 0 0 / 24%)",
       "liquid-shade": "oklch(0 0 0 / 28%)"
     }
