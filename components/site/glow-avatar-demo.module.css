@@ -1,0 +1,128 @@
+.demo {
+  container-type: inline-size;
+  display: grid;
+  gap: 12px;
+  width: min(100%, 540px);
+  margin-inline: auto;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  min-height: clamp(260px, 42cqh, 360px);
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklch, var(--foreground) 9%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 43%, color-mix(in oklch, var(--glow) 8%, transparent), transparent 50%),
+    color-mix(in oklch, var(--foreground) 2.5%, var(--background));
+}
+
+.aura {
+  position: absolute;
+  width: 190px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in oklch, var(--glow) 12%, transparent), transparent 70%);
+  pointer-events: none;
+}
+
+.avatar {
+  z-index: 1;
+}
+
+.hint {
+  position: absolute;
+  inset-inline: 12px;
+  bottom: 12px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  text-align: center;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 12px;
+}
+
+.group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  padding: 0 2px 7px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.choices {
+  --track-radius: 16px;
+  --track-inset: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid color-mix(in oklch, var(--foreground) 9%, transparent);
+  border-radius: var(--track-radius);
+  background: color-mix(in oklch, var(--foreground) 4%, var(--background));
+  box-shadow: inset 0 1px 2px color-mix(in oklch, var(--foreground) 6%, transparent);
+}
+
+.choice {
+  min-width: 0;
+  min-height: 36px;
+  padding: 6px 3px;
+  border: 1px solid transparent;
+  border-radius: calc(var(--track-radius) - var(--track-inset));
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 150ms cubic-bezier(.16, 1, .3, 1);
+}
+
+@media (hover: hover) {
+  .choice:hover {
+    color: var(--foreground);
+    background: color-mix(in oklch, var(--foreground) 5%, transparent);
+  }
+}
+
+.choice[aria-pressed="true"] {
+  border-color: color-mix(in oklch, var(--foreground) 10%, transparent);
+  background: color-mix(in oklch, var(--card) 86%, var(--glow) 4%);
+  color: var(--foreground);
+  box-shadow: inset 0 1px 0 var(--gloss-highlight), 0 1px 3px var(--gloss-depth), 0 4px 10px -5px var(--gloss-depth);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .choice:active { transform: scale(.97); }
+}
+
+.choice:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@container (max-width: 380px) {
+  .controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .choice {
+    transition: none;
+  }
+}

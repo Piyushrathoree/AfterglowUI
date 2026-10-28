@@ -13,6 +13,15 @@ export type Showcase = {
 
 export const showcases: readonly Showcase[] = [
   {
+    id: "glow-avatar",
+    title: "Glow avatar",
+    group: "AI",
+    components: ["glow-avatar"],
+    description: "An expressive assistant that looks around, follows the pointer, and changes shape, mood, and motion.",
+    demo: "glow-avatar",
+    keywords: ["AI", "assistant", "bot", "avatar", "voice", "animation", "emotion"],
+  },
+  {
     id: "liquid-controls",
     title: "Liquid controls",
     group: "Liquid glass",
