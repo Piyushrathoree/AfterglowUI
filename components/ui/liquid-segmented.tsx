@@ -186,7 +186,7 @@ function LiquidSegmented({
               role="radio"
               aria-checked={selected}
               tabIndex={selected ? 0 : -1}
-              className="relative inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium whitespace-nowrap text-foreground/70 outline-none transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring aria-checked:text-foreground [&_svg]:size-4"
+              className="relative inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium whitespace-nowrap text-foreground/70 outline-none transition-[color,scale] duration-150 motion-safe:active:scale-[0.97] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring aria-checked:text-foreground [&_svg]:size-4"
               onClick={() => select(option.value)}
               onKeyDown={handleKeyDown}
             >

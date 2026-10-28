@@ -151,7 +151,16 @@ function LiquidSwitch({
       }}
       onPointerCancel={(event) => {
         onPointerCancel?.(event)
-        release()
+        drag.current = null
+        skipClick.current = false
+        window.clearTimeout(settle.current)
+        if (reduceMotion) {
+          x.jump(on ? TRAVEL : 0)
+          lens.jump(0)
+        } else {
+          x.set(on ? TRAVEL : 0)
+          lens.set(0)
+        }
       }}
       {...props}
     >
