@@ -45,7 +45,7 @@ function MetalButton({
         className
       )}
       whileTap={{ scale: reduceMotion ? 1 : 0.97 }}
-      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+      transition={{ type: "spring", duration: 0.22, bounce: 0 }}
       {...props}
     >
       {silver ? (

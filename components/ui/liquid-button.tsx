@@ -22,7 +22,7 @@ const sizes = {
 }
 
 // liquid glass swells when pressed and settles back with a little overshoot
-const swell = { type: "spring", stiffness: 420, damping: 15, mass: 0.7 } as const
+const swell = { type: "spring", stiffness: 420, damping: 27, mass: 0.7 } as const
 
 type LiquidButtonProps = Omit<HTMLMotionProps<"button">, "children"> & {
   size?: keyof typeof sizes
@@ -66,7 +66,7 @@ function LiquidButton({
         sizes[size],
         className
       )}
-      whileTap={{ scale: reduceMotion ? 1 : 1.08 }}
+      whileTap={{ scale: reduceMotion ? 1 : 1.04 }}
       transition={swell}
       onPointerEnter={(event) => {
         onPointerEnter?.(event)
