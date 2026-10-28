@@ -31,7 +31,7 @@ export function ThemeToggle() {
     <button
       type="button"
       aria-label="Toggle color theme"
-      className="grid size-9 cursor-pointer place-items-center rounded-full border border-transparent bg-linear-to-b from-card to-muted/70 text-muted-foreground shadow-gloss outline-none transition-[color,scale] duration-150 ease-out hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-96"
+      className="grid size-9 cursor-pointer place-items-center rounded-full border border-transparent bg-linear-to-b from-card to-muted/70 text-muted-foreground shadow-gloss outline-none transition-[color,scale] duration-150 ease-out motion-reduce:transition-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:active:scale-96"
       aria-keyshortcuts="T"
       title="Switch theme (T)"
       onClick={toggle}
