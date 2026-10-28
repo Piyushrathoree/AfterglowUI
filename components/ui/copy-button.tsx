@@ -108,7 +108,7 @@ function CopyButton({
         className={cn(
           // a capsule with no rim of its own, so it sits cleanly inside a bordered field. 32px tall,
           // its 16px radius nests concentric in a 48px row with 8px of padding
-          "relative inline-flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-[13px] font-medium outline-none transition-[background-color,color,scale] duration-150 ease-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
+          "relative inline-flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-[13px] font-medium outline-none transition-[background-color,color,scale] duration-150 ease-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:active:scale-[0.97] motion-reduce:transition-none disabled:pointer-events-none disabled:opacity-50",
           variant === "soft"
             ? "bg-foreground/[0.07] text-foreground hover:bg-foreground/[0.12]"
             : "text-foreground/65 hover:bg-foreground/[0.08] hover:text-foreground",
@@ -138,7 +138,7 @@ function CopyButton({
                 <motion.span
                   key={state}
                   className="col-start-1 row-start-1 grid place-items-center"
-                  transition={iconTransition}
+                  transition={reduceMotion ? { duration: 0 } : iconTransition}
                   {...swap}
                 >
                   {copied ? <Check aria-hidden className="text-glow" /> : <Copy aria-hidden />}
@@ -149,7 +149,7 @@ function CopyButton({
             {showLabel && (
               <span aria-hidden className="relative grid overflow-hidden">
                 <AnimatePresence initial={false} mode="popLayout">
-                  <motion.span key={state} transition={spring("snappy")} {...slide}>
+                  <motion.span key={state} transition={reduceMotion ? { duration: 0 } : spring("snappy")} {...slide}>
                     {copied ? "Copied" : "Copy"}
                   </motion.span>
                 </AnimatePresence>
@@ -170,7 +170,7 @@ function CopyButton({
                   ? { opacity: 0 }
                   : { opacity: 0, y: -4, filter: "blur(4px)", transition: { duration: 0.15 } }
               }
-              transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+              transition={reduceMotion ? { duration: 0 } : { type: "spring", duration: 0.22, bounce: 0 }}
             >
               Copied
             </motion.span>

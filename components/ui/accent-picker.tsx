@@ -108,7 +108,7 @@ function AccentPicker({
             aria-label={option.label}
             title={option.label}
             onClick={() => choose(option.id)}
-            className="relative grid size-8 cursor-pointer place-items-center rounded-full outline-none transition-[scale] duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.92]"
+            className="relative grid size-8 cursor-pointer place-items-center rounded-full outline-none transition-[scale] duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:active:scale-[0.96] motion-reduce:transition-none"
           >
             {selected && (
               <motion.span
